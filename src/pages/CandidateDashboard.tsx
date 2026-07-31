@@ -33,6 +33,7 @@ interface Badge {
   skill_category: { id: number; name: string };
   badge_level: string;
   issued_at: string;
+  overall_score?: number;
 }
 
 interface Attempt {

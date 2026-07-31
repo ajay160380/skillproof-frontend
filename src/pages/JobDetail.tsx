@@ -176,7 +176,7 @@ export function JobDetail() {
               <p className="text-sm text-ink/70 max-w-md">You have successfully verified all the required skills for this role. Your profile has been shared with the recruiter.</p>
             </div>
             <div className="shrink-0">
-              <ScoreRing score={progress.overall_fit_score} size={140} label="FIT SCORE" />
+              <ScoreRing percentage={progress.overall_fit_score} size={140} label="FIT SCORE" />
             </div>
           </div>
         )}
