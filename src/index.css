@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme {
+  --color-vellum: #FBFBFA;
+  --color-ink: #1A1C1E;
+  --color-verification: #0B6E4F;
+  --color-seal: #C81D25;
+  --color-data: #64748B;
+  --color-structure: #E2E8F0;
+  --color-platinum: #E5E4E2;
+  --color-gold: #FFD700;
+  --color-silver: #C0C0C0;
+  --color-bronze: #CD7F32;
+
+  --font-sans: "Public Sans", sans-serif;
+  --font-serif: "DM Serif Display", serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+/* Reset and Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background-color: var(--color-vellum);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* 1px Structural Borders */
+.border-structure {
+  border-color: var(--color-structure);
+}
+
+.bg-structure {
+  background-color: var(--color-structure);
+}
+
+/* Hide scrollbar for clean dossier look but keep functionality */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-vellum); 
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-structure); 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-data); 
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+
+/* Subtle animated gradient background without scroll lag */
+.bg-mesh {
+  position: relative;
+}
+.bg-mesh::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    radial-gradient(at 40% 20%, rgba(11, 110, 79, 0.05) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(200, 29, 37, 0.03) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(100, 116, 139, 0.05) 0px, transparent 50%);
+  pointer-events: none;
+}
