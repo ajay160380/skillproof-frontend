@@ -16,6 +16,7 @@ import { JobDetail } from './pages/JobDetail';
 import { PostJob } from './pages/PostJob';
 import { RecruiterJobs } from './pages/RecruiterJobs';
 import { FollowersList } from './pages/FollowersList';
+import { VerifyCertificate } from './pages/VerifyCertificate';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 import { useAuthStore } from './store/authStore';
@@ -88,6 +89,7 @@ function App() {
           <Route index element={<LandingPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="verify/:id?" element={<VerifyCertificate />} />
           
           <Route element={<ProtectedRoute />}>
             <Route path="dashboard" element={<CandidateDashboard />} />
