@@ -15,7 +15,7 @@ export function Layout() {
   return (
     <div className="min-h-screen flex flex-col font-sans bg-vellum text-ink overflow-x-hidden">
       {/* Structural Header */}
-      <header className="border-b border-white/20 px-6 py-4 flex items-center justify-between bg-white/60 backdrop-blur-xl shadow-sm z-50 sticky top-0 transition-all duration-300">
+      <header className="border border-structure/30 px-6 py-4 mx-4 mt-4 rounded-2xl flex items-center justify-between bg-white/70 backdrop-blur-2xl shadow-sm z-50 sticky top-4 transition-all duration-300">
         <Link to={isAuthenticated ? (user?.role === 'recruiter' ? '/recruiter' : '/dashboard') : '/'} className="outline-none">
           <Logo />
         </Link>
@@ -58,7 +58,7 @@ export function Layout() {
               <Link to="/login" className="hover:text-verification transition-colors">Log In</Link>
               <Link 
                 to="/register" 
-                className="bg-ink text-vellum px-4 py-2 border border-ink hover:bg-vellum hover:text-ink transition-colors"
+                className="bg-verification text-white px-5 py-2 rounded-lg font-bold shadow-md hover:shadow-lg hover:scale-105 transition-all"
               >
                 Get Verified
               </Link>
