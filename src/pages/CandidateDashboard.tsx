@@ -355,7 +355,7 @@ const tabVariants = {
   ];
 
   return (
-    <div className="flex h-[calc(100vh-73px)] overflow-hidden bg-vellum bg-mesh">
+    <div className="flex h-[calc(100vh-73px)] overflow-hidden bg-transparent">
       {/* Sidebar */}
       <div className="w-64 bg-white/80 backdrop-blur-xl border-r border-structure/20 flex flex-col h-full shrink-0">
         <div className="p-6 pb-2">
@@ -370,10 +370,10 @@ const tabVariants = {
                   <li key={item.id}>
                     <button
                       onClick={() => setActiveTab(item.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                         activeTab === item.id 
-                          ? 'bg-verification/10 text-verification' 
-                          : 'text-ink/70 hover:bg-structure/10 hover:text-ink'
+                          ? 'bg-verification/10 text-verification shadow-sm' 
+                          : 'text-ink/70 hover:bg-structure/30 hover:text-ink'
                       }`}
                     >
                       <span className="text-lg">{item.icon}</span>
@@ -387,7 +387,7 @@ const tabVariants = {
         </div>
         
         {/* User Profile Snippet */}
-        <div className="p-4 border-t border-structure/20 m-4 rounded-xl bg-structure/5 flex items-center justify-between">
+        <div className="p-4 border-t border-structure/20 m-4 rounded-xl bg-structure/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-verification/20 flex items-center justify-center text-verification font-serif font-bold">
               {user?.email?.charAt(0).toUpperCase() || 'U'}
@@ -397,14 +397,14 @@ const tabVariants = {
               <div className="text-[9px] font-mono text-data uppercase">Candidate</div>
             </div>
           </div>
-          <button onClick={() => {}} className="text-data hover:text-red-500 transition-colors">
+          <button onClick={() => {}} className="text-data hover:text-seal transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
           </button>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 h-full overflow-y-auto relative bg-vellum/50">
+      <div className="flex-1 h-full overflow-y-auto relative bg-transparent">
         
         {/* Invites Icon Toggle (Fixed Floating Action Button) */}
         <div className="fixed bottom-8 right-8 z-[100]">
@@ -475,7 +475,7 @@ const tabVariants = {
                 </p>
                 <button 
                   onClick={() => setActiveTab('Resume')}
-                  className="bg-verification text-ink font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:bg-verification/90 transition-transform hover:scale-105 shadow-lg shadow-verification/20"
+                  className="bg-verification text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:bg-verification/90 transition-transform hover:scale-105 shadow-md hover:shadow-lg"
                 >
                   Upload Your Resume
                 </button>
