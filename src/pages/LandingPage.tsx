@@ -44,7 +44,7 @@ function MiniDemoCertificate() {
     <motion.div 
       animate={{ y: [0, -10, 0] }} 
       transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-      className="bg-vellum border border-structure shadow-xl shadow-ink/10 p-8 w-full max-w-md relative z-10"
+      className="bg-white/80 backdrop-blur-xl border border-white shadow-xl rounded-2xl p-8 w-full max-w-md relative z-10"
     >
       <div className="flex items-start justify-between mb-8">
         <div>
@@ -132,13 +132,13 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
               to="/register" 
-              className="bg-ink text-vellum px-6 py-4 text-center font-medium hover:bg-verification transition-colors rounded-md"
+              className="bg-verification text-white px-8 py-4 text-center font-bold hover:scale-105 transition-all rounded-xl shadow-lg hover:shadow-xl"
             >
               Start Verification
             </Link>
             <Link 
               to="/login" 
-              className="bg-transparent text-ink px-6 py-4 text-center font-medium border border-ink hover:bg-structure transition-colors rounded-md"
+              className="bg-transparent text-ink px-8 py-4 text-center font-medium border border-structure hover:bg-structure/30 transition-all rounded-xl hover:scale-105"
             >
               Recruiter Access
             </Link>
