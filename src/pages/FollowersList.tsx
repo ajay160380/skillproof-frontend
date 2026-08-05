@@ -47,7 +47,7 @@ export function FollowersList() {
             NETWORK ACTIVITY
           </p>
           <h1 className="font-serif text-5xl md:text-6xl mb-4 font-light tracking-tight">
-            Your Followers
+            Network Followers
           </h1>
           <p className="text-white/60 text-sm md:text-base font-light max-w-lg leading-relaxed">
             Recruiters actively tracking your verified skill profile.
