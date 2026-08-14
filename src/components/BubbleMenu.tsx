@@ -190,6 +190,7 @@ export function BubbleMenu({
             transform: rotate(var(--item-rot)) scale(1.06);
             background: var(--hover-bg) !important;
             color: var(--hover-color) !important;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
           }
           .bubble-menu-items .pill-link:active {
             transform: rotate(var(--item-rot)) scale(.94);
