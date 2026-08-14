@@ -455,7 +455,7 @@ export function RecruiterDashboard() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               <div className="max-w-5xl mx-auto px-8 pb-12 space-y-8">
                 {/* Stats Grid */}
