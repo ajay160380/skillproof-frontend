@@ -12,10 +12,6 @@ interface SkillTest {
   };
 }
 
-/**
- * PostJob component
- * Allows recruiters to create a new job listing with required skill assessments.
- */
 export function PostJob() {
   const [roleTitle, setRoleTitle] = useState('');
   const [companyName, setCompanyName] = useState('');

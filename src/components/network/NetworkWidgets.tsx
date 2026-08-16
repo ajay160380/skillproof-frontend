@@ -376,11 +376,7 @@ export const FeedWidget = ({ authorId, hidePostInput = false }: { authorId?: str
         formData.append('image', image);
       }
       
-      await api.post('/network/feed/posts/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      await api.post('/network/feed/posts/', formData);
       setContent('');
       setImage(null);
       fetchPosts();

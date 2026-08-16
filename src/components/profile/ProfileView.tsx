@@ -179,9 +179,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       if (coverFile) formData.append('cover_image', coverFile);
       if (avatarFile) formData.append('avatar_url', avatarFile);
 
-      const res = await api.patch('/auth/me/', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await api.patch('/auth/me/', formData);
       if (onProfileUpdate) {
         onProfileUpdate(res.data);
       }
@@ -202,9 +200,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       formData.append(type, file);
       
       toastId = toast.loading(`Uploading ${type === 'avatar_url' ? 'profile picture' : 'cover image'}...`);
-      const res = await api.patch('/auth/me/', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const res = await api.patch('/auth/me/', formData);
       
       if (onProfileUpdate) {
         onProfileUpdate(res.data);

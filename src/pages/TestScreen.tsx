@@ -86,10 +86,7 @@ export function TestScreen() {
         const config = { timeout: 90000 };
         
         if (testType === 'communication') {
-          await api.post(`/assessments/${id}/submit/`, finalPayload, {
-            ...config,
-            headers: { 'Content-Type': 'multipart/form-data' }
-          });
+          await api.post(`/assessments/${id}/submit/`, finalPayload, config);
         } else {
           await api.post(`/assessments/${id}/submit/`, finalPayload, config);
         }

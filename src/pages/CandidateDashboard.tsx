@@ -569,7 +569,7 @@ const tabVariants = {
                       </p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
                 
                 {allBadges.length === 0 && (
                   <div className="max-w-5xl mx-auto px-8 mb-8">
@@ -622,7 +622,7 @@ const tabVariants = {
                           </div>
                         )}
                       </div>
-                    </motion.div>
+                    </div>
 
                     <motion.div 
                       whileHover={{ y: -5 }}
@@ -650,7 +650,7 @@ const tabVariants = {
                           </div>
                         )}
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </>

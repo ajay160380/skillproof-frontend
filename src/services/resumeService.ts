@@ -21,9 +21,7 @@ export interface SuggestedTest {
 export const uploadResume = async (file: File): Promise<Resume> => {
   const formData = new FormData();
   formData.append('file', file);
-  const response = await api.post('/resumes/upload/', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const response = await api.post('/resumes/upload/', formData);
   return response.data;
 };
 
