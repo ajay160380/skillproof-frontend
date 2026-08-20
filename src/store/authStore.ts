@@ -3,8 +3,19 @@ import { create } from 'zustand';
 export interface User {
   id: number;
   email: string;
+  username?: string;
+  full_name?: string;
   role: 'candidate' | 'recruiter';
+  avatar_url?: string;
+  cover_image?: string;
+  bio?: string;
+  headline?: string;
+  location?: string;
   company_name?: string;
+  github_url?: string;
+  linkedin_url?: string;
+  website_url?: string;
+  is_verified?: boolean;
   created_at?: string;
 }
 

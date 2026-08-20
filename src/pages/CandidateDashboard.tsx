@@ -286,7 +286,7 @@ const tabVariants = {
       setIsEditingProfile(false);
     } catch (err) {
       console.error('Failed to update profile', err);
-      alert('Failed to save profile. Please try again.');
+      toast.error('Failed to save profile. Please try again.');
     } finally {
       setIsSavingProfile(false);
     }
@@ -359,7 +359,7 @@ const tabVariants = {
       items: [
         { id: 'Feed', icon: '📰', label: 'Feed' },
         { id: 'Explore Network', icon: '🔍', label: 'Explore Network' },
-        { id: 'Messages', icon: '💬', label: 'Messages' },
+        { id: 'Messages', icon: '💬', label: 'Messages', badge: totalUnreadMessages },
       ]
     },
     {
@@ -430,6 +430,11 @@ const tabVariants = {
                           {item.icon}
                         </span>
                         <span className={`tracking-wide ${isActive ? 'font-bold' : ''}`}>{item.label}</span>
+                        {item.badge > 0 && (
+                          <span className="ml-auto w-5 h-5 bg-[#EF4444] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
+                            {item.badge}
+                          </span>
+                        )}
                       </button>
                     </li>
                   );
@@ -980,7 +985,7 @@ const tabVariants = {
                       <div className="mt-6 flex items-center gap-6 pt-4 border-t border-structure/20">
                         {resume.file && (
                           <a
-                            href={resume.file.startsWith('http') ? resume.file : `http://127.0.0.1:8000${resume.file}`}
+                            href={resume.file.startsWith('http') ? resume.file : `${api.defaults.baseURL?.replace('/api', '') || ''}${resume.file}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-mono text-[10px] uppercase tracking-widest text-ink hover:underline flex items-center gap-2 font-bold"

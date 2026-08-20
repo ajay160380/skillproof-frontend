@@ -6,9 +6,6 @@ const API_URL = `${BASE_URL}/api`;
 
 export const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // Interceptor for attaching token
