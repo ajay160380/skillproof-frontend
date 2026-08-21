@@ -11,6 +11,7 @@ import { Testimonials } from '../components/landing/Testimonials';
 import { FAQ } from '../components/landing/FAQ';
 import { AboutSection } from '../components/landing/AboutSection';
 import { FinalCTA } from '../components/landing/FinalCTA';
+import { InteractiveHero } from '../components/landing/InteractiveHero';
 
 function MiniDemoCertificate() {
   const [demoScore, setDemoScore] = useState(0);
@@ -119,79 +120,9 @@ export function LandingPage() {
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }}
-      className="flex-1 flex flex-col relative bg-mesh"
+      className="flex-1 flex flex-col relative bg-mesh text-ink"
     >
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(var(--color-structure) 1px, transparent 1px), linear-gradient(90deg, var(--color-structure) 1px, transparent 1px)', backgroundSize: '60px 60px', opacity: 0.3 }}></div>
-        
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10 pt-20 lg:pt-0">
-          
-          {/* Copy Side */}
-          <motion.div 
-            style={{ y, opacity }}
-            className="flex flex-col justify-center"
-          >
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 border border-structure w-fit mb-6 shadow-sm"
-            >
-              <span className="w-2 h-2 rounded-full bg-verification animate-pulse"></span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-data">
-                The End of Resume Fiction
-              </span>
-            </motion.div>
-            
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="font-serif text-6xl md:text-8xl leading-[1.05] mb-8 text-ink"
-            >
-              Prove what <br/>
-              you can do.
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl md:text-2xl text-data mb-10 max-w-xl leading-relaxed"
-            >
-              Resumes claim skills. SkillProof verifies them. Take live AI-observed assessments and earn undeniable, cryptographic proof of your abilities.
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <Link 
-                to="/register" 
-                className="bg-ink text-white px-8 py-4 rounded-xl text-center font-medium hover:bg-gray-800 transition-all shadow-[0_0_40px_rgba(15,23,42,0.2)] hover:shadow-[0_0_60px_rgba(15,23,42,0.4)] hover:-translate-y-1"
-              >
-                Start Verification
-              </Link>
-              <Link 
-                to="/login" 
-                className="glass-button text-ink px-8 py-4 rounded-xl text-center font-medium"
-              >
-                Recruiter Access
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Visual Side */}
-          <div className="flex items-center justify-center relative">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-brand-primary/20 via-brand-secondary/20 to-brand-tertiary/20 blur-[100px] -z-10 rounded-full"></div>
-            <MiniDemoCertificate />
-          </div>
-
-        </div>
-      </section>
+      <InteractiveHero />
 
       {/* How it Works - Staggered Cards */}
       <section className="py-24 bg-white/50 backdrop-blur-sm border-y border-structure relative z-20">

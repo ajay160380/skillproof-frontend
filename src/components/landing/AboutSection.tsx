@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export function AboutSection() {
   return (
-    <section className="border-b border-structure bg-vellum py-24 px-8">
+    <section id="about" className="border-b border-structure bg-vellum py-24 px-8 scroll-mt-20">
       <div className="max-w-3xl mx-auto text-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
