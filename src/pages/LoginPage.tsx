@@ -104,26 +104,26 @@ export function LoginPage() {
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }}
-      className="flex-1 flex min-h-screen bg-mesh"
+      className="flex-1 flex min-h-screen bg-mesh-light"
     >
       {/* Left side: Form */}
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
         <motion.div 
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
-          className="w-full max-w-md glass-panel rounded-3xl p-10"
+          transition={{ delay: 0.1, duration: 0.5, type: 'spring', stiffness: 100 }}
+          className="w-full max-w-md glass-panel rounded-[2rem] p-10 shadow-2xl"
         >
           <div className="mb-10 text-center">
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', delay: 0.2 }}
-              className="w-12 h-12 bg-ink rounded-full mx-auto mb-6 flex items-center justify-center"
+              initial={{ scale: 0, rotate: -90 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', delay: 0.2, stiffness: 200, damping: 20 }}
+              className="w-14 h-14 bg-ink rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg transform rotate-3"
             >
-              <div className="w-4 h-4 bg-verification rounded-full"></div>
+              <div className="w-5 h-5 bg-verification rounded-full"></div>
             </motion.div>
-            <h2 className="font-serif text-4xl mb-2">Access Portal</h2>
+            <h2 className="font-serif text-4xl mb-2 text-ink">Access Portal</h2>
             <p className="font-mono text-xs text-data uppercase tracking-widest">Identify Yourself</p>
           </div>
           
@@ -153,18 +153,23 @@ export function LoginPage() {
             />
             
             <motion.button 
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.01, translateY: -2 }}
               whileTap={{ scale: 0.98 }}
               type="submit" 
               disabled={loading}
-              className="w-full bg-ink text-vellum py-4 mt-8 font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 rounded-xl shadow-lg"
+              className="w-full bg-ink text-vellum py-4 mt-8 font-semibold hover:bg-gray-800 transition-all duration-300 disabled:opacity-50 rounded-xl shadow-xl hover:shadow-2xl flex items-center justify-center relative overflow-hidden"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   Authenticating...
                 </span>
-              ) : 'Log In'}
+              ) : (
+                <>
+                  <span>Sign In</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full hover:animate-[shimmer_1.5s_infinite]"></div>
+                </>
+              )}
             </motion.button>
           </form>
 
@@ -177,27 +182,37 @@ export function LoginPage() {
       </div>
       
       {/* Right side: Visuals (hidden on small screens) */}
-      <div className="hidden lg:flex flex-1 relative bg-ink items-center justify-center overflow-hidden rounded-l-[3rem] my-4 mr-4 shadow-2xl">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.3)_0%,transparent_50%)]"></div>
-          <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,rgba(16,185,129,0.3)_0%,transparent_50%)]"></div>
-        </div>
+      <div className="hidden lg:flex flex-1 relative bg-mesh-dark items-center justify-center overflow-hidden rounded-l-[3rem] my-4 mr-4 shadow-2xl border border-white/10">
         
         <div className="z-10 text-center p-12">
           <motion.div 
             animate={{ rotate: 360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            className="w-64 h-64 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-12 relative"
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="w-[28rem] h-[28rem] border-[0.5px] border-white/10 rounded-full flex items-center justify-center mx-auto mb-12 relative animate-float"
           >
-            <div className="absolute inset-0 border border-verification/30 rounded-full animate-ping" style={{ animationDuration: '3s' }}></div>
-            <div className="w-48 h-48 border border-white/20 rounded-full flex items-center justify-center">
-              <div className="w-32 h-32 border border-white/30 rounded-full flex items-center justify-center bg-white/5 backdrop-blur-sm">
-                <span className="font-serif text-4xl text-white">SP</span>
+            <div className="absolute inset-0 border-[0.5px] border-verification/20 rounded-full animate-ping" style={{ animationDuration: '4s' }}></div>
+            <div className="w-80 h-80 border-[0.5px] border-white/20 rounded-full flex items-center justify-center">
+              <div className="w-48 h-48 border-[0.5px] border-white/30 rounded-full flex items-center justify-center bg-white/5 backdrop-blur-md shadow-2xl">
+                <span className="font-serif text-5xl text-white tracking-widest">SP</span>
               </div>
             </div>
           </motion.div>
-          <h3 className="font-serif text-3xl text-white mb-4">Welcome back to SkillProof.</h3>
-          <p className="text-data max-w-sm mx-auto">Your verified credentials await. Log in to continue proving your skills to the world.</p>
+          <motion.h3 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="font-serif text-4xl text-white mb-4"
+          >
+            Welcome back to SkillProof.
+          </motion.h3>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-white/60 max-w-md mx-auto text-sm leading-relaxed"
+          >
+            Your verified credentials await. Log in to continue proving your skills to the world.
+          </motion.p>
         </div>
       </div>
     </motion.div>

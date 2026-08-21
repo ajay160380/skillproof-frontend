@@ -113,11 +113,19 @@ export function RegisterPage() {
         <motion.div 
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
-          className="w-full max-w-md glass-panel rounded-3xl p-10"
+          transition={{ delay: 0.1, duration: 0.5, type: 'spring', stiffness: 100 }}
+          className="w-full max-w-md glass-panel rounded-[2rem] p-10 shadow-2xl"
         >
           <div className="mb-10 text-center">
-            <h2 className="font-serif text-4xl mb-2">Initialize Profile</h2>
+            <motion.div
+              initial={{ scale: 0, rotate: 90 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', delay: 0.2, stiffness: 200, damping: 20 }}
+              className="w-14 h-14 bg-ink rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg transform -rotate-3"
+            >
+              <div className="w-5 h-5 bg-verification rounded-full"></div>
+            </motion.div>
+            <h2 className="font-serif text-4xl mb-2 text-ink">Initialize Profile</h2>
             <p className="font-mono text-xs text-data uppercase tracking-widest">Create Identity Record</p>
           </div>
           
@@ -209,18 +217,23 @@ export function RegisterPage() {
             />
             
             <motion.button 
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.01, translateY: -2 }}
               whileTap={{ scale: 0.98 }}
               type="submit" 
               disabled={loading}
-              className="w-full bg-ink text-vellum py-4 mt-8 font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 rounded-xl shadow-lg"
+              className="w-full bg-ink text-vellum py-4 mt-8 font-semibold hover:bg-gray-800 transition-all duration-300 disabled:opacity-50 rounded-xl shadow-xl hover:shadow-2xl flex items-center justify-center relative overflow-hidden"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   Initializing...
                 </span>
-              ) : 'Register Profile'}
+              ) : (
+                <>
+                  <span>Create Account</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full hover:animate-[shimmer_1.5s_infinite]"></div>
+                </>
+              )}
             </motion.button>
           </form>
 
@@ -233,35 +246,38 @@ export function RegisterPage() {
       </div>
       
       {/* Left side: Visuals (hidden on small screens) */}
-      <div className="hidden lg:flex flex-1 relative bg-brand-primary items-center justify-center overflow-hidden rounded-r-[3rem] my-4 ml-4 shadow-2xl">
+      <div className="hidden lg:flex flex-1 relative bg-mesh-dark items-center justify-center overflow-hidden rounded-r-[3rem] my-4 ml-4 shadow-2xl border border-white/10">
         <div className="absolute inset-0 opacity-40">
           <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.4)_0%,transparent_50%)]"></div>
           <div className="absolute bottom-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_80%,rgba(15,23,42,0.4)_0%,transparent_50%)]"></div>
         </div>
         
-        {/* Decorative elements */}
-        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-        
-        <div className="z-10 text-center p-12 text-white">
+        <div className="z-10 text-center p-12">
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
+            animate={{ y: [-10, 10, -10] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="flex gap-4 justify-center mb-12"
           >
-            <div className="inline-flex gap-2">
-              {[0,1,2].map(i => (
-                <motion.div 
-                  key={i}
-                  animate={{ height: [20, 60, 20] }}
-                  transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.2 }}
-                  className="w-2 bg-white/50 rounded-full"
-                />
-              ))}
-            </div>
+            <div className="w-4 h-16 bg-white/20 rounded-full blur-[1px]"></div>
+            <div className="w-4 h-24 bg-white/40 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
+            <div className="w-4 h-12 bg-white/10 rounded-full blur-[2px]"></div>
           </motion.div>
-          <h3 className="font-serif text-4xl mb-6 leading-tight">Leave resumes<br/>in the past.</h3>
-          <p className="text-white/80 text-lg max-w-sm mx-auto font-light">Join the new standard of hiring. Prove your skills and get hired based on what you can actually do.</p>
+          <motion.h3 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="font-serif text-4xl text-white mb-6"
+          >
+            Leave resumes <br/>in the past.
+          </motion.h3>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-white/70 max-w-sm mx-auto text-sm leading-relaxed"
+          >
+            Join the new standard of hiring. Prove your skills and get hired based on what you can actually do.
+          </motion.p>
         </div>
       </div>
     </motion.div>
