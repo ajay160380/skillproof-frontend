@@ -83,9 +83,9 @@ export const NetworkDiscoveryWidget = () => {
   return (
     <div className="space-y-6">
       {/* Search Header */}
-      <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-6 md:p-8 shadow-sm">
+      <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 md:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
-          <div className="flex bg-structure/5 p-1 rounded-xl w-full md:w-auto">
+          <div className="flex bg-white/5 p-1 rounded-xl w-full md:w-auto border border-white/10">
             {['all', 'candidate', 'recruiter'].map((r) => (
               <button
                 key={r}
@@ -93,7 +93,7 @@ export const NetworkDiscoveryWidget = () => {
                 className={`flex-1 md:px-6 py-2 rounded-lg font-mono text-[10px] uppercase tracking-widest font-bold transition-all ${
                   role === r
                     ? 'bg-white shadow-sm text-ink'
-                    : 'text-data hover:text-ink'
+                    : 'text-white/50 hover:text-white'
                 }`}
               >
                 {r === 'all' ? 'All Users' : r === 'candidate' ? 'Candidates' : 'Recruiters'}
@@ -102,115 +102,77 @@ export const NetworkDiscoveryWidget = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSearch}>
-          <div className="relative group">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by name, company, or headline..."
-              className="w-full bg-white border border-structure/20 rounded-xl py-4 pl-12 pr-32 font-serif text-lg text-ink focus:outline-none focus:border-verification focus:ring-4 focus:ring-verification/10 transition-all shadow-sm group-hover:border-structure/40"
-            />
-            <span className="absolute left-4 top-4 text-xl opacity-40">🔍</span>
-            <button type="submit" className="absolute right-2 top-2 bg-ink text-white font-mono text-[10px] uppercase tracking-widest px-6 py-2.5 rounded-lg hover:bg-ink/80 transition-all shadow-md active:scale-95">
-              Search
-            </button>
+        <form onSubmit={handleSearch} className="relative">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg className="h-5 w-5 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
           </div>
+          <input
+            type="text"
+            placeholder="Search by name, company, or headline..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full pl-12 pr-24 py-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none text-white font-serif placeholder-white/30 transition-all"
+          />
+          <button type="submit" className="absolute inset-y-2 right-2 bg-white/10 text-white px-6 rounded-lg font-mono text-[10px] uppercase font-bold tracking-widest hover:bg-white/20 transition-colors">
+            Search
+          </button>
         </form>
       </div>
 
       {/* Results Grid */}
       {loading ? (
-        <div className="text-center py-20 bg-white/40 backdrop-blur-md rounded-2xl border border-structure/20">
-          <div className="w-8 h-8 border-4 border-structure/20 border-t-verification rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-data">Discovering network...</p>
+        <div className="text-center py-20 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+          <div className="w-8 h-8 border-4 border-white/10 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-white/50">Discovering network...</p>
         </div>
       ) : users.length === 0 ? (
-        <div className="text-center py-20 bg-white/40 backdrop-blur-md rounded-2xl border border-dashed border-structure/30">
+        <div className="text-center py-20 bg-white/5 backdrop-blur-md rounded-2xl border border-dashed border-white/10">
           <span className="text-5xl mb-4 block opacity-30">🌐</span>
-          <h3 className="font-serif text-xl font-bold text-ink mb-2">No users found</h3>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-data">Try adjusting your search terms or filters.</p>
+          <h3 className="font-serif text-xl font-bold text-white mb-2">No users found</h3>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-white/50">Try adjusting your search terms or filters.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => {
-            const isFollowing = followingIds.has(user.id);
-            return (
-              <motion.div 
-                key={user.id} 
-                variants={itemVariants}
-                className="group relative bg-white/80 backdrop-blur-xl rounded-2xl border border-structure/20 shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden transition-all duration-300 flex flex-col"
-              >
-                {/* Cover Image or Gradient */}
-                <div className="h-24 w-full bg-gradient-to-r from-structure/20 to-structure/5 relative">
-                  {user.cover_image && (
-                    <img src={user.cover_image} alt="cover" className="w-full h-full object-cover" />
-                  )}
-                  {/* Role Badge */}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full font-mono text-[8px] uppercase tracking-widest font-bold shadow-sm">
-                    {user.role === 'candidate' ? '👤 Candidate' : '🏢 Recruiter'}
+          {users.map((user) => (
+            <motion.div key={user.id} variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col justify-between hover:border-white/20 hover:shadow-lg transition-all group">
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center border border-white/20 text-xl font-serif text-white font-bold">
+                    {(user.full_name || user.username)[0].toUpperCase()}
+                  </div>
+                  <div className="bg-white/5 border border-white/10 rounded-full px-3 py-1 flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 bg-brand-primary rounded-full"></span>
+                    <span className="font-mono text-[8px] uppercase tracking-widest text-white/70 font-bold">{user.role}</span>
                   </div>
                 </div>
-
-                {/* Profile Content */}
-                <div className="px-6 pb-6 pt-0 flex-1 flex flex-col relative">
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="-mt-10 mb-2 relative">
-                      {user.avatar_url ? (
-                        <img src={user.avatar_url} alt={user.full_name} className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md bg-white" />
-                      ) : (
-                        <div className="w-20 h-20 rounded-full bg-structure/10 border-4 border-white flex items-center justify-center font-serif text-2xl font-bold text-ink shadow-md">
-                          {(user.full_name || user.username)[0].toUpperCase()}
-                        </div>
-                      )}
-                      {user.is_verified && (
-                        <div className="absolute bottom-0 right-0 bg-verification text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-sm" title="Verified">
-                          ✓
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <a href={`/profile/${user.username}`} className="font-serif font-bold text-xl text-ink hover:text-verification transition-colors truncate">
-                    {user.full_name || user.username}
-                  </a>
-                  <p className="font-serif text-sm text-ink/70 mt-1 line-clamp-2 min-h-[40px]">
-                    {user.headline || (user.role === 'recruiter' ? 'Talent Acquisition' : 'Open to opportunities')}
-                  </p>
-                  
-                  <div className="mt-4 pt-4 border-t border-structure/10 flex items-center gap-2 text-data font-mono text-[9px] uppercase tracking-widest mb-6">
-                    {user.company_name ? (
-                      <><span>🏢</span> <span className="truncate">{user.company_name}</span></>
-                    ) : user.location ? (
-                      <><span>📍</span> <span className="truncate">{user.location}</span></>
-                    ) : (
-                      <><span>🌐</span> <span className="truncate">SkillProof Network</span></>
-                    )}
-                  </div>
-
-                  <div className="mt-auto flex gap-2">
-                    <button
-                      onClick={() => toggleFollow(user.id)}
-                      className={`flex-1 py-2 rounded-xl font-mono text-[10px] uppercase tracking-widest font-bold transition-all shadow-sm active:scale-95 ${
-                        isFollowing 
-                          ? 'bg-structure/10 text-ink hover:bg-structure/20' 
-                          : 'bg-ink text-white hover:bg-ink/90 hover:shadow-md'
-                      }`}
-                    >
-                      {isFollowing ? '✓ Following' : '+ Follow'}
-                    </button>
-                    <button
-                      onClick={() => handleMessage(user.id)}
-                      className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-structure/10 text-ink hover:bg-structure/20 rounded-xl transition-colors active:scale-95"
-                      title="Message"
-                    >
-                      💬
-                    </button>
-                  </div>
+                <h3 className="font-serif text-lg font-bold text-white mb-1 group-hover:text-brand-primary transition-colors">{user.full_name || user.username}</h3>
+                <p className="text-xs text-white/50 font-mono tracking-wide">{user.headline || 'Open to opportunities'}</p>
+              </div>
+              
+              <div className="mt-8">
+                <div className="flex items-center gap-2 mb-4 font-mono text-[9px] uppercase tracking-widest text-brand-primary opacity-80">
+                  <span>🌐</span> {user.company_name || 'SkillProof Network'}
                 </div>
-              </motion.div>
-            );
-          })}
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => toggleFollow(user.id)}
+                    className={`flex-1 py-2.5 rounded-xl font-mono text-[10px] uppercase font-bold tracking-widest transition-all ${
+                      followingIds.has(user.id) 
+                        ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20' 
+                        : 'bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-brand-primary/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]'
+                    }`}
+                  >
+                    {followingIds.has(user.id) ? '✓ Following' : '+ Follow'}
+                  </button>
+                  <button onClick={() => handleMessage(user.id)} className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white/70 hover:bg-brand-primary hover:border-brand-primary hover:text-white transition-all">
+                    💬
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       )}
     </div>
@@ -251,25 +213,25 @@ export const PostComponent = ({ post, onLike, onDelete }: { post: any, onLike: (
   };
 
   return (
-    <motion.div variants={itemVariants} className="bg-white p-6 rounded-2xl border border-structure/20 shadow-sm mb-6">
+    <motion.div variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-sm mb-6">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           {post.author_detail?.avatar_url ? (
-            <img src={post.author_detail.avatar_url} alt="author" className="w-10 h-10 rounded-full object-cover border border-structure/20" />
+            <img src={post.author_detail.avatar_url} alt="author" className="w-10 h-10 rounded-full object-cover border border-white/20" />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-structure/10 flex items-center justify-center font-serif font-bold text-ink">
+            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-serif font-bold text-white">
               {(post.author_detail?.full_name || post.author_detail?.username || 'U')[0].toUpperCase()}
             </div>
           )}
           <div>
-            <a href={`/profile/${post.author_detail?.username}`} className="font-serif font-bold text-ink text-sm hover:text-verification transition-colors">
+            <a href={`/profile/${post.author_detail?.username}`} className="font-serif font-bold text-white text-sm hover:text-brand-primary transition-colors">
               {post.author_detail?.full_name || post.author_detail?.username}
             </a>
-            <p className="font-mono text-[9px] text-data uppercase tracking-widest">{post.author_detail?.company_name || 'Candidate'}</p>
+            <p className="font-mono text-[9px] text-white/50 uppercase tracking-widest">{post.author_detail?.company_name || 'Candidate'}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[8px] text-data uppercase tracking-widest">{new Date(post.created_at).toLocaleDateString()}</span>
+          <span className="font-mono text-[8px] text-white/50 uppercase tracking-widest">{new Date(post.created_at).toLocaleDateString()}</span>
           {isAuthor && (
             <button onClick={() => onDelete(post.id)} className="text-red-400 hover:text-red-600 transition-colors font-mono text-[9px] uppercase tracking-widest font-bold flex items-center gap-1">
               <span>🗑️</span> Delete
@@ -278,60 +240,60 @@ export const PostComponent = ({ post, onLike, onDelete }: { post: any, onLike: (
         </div>
       </div>
       
-      <p className="font-serif text-ink text-sm mb-4 whitespace-pre-wrap">{post.content}</p>
+      <p className="font-serif text-white/80 text-sm mb-4 whitespace-pre-wrap">{post.content}</p>
       
       {post.image && (
-        <div className="mb-4 rounded-xl overflow-hidden border border-structure/10">
+        <div className="mb-4 rounded-xl overflow-hidden border border-white/10">
           <img src={post.image} alt="Post content" className="w-full max-h-96 object-cover" />
         </div>
       )}
       
       {post.linked_badge_detail && (
-        <div className="mb-4 p-4 rounded-xl bg-verification/5 border border-verification/20 flex items-center gap-4">
-          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-2xl shadow-sm border border-structure/10">
+        <div className="mb-4 p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-4">
+          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-2xl shadow-sm border border-white/10">
             🏅
           </div>
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-widest text-verification font-bold mb-0.5">Verified Credential</p>
-            <p className="font-serif font-bold text-ink text-sm">{post.linked_badge_detail.skill_category?.name}</p>
-            <p className="font-mono text-[10px] text-data">Score: {post.linked_badge_detail.score}/100</p>
+            <p className="font-mono text-[9px] uppercase tracking-widest text-brand-primary font-bold mb-0.5">Verified Credential</p>
+            <p className="font-serif font-bold text-white text-sm">{post.linked_badge_detail.skill_category?.name}</p>
+            <p className="font-mono text-[10px] text-white/50">Score: {post.linked_badge_detail.score}/100</p>
           </div>
         </div>
       )}
 
-      <div className="flex items-center gap-6 border-t border-structure/10 pt-4">
-        <button onClick={() => onLike(post.id)} className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest font-bold transition-colors ${post.is_liked ? 'text-verification' : 'text-data hover:text-ink'}`}>
+      <div className="flex items-center gap-6 border-t border-white/10 pt-4">
+        <button onClick={() => onLike(post.id)} className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest font-bold transition-colors ${post.is_liked ? 'text-pink-500' : 'text-white/50 hover:text-white'}`}>
           <span className="text-sm">{post.is_liked ? '❤️' : '🤍'}</span> {post.likes_count || 0}
         </button>
-        <button onClick={() => setShowComments(!showComments)} className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest font-bold text-data hover:text-ink transition-colors">
+        <button onClick={() => setShowComments(!showComments)} className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-colors">
           <span className="text-sm">💬</span> {post.comments_count || 0}
         </button>
       </div>
 
       {showComments && (
-        <div className="mt-4 pt-4 border-t border-structure/10">
+        <div className="mt-4 pt-4 border-t border-white/10">
           <form onSubmit={handleAddComment} className="flex gap-2 mb-4">
             <input 
               type="text" 
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Add a comment..." 
-              className="flex-1 bg-structure/5 border border-structure/20 rounded-lg px-3 py-2 font-serif text-sm focus:outline-none focus:border-verification"
+              className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 font-serif text-sm text-white focus:outline-none focus:border-brand-primary"
             />
-            <button type="submit" className="bg-ink text-white font-mono text-[9px] uppercase tracking-widest px-4 rounded-lg hover:bg-ink/80 transition-colors">Post</button>
+            <button type="submit" className="bg-white text-black font-mono text-[9px] uppercase tracking-widest px-4 rounded-lg hover:bg-white/80 transition-colors">Post</button>
           </form>
           <div className="space-y-3">
             {comments.map(c => (
-              <div key={c.id} className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-structure/20 flex items-center justify-center shrink-0 mt-1">
+              <div key={c.id} className="flex gap-2 text-sm">
+                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-1 text-white font-bold text-xs">
                   {(c.author_detail?.full_name || 'U')[0].toUpperCase()}
                 </div>
-                <div className="bg-structure/5 rounded-xl rounded-tl-none p-3 flex-1 border border-structure/10">
+                <div className="bg-white/5 rounded-xl rounded-tl-none p-3 flex-1 border border-white/10">
                   <div className="flex justify-between items-start mb-1">
-                    <span className="font-serif font-bold text-xs text-ink">{c.author_detail?.full_name}</span>
-                    <span className="font-mono text-[8px] text-data">{new Date(c.created_at).toLocaleDateString()}</span>
+                    <span className="font-serif font-bold text-xs text-white">{c.author_detail?.full_name}</span>
+                    <span className="font-mono text-[8px] text-white/50">{new Date(c.created_at).toLocaleDateString()}</span>
                   </div>
-                  <p className="font-serif text-sm text-ink/80">{c.content}</p>
+                  <p className="font-serif text-sm text-white/80">{c.content}</p>
                 </div>
               </div>
             ))}

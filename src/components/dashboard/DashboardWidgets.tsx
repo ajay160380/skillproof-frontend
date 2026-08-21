@@ -7,7 +7,7 @@ export const itemVariants: Variants = {
   show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 400, damping: 30 } }
 };
 
-const glassCardClasses = "relative bg-white/40 backdrop-blur-3xl border border-white/60 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.1)] rounded-3xl p-6 hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.15)] transition-all duration-500 overflow-hidden group";
+const glassCardClasses = "bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 hover:bg-white/10 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)] transition-all duration-300 relative overflow-hidden group";
 
 export const ActivityStreakWidget = ({ attempts = [] }: { attempts?: any[] }) => {
   const currentStreak = attempts.length > 0 ? 3 : 0; // Simplified for now
@@ -20,26 +20,26 @@ export const ActivityStreakWidget = ({ attempts = [] }: { attempts?: any[] }) =>
       
       <div className="relative z-10 flex justify-between items-start mb-6">
         <div>
-          <h4 className="font-serif text-lg font-bold text-ink tracking-tight">Activity Streak</h4>
-          <p className="font-mono text-[9px] text-data font-bold uppercase tracking-[0.2em] mt-1">Consistency Tracker</p>
+          <h4 className="font-serif text-lg font-bold text-white tracking-tight">Activity Streak</h4>
+          <p className="font-mono text-[9px] text-white/50 font-bold uppercase tracking-[0.2em] mt-1">Consistency Tracker</p>
         </div>
-        <div className="w-10 h-10 bg-white/80 rounded-xl flex items-center justify-center shadow-sm">
+        <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shadow-sm border border-white/10">
           <span className="text-xl">🔥</span>
         </div>
       </div>
       
       <div className="relative z-10 flex items-end gap-3 mb-8">
-        <div className="text-6xl font-serif font-bold bg-clip-text text-transparent bg-gradient-to-br from-ink to-ink/70 leading-none tracking-tighter drop-shadow-sm">{currentStreak}</div>
-        <div className="pb-2 font-mono text-[10px] text-data font-bold uppercase tracking-widest">Day<br/>Streak</div>
+        <div className="text-6xl font-serif font-bold bg-clip-text text-transparent bg-gradient-to-br from-white to-white/70 leading-none tracking-tighter drop-shadow-sm">{currentStreak}</div>
+        <div className="pb-2 font-mono text-[10px] text-white/50 font-bold uppercase tracking-widest">Day<br/>Streak</div>
       </div>
 
       <div className="relative z-10 space-y-4">
         <div>
-          <div className="flex justify-between text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-ink/70 mb-3">
+          <div className="flex justify-between text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/70 mb-3">
             <span>Tests Passed</span>
-            <span className="text-verification">{passed} Total</span>
+            <span className="text-emerald-400">{passed} Total</span>
           </div>
-          <div className="w-full bg-structure/30 h-2 rounded-full overflow-hidden flex shadow-inner">
+          <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden flex shadow-inner border border-white/5">
              <motion.div 
                initial={{ width: 0 }}
                animate={{ width: `${Math.min(passed * 10, 100)}%` }}
@@ -61,28 +61,34 @@ export const RecentJobMatchesWidget = ({ jobs = [] }: { jobs?: any[] }) => (
     
     <div className="relative z-10 flex justify-between items-start mb-6">
       <div>
-        <h4 className="font-serif text-lg font-bold text-ink tracking-tight">Recent Matches</h4>
-        <p className="font-mono text-[9px] text-data font-bold uppercase tracking-[0.2em] mt-1">High fit jobs</p>
+        <h4 className="font-serif text-lg font-bold text-white tracking-tight">Recent Matches</h4>
+        <p className="font-mono text-[9px] text-white/50 font-bold uppercase tracking-[0.2em] mt-1">High fit jobs</p>
       </div>
-      <div className="w-10 h-10 bg-white/80 rounded-xl flex items-center justify-center shadow-sm">
+      <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shadow-sm border border-white/10">
         <span className="text-xl">💼</span>
       </div>
     </div>
     
-    <div className="relative z-10 flex-1 flex flex-col justify-center space-y-3">
-      {jobs.length > 0 ? jobs.slice(0, 3).map((job, i) => (
-        <a href={`/jobs/${job.id}`} key={i} className="flex justify-between items-center bg-white/50 hover:bg-white/90 p-4 rounded-2xl cursor-pointer border border-white/60 shadow-sm hover:shadow-md transition-all duration-300 group/item">
-          <div>
-            <span className="font-serif text-sm font-bold text-ink group-hover/item:text-blue-600 transition-colors block tracking-tight">{job.title}</span>
-            <span className="font-mono text-[9px] font-bold text-data uppercase tracking-widest mt-1 block">{job.company_name}</span>
-          </div>
-          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm group-hover/item:bg-blue-600 group-hover/item:text-white transition-colors">
-            <span className="text-xs group-hover/item:translate-x-0.5 transition-transform">→</span>
-          </div>
-        </a>
-      )) : (
-        <div className="text-center py-8 bg-white/30 rounded-2xl border border-dashed border-white/60">
-          <p className="font-mono text-[9px] font-bold text-data uppercase tracking-[0.2em]">No matches yet.</p>
+    <div className="relative z-10 flex-1 flex flex-col justify-center h-full">
+      {jobs.length > 0 ? (
+        <div className="space-y-3">
+          {jobs.slice(0, 3).map((job, i) => (
+            <a href={`/jobs/${job.id}`} key={i} className="flex justify-between items-center bg-white/5 hover:bg-white/10 p-4 rounded-2xl cursor-pointer border border-white/10 shadow-sm hover:shadow-md transition-all duration-300 group/item">
+              <div>
+                <span className="font-serif text-sm font-bold text-white group-hover/item:text-brand-primary transition-colors block tracking-tight">{job.title}</span>
+                <span className="font-mono text-[9px] font-bold text-white/50 uppercase tracking-widest mt-1 block">{job.company_name}</span>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shadow-sm group-hover/item:bg-brand-primary group-hover/item:text-white transition-colors border border-white/10">
+                <span className="text-xs group-hover/item:translate-x-0.5 transition-transform text-white">→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div className="w-full h-full flex flex-col justify-center items-center bg-white/5 rounded-2xl border border-dashed border-white/20 min-h-[60px]">
+          <p className="font-mono text-[9px] font-bold text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
+            <span className="text-sm">🔭</span> No matches yet
+          </p>
         </div>
       )}
     </div>
@@ -95,19 +101,19 @@ export const UpcomingInterviewsWidget = ({ invites = [] }: { invites?: any[] }) 
     
     <div className="relative z-10 flex justify-between items-start mb-6">
       <div>
-        <h4 className="font-serif text-lg font-bold text-ink tracking-tight">Interviews</h4>
-        <p className="font-mono text-[9px] text-data font-bold uppercase tracking-[0.2em] mt-1">Recruiter Invites</p>
+        <h4 className="font-serif text-lg font-bold text-white tracking-tight">Interviews</h4>
+        <p className="font-mono text-[9px] text-white/50 font-bold uppercase tracking-[0.2em] mt-1">Recruiter Invites</p>
       </div>
-      <div className="w-10 h-10 bg-white/80 rounded-xl flex items-center justify-center shadow-sm">
-        <span className="text-xl">🗓️</span>
+      <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shadow-sm border border-white/10">
+        <span className="text-xl">📅</span>
       </div>
     </div>
     
     <div className="relative z-10 flex-1 flex flex-col justify-center gap-4">
       {invites.length > 0 ? (
         invites.slice(0, 2).map((invite, i) => (
-          <div key={i} className="flex items-center gap-4 bg-white/60 p-3 rounded-2xl border border-white/80 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ink to-ink/80 text-white flex flex-col items-center justify-center leading-none shadow-lg shadow-ink/20">
+          <div key={i} className="flex items-center gap-4 bg-white/5 p-3 rounded-2xl border border-white/10 shadow-sm hover:shadow-md transition-shadow group/item">
+            <div className="w-12 h-12 rounded-xl bg-white/10 text-white flex flex-col items-center justify-center leading-none shadow-lg shadow-black/20 border border-white/5">
               <span className="font-mono text-[8px] uppercase tracking-widest font-bold opacity-80">
                 {invite.proposed_time ? new Date(invite.proposed_time).toLocaleDateString(undefined, { month: 'short' }) : 'Day'}
               </span>
@@ -116,17 +122,18 @@ export const UpcomingInterviewsWidget = ({ invites = [] }: { invites?: any[] }) 
               </span>
             </div>
             <div className="flex-1">
-              <div className="font-serif font-bold text-sm text-ink tracking-tight">{invite.recruiter_company || 'Tech Company'}</div>
-              <div className="font-mono text-[9px] text-data font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
-                <span className={`w-1.5 h-1.5 rounded-full ${invite.status === 'Accepted' ? 'bg-verification' : 'bg-gold'}`} />
+              <div className="font-serif font-bold text-sm text-white group-hover/item:text-purple-400 transition-colors tracking-tight">{invite.recruiter_company || 'Tech Company'}</div>
+              <div className="font-mono text-[9px] text-white/50 font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
+                <span className={`w-1.5 h-1.5 rounded-full ${invite.status === 'Accepted' ? 'bg-brand-primary' : 'bg-gold'}`} />
                 {invite.status || 'Pending'}
               </div>
             </div>
           </div>
         ))
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center py-8 bg-white/30 rounded-2xl border border-dashed border-white/60 text-center">
-          <p className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-data">No schedules yet</p>
+        <div className="flex-1 flex flex-col items-center justify-center py-8 bg-white/5 rounded-2xl border border-dashed border-white/20 text-center">
+          <span className="text-3xl mb-3 opacity-50">🗓️</span>
+          <p className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/50">No schedules yet</p>
         </div>
       )}
     </div>
