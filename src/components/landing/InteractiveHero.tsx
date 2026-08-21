@@ -103,7 +103,7 @@ export function InteractiveHero() {
       y: 0, 
       opacity: 1, 
       filter: "blur(0px)",
-      transition: { ease: [0.16, 1, 0.3, 1], duration: 1.2 }
+      transition: { ease: [0.16, 1, 0.3, 1] as [number, number, number, number], duration: 1.2 }
     }
   };
   
@@ -200,7 +200,8 @@ export function InteractiveHero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+            className="flex flex-col relative z-20"
           >
             <p className="text-lg md:text-xl text-[#5A635A] leading-relaxed font-normal mb-14 max-w-2xl">
               Resumes claim skills. SkillProof verifies them. <br className="hidden sm:block" /> Take live AI-observed assessments and earn undeniable, cryptographic proof of your abilities.
@@ -211,7 +212,7 @@ export function InteractiveHero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1, delay: 1.0, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           >
             <h3 className="text-2xl font-medium tracking-tight mb-2">What role are you verifying for?</h3>
             <p className="opacity-85 text-[#738273] mb-8">Select all that apply</p>
