@@ -19,6 +19,7 @@ export function PostJob() {
   const [availableTests, setAvailableTests] = useState<SkillTest[]>([]);
   const [selectedTests, setSelectedTests] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
@@ -36,6 +37,28 @@ export function PostJob() {
     setSelectedTests(prev => 
       prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id]
     );
+  };
+
+  const generateAIDescription = async () => {
+    if (!roleTitle) {
+      toast.error('Please enter a role title first');
+      return;
+    }
+    setIsGenerating(true);
+    try {
+      const res = await api.post('/jobs/generate-description/', {
+        role_title: roleTitle,
+        company_name: companyName
+      });
+      if (res.data.description) {
+        setDescription(res.data.description);
+        toast.success('AI generated description successfully');
+      }
+    } catch (err) {
+      toast.error('Failed to generate description via AI');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,7 +129,18 @@ export function PostJob() {
             </div>
 
             <div>
-              <label className="block font-mono text-xs uppercase tracking-widest text-ink/70 mb-2">Job Description</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block font-mono text-xs uppercase tracking-widest text-ink/70">Job Description</label>
+                <button
+                  type="button"
+                  onClick={generateAIDescription}
+                  disabled={isGenerating || !roleTitle}
+                  className="font-mono text-xs flex items-center gap-1 text-verification hover:text-ink transition-colors disabled:opacity-50"
+                >
+                  <span className="text-sm">✨</span>
+                  {isGenerating ? 'Generating...' : 'Generate with AI'}
+                </button>
+              </div>
               <textarea
                 required
                 rows={4}
