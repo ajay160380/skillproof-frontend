@@ -39,6 +39,8 @@ export function JobDetail() {
   const [progress, setProgress] = useState<JobProgress | null>(null);
   const [companyReqs, setCompanyReqs] = useState<CompanyRequirement | null>(null);
   const [loading, setLoading] = useState(true);
+  const [prepGuide, setPrepGuide] = useState<string | null>(null);
+  const [isGeneratingPrep, setIsGeneratingPrep] = useState(false);
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
@@ -82,6 +84,23 @@ export function JobDetail() {
 
   const startTest = (testId: number) => {
     navigate(`/test/${testId}`);
+  };
+
+  const generatePrepGuide = async () => {
+    if (!job) return;
+    setIsGeneratingPrep(true);
+    try {
+      const res = await api.post('/jobs/generate-prep/', {
+        role_title: job.role_title,
+        description: job.description
+      });
+      setPrepGuide(res.data.prep_guide);
+      toast.success('Generated interview prep guide!');
+    } catch (err) {
+      toast.error('Failed to generate prep guide');
+    } finally {
+      setIsGeneratingPrep(false);
+    }
   };
 
   if (loading) return <Loader />;
@@ -139,12 +158,32 @@ export function JobDetail() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <motion.div 
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
-            className="md:col-span-2 glass-panel rounded-[2rem] p-10 border-structure/30"
+            className="md:col-span-2 glass-panel rounded-[2rem] p-10 border-structure/30 flex flex-col"
           >
-            <h3 className="font-serif text-3xl text-ink mb-6 flex items-center gap-3">
-              <span className="text-2xl">📋</span> About the Role
-            </h3>
-            <div className="text-data leading-relaxed whitespace-pre-wrap text-lg">
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="font-serif text-3xl text-ink flex items-center gap-3">
+                <span className="text-2xl">📋</span> About the Role
+              </h3>
+              <button
+                onClick={generatePrepGuide}
+                disabled={isGeneratingPrep}
+                className="font-mono text-xs flex items-center gap-2 text-verification bg-verification/10 px-4 py-2 rounded-xl hover:bg-verification hover:text-white transition-all disabled:opacity-50"
+              >
+                <span>✨</span>
+                {isGeneratingPrep ? 'Generating...' : 'AI Prep Guide'}
+              </button>
+            </div>
+            
+            {prepGuide && (
+              <div className="mb-8 p-6 bg-verification/5 border border-verification/20 rounded-2xl">
+                <h4 className="font-mono text-[10px] uppercase tracking-widest text-verification font-bold mb-4">AI Interview Prep</h4>
+                <div className="text-sm text-ink/80 whitespace-pre-wrap leading-relaxed font-serif">
+                  {prepGuide}
+                </div>
+              </div>
+            )}
+            
+            <div className="text-data leading-relaxed whitespace-pre-wrap text-lg flex-1">
               {job.description}
             </div>
           </motion.div>
