@@ -14,6 +14,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsToolti
 import toast from 'react-hot-toast';
 
 import { ActivityStreakWidget, RecentJobMatchesWidget, UpcomingInterviewsWidget, PortfolioWidget } from '../components/dashboard/DashboardWidgets';
+import { SkillInsights } from '../components/dashboard/SkillInsights';
 import { FeedWidget, NetworkDiscoveryWidget, FollowersWidget } from '../components/network/NetworkWidgets';
 import { ProfileView } from '../components/profile/ProfileView';
 import { ErrorBoundary } from '../components/ErrorBoundary';
@@ -373,6 +374,7 @@ const tabVariants = {
       category: 'OVERVIEW',
       items: [
         { id: 'Dashboard', icon: '📊', label: 'Dashboard' },
+        { id: 'Skill Insights', icon: '🧠', label: 'Skill Insights' },
         { id: 'Activity', icon: '🔥', label: 'Activity' },
       ]
     },
@@ -787,6 +789,21 @@ const tabVariants = {
                 </div>
               </div>
             </div>
+          </motion.div>
+        )}
+
+        {/* Skill Insights Tab */}
+        {activeTab === 'Skill Insights' && (
+          <motion.div key="skill-insights" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-serif text-2xl font-bold text-white tracking-tight drop-shadow-md">Skill Insights</h2>
+                <p className="font-mono text-[9px] text-white/50 font-bold uppercase tracking-[0.25em] mt-1">AI-Powered Gap Analysis & Learning Roadmap</p>
+              </div>
+            </div>
+            <ErrorBoundary>
+              <SkillInsights onStartTest={handleStartTest} />
+            </ErrorBoundary>
           </motion.div>
         )}
 
