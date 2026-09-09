@@ -336,7 +336,7 @@ export function RecruiterDashboard() {
   ];
 
   if (loading) {
-    return <div className="flex h-screen items-center justify-center"><Loader text="LOADING TERMINAL..." size="lg" /></div>;
+    return <div className="flex h-screen items-center justify-center bg-ink"><Loader text="LOADING TERMINAL..." size="lg" /></div>;
   }
 
   return (

@@ -56,7 +56,7 @@ export function PublicProfile() {
       
       <ProfileView 
         profile={profile} 
-        isOwnProfile={false} 
+        isOwnProfile={Boolean(user && (String(user.id) === String(profile.id) || (user.username && user.username === profile.username)))} 
       />
     </div>
   );

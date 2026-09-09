@@ -62,6 +62,15 @@ export const AIAssistantWidget: React.FC = () => {
     "What should I do first?",
   ];
 
+  // Simple markdown formatter: converts **bold**, *italic* to proper HTML
+  const formatMessage = (text: string) => {
+    // Replace **bold** with <strong>
+    let formatted = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Replace *italic* with <em>
+    formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    return formatted;
+  };
+
   return (
     <>
       <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
@@ -110,7 +119,14 @@ export const AIAssistantWidget: React.FC = () => {
                         ? 'bg-ink text-white rounded-br-none' 
                         : 'bg-white border border-structure/30 text-ink rounded-bl-none'
                     }`}>
-                      <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                      {msg.is_user ? (
+                        <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                      ) : (
+                        <p 
+                          className="leading-relaxed whitespace-pre-wrap [&_strong]:font-bold [&_em]:italic" 
+                          dangerouslySetInnerHTML={{ __html: formatMessage(msg.text) }} 
+                        />
+                      )}
                     </div>
                   </motion.div>
                 ))}

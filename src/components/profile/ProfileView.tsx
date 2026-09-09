@@ -14,8 +14,10 @@ import {
   Trash2, 
   Code,
   Users,
-  UserPlus
+  UserPlus,
+  LogOut
 } from 'lucide-react';
+import { useAuthStore } from '../../store/authStore';
 import { ShareMenu } from './ShareMenu';
 
 const GithubIcon = ({ size = 24, className = "" }) => (
@@ -81,6 +83,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const [following, setFollowing] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
 
   // Portfolio state
   const [projects, setProjects] = useState<PortfolioProject[]>([]);
@@ -597,15 +600,27 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
           <div className="flex flex-col gap-3 self-stretch md:self-center w-full md:w-auto">
             {isOwnProfile ? (
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <button 
                   onClick={() => {
                     setEditData(profile);
                     setIsEditing(true);
                   }}
-                  className="flex-1 bg-white/10 text-white font-mono text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-xl hover:bg-white/20 transition-all shadow-sm border border-white/20 flex items-center justify-center gap-2"
+                  className="flex-1 min-w-[130px] bg-white/10 text-white font-mono text-xs font-bold uppercase tracking-widest px-6 py-3.5 rounded-xl hover:bg-white/20 transition-all shadow-sm border border-white/20 flex items-center justify-center gap-2"
                 >
                   Edit Profile
+                </button>
+                <button 
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                    toast.success('Logged out successfully');
+                  }}
+                  className="bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 font-mono text-xs font-bold uppercase tracking-widest px-5 py-3.5 rounded-xl transition-all shadow-sm border border-red-500/20 flex items-center justify-center gap-2"
+                  title="Log out of your account"
+                >
+                  <LogOut size={16} />
+                  <span>Log Out</span>
                 </button>
                 <ShareMenu profileUrl={`${window.location.origin}/profile/${profile.username || profile.id}`} profileName={profile.full_name || profile.username || 'Candidate'} />
               </div>

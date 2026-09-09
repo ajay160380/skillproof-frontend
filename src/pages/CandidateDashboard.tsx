@@ -21,6 +21,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary';
 import { PremiumToggle } from '../components/PremiumToggle';
 import { MessagesView } from './MessagesView';
 import { SkeletonLoader } from '../components/SkeletonLoader';
+import { LogOut } from 'lucide-react';
 
 interface SkillTest {
   id: number;
@@ -141,7 +142,7 @@ const tabVariants = {
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   useEffect(() => {
     async function fetchData() {
@@ -329,9 +330,9 @@ const tabVariants = {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-73px)] overflow-hidden bg-mesh-light">
+      <div className="flex h-[calc(100vh-73px)] overflow-hidden bg-ink">
         {/* Skeleton Sidebar */}
-        <div className="w-72 glass-panel border-r border-structure/30 p-8 h-full">
+        <div className="w-72 bg-white/5 backdrop-blur-3xl border-r border-white/10 p-8 h-full hidden md:block">
           <div className="mb-10"><SkeletonLoader type="profile" /></div>
           <div className="space-y-6">
             <SkeletonLoader type="text" />
@@ -340,7 +341,7 @@ const tabVariants = {
           </div>
         </div>
         {/* Skeleton Main Content */}
-        <div className="flex-1 p-8 lg:p-12 space-y-8 overflow-y-auto">
+        <div className="flex-1 p-8 lg:p-12 space-y-8 overflow-y-auto bg-transparent">
           <div className="w-1/3 mb-10"><SkeletonLoader type="text" /></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <SkeletonLoader type="card" />
@@ -490,23 +491,36 @@ const tabVariants = {
         </div>
         
         {/* User Profile Snippet */}
-        <div className="p-4 mx-4 mb-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-between group hover:-translate-y-1 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)] hover:bg-white/10 transition-all duration-300 cursor-pointer relative overflow-hidden" onClick={() => { setActiveTab('Profile'); setIsSidebarOpen(false); }}>
+        <div className="p-3.5 mx-4 mb-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-between group hover:bg-white/10 transition-all duration-300 relative overflow-hidden">
           {/* Subtle hover gradient mask */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           
-          <div className="flex items-center gap-3 relative z-10">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-primary to-emerald-400 p-[1.5px] shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+          <div 
+            className="flex items-center gap-3 relative z-10 cursor-pointer flex-1 min-w-0" 
+            onClick={() => { setActiveTab('Profile'); setIsSidebarOpen(false); }}
+            title="View Profile"
+          >
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-primary to-emerald-400 p-[1.5px] shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0">
                <div className="w-full h-full bg-ink rounded-full flex items-center justify-center text-white font-serif font-bold text-lg">
                  {user?.email?.charAt(0).toUpperCase() || 'U'}
                </div>
             </div>
-            <div>
-              <div className="text-sm font-bold text-white truncate w-24 tracking-tight">{user?.email ? user.email.split('@')[0] : 'User'}</div>
+            <div className="truncate">
+              <div className="text-sm font-bold text-white truncate tracking-tight">{user?.email ? user.email.split('@')[0] : 'User'}</div>
               <div className="text-[9.5px] font-mono font-bold text-white/50 uppercase tracking-widest mt-0.5">Candidate</div>
             </div>
           </div>
-          <button className="text-data opacity-0 group-hover:opacity-100 transition-all duration-300 hover:text-white hover:bg-white/10 p-1.5 rounded-lg relative z-10">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              logout();
+              navigate('/');
+              toast.success('Logged out successfully');
+            }}
+            className="text-white/40 hover:text-red-400 hover:bg-red-500/10 p-2 rounded-xl transition-all relative z-20 shrink-0 ml-1"
+            title="Log Out"
+          >
+            <LogOut size={18} />
           </button>
         </div>
       </div>
