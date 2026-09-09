@@ -703,26 +703,27 @@ const tabVariants = {
                     {/* Radar Chart Component */}
                     <motion.div 
                       whileHover={{ y: -5 }}
-                      className="glass-panel rounded-3xl p-8 transition-all"
+                      className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-8 transition-all shadow-sm hover:shadow-lg hover:border-white/20"
                     >
-                      <h3 className="font-serif font-bold text-ink mb-1">Core Competencies</h3>
-                      <p className="font-mono text-[9px] uppercase tracking-widest text-data mb-6">Radar Analysis</p>
+                      <h3 className="font-serif font-bold text-white mb-1">Core Competencies</h3>
+                      <p className="font-mono text-[9px] uppercase tracking-widest text-white/50 mb-6">Radar Analysis</p>
                       <div className="h-[300px]">
                         {analytics?.radar && analytics.radar.length > 0 ? (
                           <ResponsiveContainer width="100%" height="100%">
                             <RadarChart data={analytics.radar} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-                              <PolarGrid stroke="#e2e8f0" />
-                              <PolarAngleAxis dataKey="category" tick={{ fill: '#334155', fontSize: 10, fontFamily: 'monospace' }} />
-                              <Radar name="Score" dataKey="score" stroke="#10b981" fill="#10b981" fillOpacity={0.4} />
+                              <PolarGrid stroke="rgba(255,255,255,0.1)" />
+                              <PolarAngleAxis dataKey="category" tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 10, fontFamily: 'monospace' }} />
+                              <PolarRadiusAxis tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 9 }} axisLine={false} />
+                              <Radar name="Score" dataKey="score" stroke="#10b981" fill="#10b981" fillOpacity={0.3} />
                               <RechartsTooltip 
-                                contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '12px', color: '#fff' }}
+                                contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
                                 itemStyle={{ color: '#10b981', fontWeight: 'bold' }}
                               />
                             </RadarChart>
                           </ResponsiveContainer>
                         ) : (
                           <div className="h-full flex items-center justify-center">
-                            <p className="font-mono text-xs text-data uppercase tracking-widest">Complete tests to unlock radar</p>
+                            <p className="font-mono text-xs text-white/40 uppercase tracking-widest">Complete tests to unlock radar</p>
                           </div>
                         )}
                       </div>
@@ -730,19 +731,19 @@ const tabVariants = {
 
                     <motion.div 
                       whileHover={{ y: -5 }}
-                      className="glass-panel rounded-3xl p-8 transition-all flex flex-col"
+                      className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-8 transition-all shadow-sm hover:shadow-lg hover:border-white/20 flex flex-col"
                     >
-                      <h3 className="font-serif font-bold text-ink mb-1">Performance Trend</h3>
-                      <p className="font-mono text-[9px] uppercase tracking-widest text-data mb-6">Last 5 Assessments</p>
+                      <h3 className="font-serif font-bold text-white mb-1">Performance Trend</h3>
+                      <p className="font-mono text-[9px] uppercase tracking-widest text-white/50 mb-6">Last 5 Assessments</p>
                       <div className="flex-1 min-h-[300px]">
                         {analytics?.trends && analytics.trends.length > 0 ? (
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={analytics.trends}>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                              <XAxis dataKey="date" stroke="#94a3b8" fontSize={10} fontFamily="monospace" tickLine={false} axisLine={false} />
-                              <YAxis stroke="#94a3b8" fontSize={10} fontFamily="monospace" tickLine={false} axisLine={false} domain={[0, 100]} />
+                              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                              <XAxis dataKey="date" stroke="rgba(255,255,255,0.3)" fontSize={10} fontFamily="monospace" tickLine={false} axisLine={false} />
+                              <YAxis stroke="rgba(255,255,255,0.3)" fontSize={10} fontFamily="monospace" tickLine={false} axisLine={false} domain={[0, 100]} />
                               <RechartsTooltip 
-                                contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '12px', color: '#fff' }}
+                                contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
                                 itemStyle={{ color: '#10b981', fontWeight: 'bold' }}
                               />
                               <Line type="monotone" dataKey="score" stroke="#10b981" strokeWidth={3} dot={{ r: 4, fill: '#10b981', strokeWidth: 0 }} activeDot={{ r: 6, fill: '#0f172a', stroke: '#10b981', strokeWidth: 2 }} />
@@ -750,7 +751,7 @@ const tabVariants = {
                           </ResponsiveContainer>
                         ) : (
                           <div className="h-full flex items-center justify-center">
-                            <p className="font-mono text-xs text-data uppercase tracking-widest">Not enough data points</p>
+                            <p className="font-mono text-xs text-white/40 uppercase tracking-widest">Not enough data points</p>
                           </div>
                         )}
                       </div>
