@@ -48,8 +48,17 @@ code, pre, .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Glassmorphism Utilities */
+/* Glassmorphism Utilities — Dark Mode First */
 .glass-panel {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.6));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Light variant — for landing page sections with light backgrounds */
+.glass-panel-light {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -58,16 +67,16 @@ code, pre, .font-mono {
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease-in-out;
 }
 .glass-button:hover {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
 }
 
@@ -158,8 +167,23 @@ code, pre, .font-mono {
   background-attachment: fixed;
 }
 
-/* Premium Card Styles */
+/* Premium Card Styles — Dark Mode */
 .premium-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 12px 40px -12px rgba(0,0,0,0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15), 0 15px 50px -10px rgba(0,0,0,0.4);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Light variant for landing page sections */
+.premium-card-light {
   background: var(--color-platinum);
   border: 1px solid var(--color-structure);
   border-radius: 1.5rem;
@@ -167,7 +191,7 @@ code, pre, .font-mono {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.premium-card:hover {
+.premium-card-light:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 15px 50px -10px rgba(0,0,0,0.08);
   border-color: rgba(15, 23, 42, 0.1);
@@ -180,4 +204,18 @@ code, pre, .font-mono {
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+/* Focus Ring Utility */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+/* Gradient Text Utility */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

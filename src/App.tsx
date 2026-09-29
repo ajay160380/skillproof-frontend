@@ -1,24 +1,27 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
 import { Layout } from './components/Layout';
-import { LandingPage } from './pages/LandingPage';
-import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
-import { CandidateDashboard } from './pages/CandidateDashboard';
-import { RecruiterDashboard } from './pages/RecruiterDashboard';
-import { PublicProfile } from './pages/PublicProfile';
-import { TestScreen } from './pages/TestScreen';
-import { ScoreReveal } from './pages/ScoreReveal';
-import { NotFound } from './pages/NotFound';
-import { JobsBrowser } from './pages/JobsBrowser';
-import { JobDetail } from './pages/JobDetail';
-import { PostJob } from './pages/PostJob';
-import { RecruiterJobs } from './pages/RecruiterJobs';
-import { FollowersList } from './pages/FollowersList';
-import { VerifyCertificate } from './pages/VerifyCertificate';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Loader } from './components/Loader';
+
+// Lazy-loaded pages for code splitting
+const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
+const LoginPage = lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('./pages/RegisterPage').then(m => ({ default: m.RegisterPage })));
+const CandidateDashboard = lazy(() => import('./pages/CandidateDashboard').then(m => ({ default: m.CandidateDashboard })));
+const RecruiterDashboard = lazy(() => import('./pages/RecruiterDashboard').then(m => ({ default: m.RecruiterDashboard })));
+const PublicProfile = lazy(() => import('./pages/PublicProfile').then(m => ({ default: m.PublicProfile })));
+const TestScreen = lazy(() => import('./pages/TestScreen').then(m => ({ default: m.TestScreen })));
+const ScoreReveal = lazy(() => import('./pages/ScoreReveal').then(m => ({ default: m.ScoreReveal })));
+const NotFound = lazy(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
+const JobsBrowser = lazy(() => import('./pages/JobsBrowser').then(m => ({ default: m.JobsBrowser })));
+const JobDetail = lazy(() => import('./pages/JobDetail').then(m => ({ default: m.JobDetail })));
+const PostJob = lazy(() => import('./pages/PostJob').then(m => ({ default: m.PostJob })));
+const RecruiterJobs = lazy(() => import('./pages/RecruiterJobs').then(m => ({ default: m.RecruiterJobs })));
+const FollowersList = lazy(() => import('./pages/FollowersList').then(m => ({ default: m.FollowersList })));
+const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate').then(m => ({ default: m.VerifyCertificate })));
 
 import { useAuthStore } from './store/authStore';
 import { api } from './services/api';
@@ -86,6 +89,7 @@ function App() {
           },
         }} 
       />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-ink"><Loader /></div>}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Layout />}>
@@ -111,6 +115,7 @@ function App() {
           </Route>
         </Routes>
       </AnimatePresence>
+      </Suspense>
     </>
   );
 }
