@@ -1096,27 +1096,27 @@ const tabVariants = {
                           </span>
                         ))}
                       </div>
-                      
-                      <div className="mt-6 flex items-center gap-6 pt-4 border-t border-white/10">
-                        {resume.file && (
-                          <a
-                            href={resume.file.startsWith('http') ? resume.file : `${api.defaults.baseURL?.replace('/api', '') || ''}${resume.file}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-mono text-[10px] uppercase tracking-widest text-white hover:text-brand-primary flex items-center gap-2 font-bold transition-colors"
-                          >
-                            <span className="text-sm">👁️</span> View Resume
-                          </a>
-                        )}
-                        <button
-                          onClick={handleDeleteResume}
-                          className="font-mono text-[10px] uppercase tracking-widest text-red-400 hover:text-red-500 flex items-center gap-2 font-bold transition-colors"
-                        >
-                          <span className="text-sm">🗑️</span> Delete Resume Record
-                        </button>
-                      </div>
                     </div>
                   )}
+
+                  <div className="mt-6 flex items-center gap-6 pt-4 border-t border-white/10">
+                    {resume.file && (
+                      <a
+                        href={resume.file.startsWith('http') ? resume.file : `${api.defaults.baseURL?.replace('/api', '') || ''}${resume.file}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-[10px] uppercase tracking-widest text-white hover:text-brand-primary flex items-center gap-2 font-bold transition-colors"
+                      >
+                        <span className="text-sm">👁️</span> View Resume
+                      </a>
+                    )}
+                    <button
+                      onClick={handleDeleteResume}
+                      className="font-mono text-[10px] uppercase tracking-widest text-red-400 hover:text-red-500 flex items-center gap-2 font-bold transition-colors"
+                    >
+                      <span className="text-sm">🗑️</span> Delete Resume Record
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
