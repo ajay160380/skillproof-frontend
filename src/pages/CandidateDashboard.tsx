@@ -22,6 +22,7 @@ import { PremiumToggle } from '../components/PremiumToggle';
 import { MessagesView } from './MessagesView';
 import { SkeletonLoader } from '../components/SkeletonLoader';
 import { LogOut } from 'lucide-react';
+import { getCachedCandidateData, setCachedCandidateData } from '../utils/dashboardCache';
 
 interface SkillTest {
   id: number;
@@ -114,40 +115,71 @@ const tabVariants = {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, activeTab]);
-  const [categories, setCategories] = useState<SkillCategory[]>([]);
-  const [testsByCategory, setTestsByCategory] = useState<Record<number, SkillTest[]>>({});
-  const [badges, setBadges] = useState<Record<number, Badge>>({});
-  const [allBadges, setAllBadges] = useState<Badge[]>([]);
-  const [attempts, setAttempts] = useState<Attempt[]>([]);
-  const [followersCount, setFollowersCount] = useState(0);
-  const [latestFollowerCompany, setLatestFollowerCompany] = useState('');
-  const [invites, setInvites] = useState<any[]>([]);
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+  const cached = getCachedCandidateData(user?.id);
+
+  const [categories, setCategories] = useState<SkillCategory[]>(cached?.categories || []);
+  const [testsByCategory, setTestsByCategory] = useState<Record<number, SkillTest[]>>(cached?.testsByCategory || {});
+  const [badges, setBadges] = useState<Record<number, Badge>>(cached?.badges || {});
+  const [allBadges, setAllBadges] = useState<Badge[]>(cached?.allBadges || []);
+  const [attempts, setAttempts] = useState<Attempt[]>(cached?.attempts || []);
+  const [followersCount, setFollowersCount] = useState(cached?.followersCount || 0);
+  const [latestFollowerCompany, setLatestFollowerCompany] = useState(cached?.latestFollowerCompany || '');
+  const [invites, setInvites] = useState<any[]>(cached?.invites || []);
   const [showInvites, setShowInvites] = useState(false);
-  const [analytics, setAnalytics] = useState<any>(null);
+  const [analytics, setAnalytics] = useState<any>(cached?.analytics || null);
   const [articles, setArticles] = useState<any[]>([]);
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>(cached?.jobs || []);
   
   // Resume specific state
-  const [resume, setResume] = useState<Resume | null>(null);
-  const [suggestedTests, setSuggestedTests] = useState<SuggestedTest[]>([]);
+  const [resume, setResume] = useState<Resume | null>(cached?.resume || null);
+  const [suggestedTests, setSuggestedTests] = useState<SuggestedTest[]>(cached?.suggestedTests || []);
 
-  const [profile, setProfile] = useState<any>(null);
-  const [projects, setProjects] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>(cached?.profile || null);
+  const [projects, setProjects] = useState<any[]>(cached?.projects || []);
+  // Instant load if cache exists!
+  const [loading, setLoading] = useState(!cached);
+  const [isColdStarting, setIsColdStarting] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [totalUnreadMessages, setTotalUnreadMessages] = useState(0);
   
   // Profile editing state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editProfileData, setEditProfileData] = useState({ full_name: '', company_name: '', bio: '', avatar_url: '' });
   const [isSavingProfile, setIsSavingProfile] = useState(false);
-  
-  const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+
+  // Cold start timer for first-time visitors with no cache
+  useEffect(() => {
+    if (!loading) {
+      setIsColdStarting(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setIsColdStarting(true);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchData() {
+      setIsSyncing(true);
       try {
-        const [catsRes, testsRes, badgesRes, attemptsRes, followersRes, invitesRes, analyticsRes, jobsRes, profileRes, projectsRes] = await Promise.all([
+        // Fetch ALL endpoints in a single parallel batch (no serial waiting!)
+        const [
+          catsRes,
+          testsRes,
+          badgesRes,
+          attemptsRes,
+          followersRes,
+          invitesRes,
+          analyticsRes,
+          jobsRes,
+          profileRes,
+          projectsRes,
+          myResumeRes
+        ] = await Promise.all([
           api.get('/skills/categories/').catch(() => ({ data: [] })),
           api.get('/skills/tests/').catch(() => ({ data: [] })),
           api.get('/badges/my-badges/').catch(() => ({ data: [] })),
@@ -156,9 +188,12 @@ const tabVariants = {
           api.get('/jobs/interviews/my-interviews/').catch(() => ({ data: { results: [] } })),
           api.get('/assessments/analytics/').catch(() => ({ data: null })),
           api.get('/jobs/').catch(() => ({ data: { results: [] } })),
-          api.get('/accounts/me/').catch(() => ({ data: null })),
-          api.get('/portfolio/projects/').catch(() => ({ data: { results: [] } }))
+          api.get('/auth/me/').catch(() => ({ data: null })),
+          api.get('/portfolio/projects/').catch(() => ({ data: { results: [] } })),
+          getMyResume().catch(() => null)
         ]);
+
+        if (!isMounted) return;
 
         const cats: SkillCategory[] = Array.isArray(catsRes.data) ? catsRes.data : catsRes.data?.results || [];
         setCategories(cats);
@@ -188,9 +223,12 @@ const tabVariants = {
         setAttempts(attemptsData);
 
         const followersData = followersRes.data;
-        setFollowersCount(followersData?.count || 0);
+        const count = followersData?.count || 0;
+        setFollowersCount(count);
+        let latestCompany = '';
         if (followersData?.results && followersData.results.length > 0) {
-          setLatestFollowerCompany(followersData.results[0].recruiter_detail?.company_name || '');
+          latestCompany = followersData.results[0].recruiter_detail?.company_name || '';
+          setLatestFollowerCompany(latestCompany);
         }
 
         const invitesData = Array.isArray(invitesRes.data) ? invitesRes.data : invitesRes.data?.results || [];
@@ -206,29 +244,63 @@ const tabVariants = {
         const projectsList = Array.isArray(projectsRes.data) ? projectsRes.data : projectsRes.data?.results || [];
         setProjects(projectsList);
 
+        if (myResumeRes) {
+          setResume(myResumeRes);
+          if (myResumeRes.parsing_status === 'completed') {
+            getSuggestedTests().then(sTests => {
+              if (isMounted) {
+                setSuggestedTests(sTests);
+                setCachedCandidateData(user?.id, {
+                  categories: cats,
+                  testsByCategory: grouped,
+                  badges: badgeMap,
+                  allBadges: badgeList,
+                  attempts: attemptsData,
+                  followersCount: count,
+                  latestFollowerCompany: latestCompany,
+                  invites: invitesData,
+                  analytics: analyticsData,
+                  jobs: jobsList,
+                  profile: profileRes.data,
+                  projects: projectsList,
+                  resume: myResumeRes,
+                  suggestedTests: sTests
+                });
+              }
+            }).catch(console.error);
+          }
+        }
+
+        // Cache the fresh snapshot for instant 0ms loads in future
+        setCachedCandidateData(user?.id, {
+          categories: cats,
+          testsByCategory: grouped,
+          badges: badgeMap,
+          allBadges: badgeList,
+          attempts: attemptsData,
+          followersCount: count,
+          latestFollowerCompany: latestCompany,
+          invites: invitesData,
+          analytics: analyticsData,
+          jobs: jobsList,
+          profile: profileRes.data,
+          projects: projectsList,
+          resume: myResumeRes,
+        });
+
       } catch (err) {
         console.error('Dashboard fetch error:', err);
       } finally {
-        // Fetch resume silently in the background
-        try {
-          const myRes = await getMyResume();
-          setResume(myRes);
-          
-          // Stop loading immediately after fetching resume so UI renders fast
+        if (isMounted) {
           setLoading(false);
-          
-          if (myRes && myRes.parsing_status === 'completed') {
-            // Fetch suggested tests in the background (can take time if Groq AI generates tests)
-            getSuggestedTests().then(setSuggestedTests).catch(console.error);
-          }
-        } catch (e) {
-          // ignore 404
-          setLoading(false);
+          setIsSyncing(false);
+          setIsColdStarting(false);
         }
       }
     }
     fetchData();
-  }, []);
+    return () => { isMounted = false; };
+  }, [user?.id]);
 
   // Poll for unread messages
   useEffect(() => {
@@ -287,7 +359,7 @@ const tabVariants = {
   const handleSaveProfile = async () => {
     try {
       setIsSavingProfile(true);
-      const res = await api.patch('/accounts/me/', editProfileData);
+      const res = await api.patch('/auth/me/', editProfileData);
       setProfile(res.data);
       setIsEditingProfile(false);
     } catch (err) {
@@ -357,25 +429,74 @@ const tabVariants = {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-73px)] overflow-hidden bg-ink">
-        {/* Skeleton Sidebar */}
-        <div className="w-72 bg-white/5 backdrop-blur-3xl border-r border-white/10 p-8 h-full hidden md:block">
-          <div className="mb-10"><SkeletonLoader type="profile" /></div>
-          <div className="space-y-6">
-            <SkeletonLoader type="text" />
-            <SkeletonLoader type="text" />
-            <SkeletonLoader type="text" />
+      <div className="flex h-screen w-full overflow-hidden bg-ink text-white relative">
+        <div className="absolute inset-0 bg-mesh-dark opacity-100 pointer-events-none" />
+
+        {/* Sidebar with actual user info from auth state */}
+        <div className="w-72 bg-white/5 backdrop-blur-3xl border-r border-white/10 hidden md:flex flex-col h-full shrink-0 relative z-20 shadow-2xl">
+          <div className="p-8 pb-6 flex items-center gap-3">
+             <div className="w-10 h-10 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)] ring-1 ring-white/20">
+               <span className="font-serif font-bold text-white text-xl">S</span>
+             </div>
+             <h3 className="font-serif text-2xl font-bold text-white tracking-tight">SkillProof</h3>
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-2 space-y-6 scrollbar-hide">
+            {['OVERVIEW', 'NETWORK', 'CAREER'].map((group) => (
+              <div key={group} className="space-y-2">
+                <div className="h-3 w-16 bg-white/10 rounded px-2" />
+                <div className="h-9 w-full bg-white/5 rounded-xl border border-white/5" />
+                <div className="h-9 w-full bg-white/5 rounded-xl border border-white/5" />
+              </div>
+            ))}
+          </div>
+          {/* User Profile */}
+          <div className="p-3.5 mx-4 mb-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-primary to-emerald-400 p-[1.5px] shrink-0">
+               <div className="w-full h-full bg-ink rounded-full flex items-center justify-center text-white font-serif font-bold text-lg">
+                 {user?.email?.charAt(0).toUpperCase() || 'U'}
+               </div>
+            </div>
+            <div className="truncate">
+              <div className="text-sm font-bold text-white truncate">{user?.email ? user.email.split('@')[0] : 'User'}</div>
+              <div className="text-[9.5px] font-mono font-bold text-white/50 uppercase tracking-widest">Candidate</div>
+            </div>
           </div>
         </div>
-        {/* Skeleton Main Content */}
-        <div className="flex-1 p-8 lg:p-12 space-y-8 overflow-y-auto bg-transparent">
-          <div className="w-1/3 mb-10"><SkeletonLoader type="text" /></div>
+
+        {/* Main Content Skeleton Area */}
+        <div className="flex-1 p-8 lg:p-12 space-y-6 overflow-y-auto relative z-10">
+          {/* Cold start wake up indicator */}
+          {isColdStarting ? (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }} 
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-4 text-amber-200 backdrop-blur-md"
+            >
+              <div className="flex items-center gap-3">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                </span>
+                <div>
+                  <div className="text-xs font-bold text-amber-300 font-mono tracking-wide">CONNECTING TO SECURE CLOUD SERVER</div>
+                  <div className="text-[11px] text-amber-200/70 font-sans mt-0.5">Render free instance is waking up (~15-20s on first load). Loading your verified dashboard...</div>
+                </div>
+              </div>
+              <div className="hidden sm:block text-[10px] font-mono uppercase tracking-widest text-amber-400/80 px-2.5 py-1 rounded bg-amber-500/20 border border-amber-500/30">
+                Waking Up
+              </div>
+            </motion.div>
+          ) : (
+            <div className="w-1/3 mb-6"><SkeletonLoader type="text" /></div>
+          )}
+
+          {/* Cards skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <SkeletonLoader type="card" />
             <SkeletonLoader type="card" />
             <SkeletonLoader type="card" />
           </div>
-          <div className="mt-8 h-64"><SkeletonLoader type="card" /></div>
+          <div className="mt-8 h-72"><SkeletonLoader type="card" /></div>
         </div>
       </div>
     );
@@ -666,7 +787,15 @@ const tabVariants = {
                   <div className="relative max-w-5xl mx-auto px-8 py-12">
                     <div className="flex flex-col md:flex-row items-start justify-between gap-6">
                       <div>
-                        <h1 className="text-sm font-mono tracking-[0.3em] text-white/50 mb-2 uppercase">Candidate Dossier &mdash; {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}</h1>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h1 className="text-sm font-mono tracking-[0.3em] text-white/50 uppercase">Candidate Dossier &mdash; {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}</h1>
+                          {isSyncing && (
+                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[9px] font-mono text-emerald-400 tracking-wider">
+                              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-ping" />
+                              SYNCING
+                            </span>
+                          )}
+                        </div>
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Welcome back</h2>
                         <p className="max-w-xl text-white/70 font-serif leading-relaxed text-sm">
                           Complete AI-proctored assessments to build a cryptographically verified profile. 

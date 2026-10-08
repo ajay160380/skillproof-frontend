@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { NetworkDiscoveryWidget, FeedWidget } from '../components/network/NetworkWidgets';
 import { useAuthStore } from '../store/authStore';
 import { LogOut } from 'lucide-react';
+import { getCachedRecruiterData, setCachedRecruiterData } from '../utils/dashboardCache';
 
 // Interfaces
 interface PublicBadge {
@@ -76,16 +77,19 @@ export function RecruiterDashboard() {
       setActiveTab(urlTab);
     }
   }, [searchParams, activeTab]);
-  const [loading, setLoading] = useState(true);
+  const { user, logout } = useAuthStore();
+  const cached = getCachedRecruiterData(user?.id);
   
-  // Dashboard & Candidates State
-  const [stats, setStats] = useState<DashboardStats | null>(null);
+  // Dashboard & Candidates State - Instantly hydrated from cache
+  const [loading, setLoading] = useState(!cached);
+  const [isColdStarting, setIsColdStarting] = useState(false);
+  const [stats, setStats] = useState<DashboardStats | null>(cached?.stats || null);
   const [candidates, setCandidates] = useState<MarketplaceCandidate[]>([]);
-  const [savedCandidates, setSavedCandidates] = useState<SavedCandidate[]>([]);
+  const [savedCandidates, setSavedCandidates] = useState<SavedCandidate[]>(cached?.savedCandidates || []);
   const [talentMatches, setTalentMatches] = useState<any[]>([]);
   
   // Jobs & Interviews State
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>(cached?.jobs || []);
   const [interviews, setInterviews] = useState<any[]>([]);
   const [applicants, setApplicants] = useState<any[]>([]);
   const [selectedJobIdForApplicants, setSelectedJobIdForApplicants] = useState<number | null>(null);
@@ -102,16 +106,15 @@ export function RecruiterDashboard() {
   const [sendingInvite, setSendingInvite] = useState<number | null>(null);
 
   // Requirements / Company Profile State
-  const [reqCompany, setReqCompany] = useState('');
-  const [reqDesc, setReqDesc] = useState('');
-  const [reqMinScore, setReqMinScore] = useState<number | ''>('');
-  const [reqSkills, setReqSkills] = useState<string[]>([]);
-  const [allCategories, setAllCategories] = useState<{id: number, slug: string, name: string}[]>([]);
+  const [reqCompany, setReqCompany] = useState(cached?.reqCompany || '');
+  const [reqDesc, setReqDesc] = useState(cached?.reqDesc || '');
+  const [reqMinScore, setReqMinScore] = useState<number | ''>(typeof cached?.reqMinScore === 'number' ? cached.reqMinScore : '');
+  const [reqSkills, setReqSkills] = useState<string[]>(cached?.reqSkills || []);
+  const [allCategories, setAllCategories] = useState<{id: number, slug: string, name: string}[]>(cached?.allCategories || []);
   const [savingReqs, setSavingReqs] = useState(false);
 
   // Settings State
-  const { user, logout } = useAuthStore();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(cached?.profile || null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editProfileData, setEditProfileData] = useState({ full_name: '', company_name: '', bio: '', avatar_url: '' });
   const [isSavingProfile, setIsSavingProfile] = useState(false);
@@ -129,6 +132,18 @@ export function RecruiterDashboard() {
   const badgeLevels = ['platinum', 'gold', 'silver', 'bronze'];
 
   useEffect(() => {
+    if (!loading) {
+      setIsColdStarting(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setIsColdStarting(true);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, [loading]);
+
+  useEffect(() => {
+    let isMounted = true;
     async function fetchAllData() {
       try {
         const [statsRes, reqsRes, catsRes, savedRes, jobsRes, profileRes] = await Promise.all([
@@ -137,32 +152,64 @@ export function RecruiterDashboard() {
           api.get('/skills/categories/').catch(() => ({ data: { results: [] } })),
           api.get('/network/my-follows/').catch(() => ({ data: { results: [] } })),
           api.get('/jobs/my-listings/').catch(() => ({ data: { results: [] } })),
-          api.get('/accounts/me/').catch(() => ({ data: null }))
+          api.get('/auth/me/').catch(() => ({ data: null }))
         ]);
         
-        if(statsRes.data) setStats(statsRes.data);
+        if (!isMounted) return;
+
+        if (statsRes.data) setStats(statsRes.data);
         
         const cats = Array.isArray(catsRes.data) ? catsRes.data : catsRes.data.results || [];
         setAllCategories(cats);
         
+        let cName = '';
+        let cDesc = '';
+        let cScore: number | '' = '';
+        let cSkills: string[] = [];
+
         if (reqsRes.data) {
-          setReqCompany(reqsRes.data.company_name || '');
-          setReqDesc(reqsRes.data.company_description || '');
-          setReqMinScore(reqsRes.data.preferred_min_score || '');
-          setReqSkills(reqsRes.data.required_skills?.map((s: any) => s.id.toString()) || []);
+          cName = reqsRes.data.company_name || '';
+          cDesc = reqsRes.data.company_description || '';
+          cScore = reqsRes.data.preferred_min_score || '';
+          cSkills = reqsRes.data.required_skills?.map((s: any) => s.id.toString()) || [];
+
+          setReqCompany(cName);
+          setReqDesc(cDesc);
+          setReqMinScore(cScore);
+          setReqSkills(cSkills);
         }
 
-        setSavedCandidates(Array.isArray(savedRes.data) ? savedRes.data : savedRes.data.results || []);
-        setJobs(Array.isArray(jobsRes.data) ? jobsRes.data : jobsRes.data.results || []);
-        if(profileRes.data) setProfile(profileRes.data);
+        const savedList = Array.isArray(savedRes.data) ? savedRes.data : savedRes.data.results || [];
+        const jobsList = Array.isArray(jobsRes.data) ? jobsRes.data : jobsRes.data.results || [];
+
+        setSavedCandidates(savedList);
+        setJobs(jobsList);
+        if (profileRes.data) setProfile(profileRes.data);
+
+        setCachedRecruiterData(user?.id, {
+          stats: statsRes.data,
+          allCategories: cats,
+          reqCompany: cName,
+          reqDesc: cDesc,
+          reqMinScore: cScore,
+          reqSkills: cSkills,
+          savedCandidates: savedList,
+          jobs: jobsList,
+          profile: profileRes.data,
+        });
+
       } catch (err) {
         console.error('Failed to fetch initial data:', err);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+          setIsColdStarting(false);
+        }
       }
     }
     fetchAllData();
-  }, []);
+    return () => { isMounted = false; };
+  }, [user?.id]);
 
   useEffect(() => {
     const timer = setTimeout(() => { setDebouncedQuery(searchQuery); }, 300);
@@ -286,7 +333,7 @@ export function RecruiterDashboard() {
   const handleSaveProfile = async () => {
     try {
       setIsSavingProfile(true);
-      const res = await api.patch('/accounts/me/', editProfileData);
+      const res = await api.patch('/auth/me/', editProfileData);
       setProfile(res.data);
       setIsEditingProfile(false);
       toast.success('Profile updated');
@@ -342,7 +389,22 @@ export function RecruiterDashboard() {
   ];
 
   if (loading) {
-    return <div className="flex h-screen items-center justify-center bg-ink"><Loader text="LOADING TERMINAL..." size="lg" /></div>;
+    return (
+      <div className="flex h-screen w-full flex-col items-center justify-center bg-ink text-white p-6 relative">
+        <div className="absolute inset-0 bg-mesh-dark opacity-100 pointer-events-none" />
+        <Loader text="INITIALIZING RECRUITER SUITE..." size="lg" />
+        {isColdStarting && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 max-w-md p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center text-xs text-amber-200 backdrop-blur-md"
+          >
+            <div className="font-mono font-bold tracking-wider text-amber-300 mb-1">CONNECTING TO CLOUD SERVER</div>
+            <div className="text-[11px] text-amber-200/70">Render free tier spins up from sleep (~15-20s on first load). Loading candidate marketplace...</div>
+          </motion.div>
+        )}
+      </div>
+    );
   }
 
   return (
