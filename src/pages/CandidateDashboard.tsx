@@ -545,7 +545,7 @@ const tabVariants = {
     {
       category: 'CREDENTIALS',
       items: [
-        { id: 'Certificates', icon: '🏅', label: 'Certificates' },
+        { id: 'Certificates', icon: '🏅', label: 'Assessments & Badges' },
         { id: 'Resume', icon: '📄', label: 'Resume' },
       ]
     },
@@ -1110,7 +1110,7 @@ const tabVariants = {
         {/* Certificates Tab */}
         {activeTab === 'Certificates' && (
           <motion.div key="certificates" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
-            <h2 className="font-sans tracking-tight text-2xl font-bold text-white tracking-tight">Certificates</h2>
+            <h2 className="font-sans tracking-tight text-2xl font-bold text-white tracking-tight">Assessments & Badges</h2>
             <div className="bg-[#111113] border border-[#2A2A2D] rounded-3xl p-8 shadow-sm">
               <h2 className="font-mono text-[10px] text-brand-primary uppercase tracking-[0.3em] mb-6 font-bold">Badge Showcase</h2>
               
