@@ -1376,13 +1376,15 @@ const tabVariants = {
                         </div>
                         <div className="flex flex-wrap gap-2.5">
                           {resume.extracted_skills.map((skill: string, i: number) => (
-                            <span 
+                            <button 
                               key={i} 
-                              className="font-mono text-xs font-bold tracking-wide px-3.5 py-1.5 bg-[#141415] hover:bg-[#1E1E21] border border-[#2A2A2D] hover:border-emerald-500/50 text-white rounded-xl shadow-sm transition-all duration-300 hover:scale-105 flex items-center gap-2 group cursor-default"
+                              onClick={() => setActiveTab('Certificates')}
+                              title={`Take assessment for ${skill}`}
+                              className="font-mono text-xs font-bold tracking-wide px-3.5 py-1.5 bg-[#141415] hover:bg-[#1E1E21] border border-[#2A2A2D] hover:border-emerald-500/50 text-white rounded-xl shadow-sm transition-all duration-300 hover:scale-105 flex items-center gap-2 group cursor-pointer"
                             >
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:scale-125 transition-transform" />
                               {skill}
-                            </span>
+                            </button>
                           ))}
                         </div>
                       </div>
