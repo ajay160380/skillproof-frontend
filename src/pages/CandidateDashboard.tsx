@@ -680,7 +680,7 @@ const tabVariants = {
         <div className="md:hidden flex items-center justify-between p-4 border-b border-[#2A2A2D] bg-[#111113] z-30">
           <div className="flex items-center gap-3">
              <div className="w-8 h-8 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-lg flex items-center justify-center">
-               <span className="font-sans tracking-tight font-bold text-white text-sm">S</span>
+               <span className="font-sans tracking-tight font-bold text-ink text-sm">S</span>
              </div>
              <h3 className="font-sans tracking-tight text-xl font-bold text-white tracking-tight">SkillProof</h3>
           </div>

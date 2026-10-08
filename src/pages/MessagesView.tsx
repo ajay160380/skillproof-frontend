@@ -324,7 +324,7 @@ export function MessagesView() {
                         <div 
                           className={`p-3 px-5 rounded-2xl shadow-sm  border transition-all ${
                             isMine 
-                              ? 'bg-gradient-to-br from-brand-primary to-brand-primary/80 border-brand-primary/20 text-white rounded-br-sm' 
+                              ? 'bg-gradient-to-br from-brand-primary to-brand-primary/80 border-brand-primary/20 text-ink rounded-br-sm' 
                               : 'bg-[#1E1E21] border-[#2A2A2D] text-white rounded-bl-sm'
                           }`}
                         >

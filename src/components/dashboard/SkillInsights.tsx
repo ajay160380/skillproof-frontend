@@ -187,7 +187,7 @@ export function SkillInsights({ onStartTest }: { onStartTest: (testId: number) =
           </p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-mono text-xs uppercase tracking-widest rounded-2xl hover: transition-all duration-300 font-bold"
+            className="px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-secondary text-ink font-mono text-xs uppercase tracking-widest rounded-2xl hover:opacity-80 transition-all duration-300 font-bold"
           >
             Take Your First Test →
           </button>
@@ -469,7 +469,7 @@ export function SkillInsights({ onStartTest }: { onStartTest: (testId: number) =
                         {step.test_id && (step.action_type === 'take_test' || step.action_type === 'retake_test') && (
                           <button
                             onClick={() => onStartTest(step.test_id!)}
-                            className="shrink-0 px-5 py-2.5 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-mono text-[10px] uppercase tracking-widest rounded-xl hover: transition-all duration-300 font-bold whitespace-nowrap"
+                            className="shrink-0 px-5 py-2.5 bg-gradient-to-r from-brand-primary to-brand-secondary text-ink font-mono text-[10px] uppercase tracking-widest rounded-xl hover:opacity-80 transition-all duration-300 font-bold whitespace-nowrap"
                           >
                             {step.action_type === 'retake_test' ? 'Retake Test' : 'Start Test'} →
                           </button>
