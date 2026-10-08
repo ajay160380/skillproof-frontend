@@ -66,7 +66,7 @@ export function VerifyCertificate() {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest rounded-md hover:hidden transition-colors disabled:opacity-50"
+            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest rounded-md hover:opacity-80 transition-colors disabled:opacity-50"
           >
             {loading ? 'Verifying...' : 'Verify'}
           </button>

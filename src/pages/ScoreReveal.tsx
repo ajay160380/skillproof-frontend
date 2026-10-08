@@ -64,7 +64,7 @@ export function ScoreReveal() {
           <p className="font-mono text-xs text-data mb-6">{error}</p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-md"
+            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:opacity-80 transition-colors rounded-md"
           >
             Return to Dashboard
           </button>
@@ -81,7 +81,7 @@ export function ScoreReveal() {
           <p className="font-mono text-xs text-data mb-6">The AI engine was unable to process your submission. Please try again.</p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-md"
+            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:opacity-80 transition-colors rounded-md"
           >
             Return to Dashboard
           </button>
@@ -124,7 +124,7 @@ export function ScoreReveal() {
             <div className="font-mono text-[10px] text-data uppercase tracking-widest mb-1 flex items-center gap-2">
               Assessment Complete
               {cheatingFlags && (
-                <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${isHighSuspicion ? 'bg-red-500/10 text-red-500 border border-red-500/20' : isLowSuspicion ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'hidden/10 text-verification border border-verification/20'}`}>
+                <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${isHighSuspicion ? 'bg-red-500/10 text-red-500 border border-red-500/20' : isLowSuspicion ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'bg-verification/10 text-verification border border-verification/20'}`}>
                   {isHighSuspicion ? 'Integrity Flagged' : isLowSuspicion ? 'Integrity Reviewed' : 'Integrity Clean'}
                 </span>
               )}

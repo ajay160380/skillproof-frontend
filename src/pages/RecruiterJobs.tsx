@@ -72,7 +72,7 @@ export function RecruiterJobs() {
         <div className="p-6 border-b border-structure/20 bg-vellum">
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-sans tracking-tight text-2xl text-[#0A0A0B]">My Listings</h2>
-            <Link to="/jobs/post" className="w-8 h-8 flex items-center justify-center bg-[#0A0A0B] text-white rounded-full hover:hidden transition-colors">
+            <Link to="/jobs/post" className="w-8 h-8 flex items-center justify-center bg-[#0A0A0B] text-white rounded-full hover:opacity-80 transition-colors">
               +
             </Link>
           </div>
@@ -134,7 +134,7 @@ export function RecruiterJobs() {
                         <td className="px-6 py-4 font-sans tracking-tight text-lg text-[#0A0A0B]">{app.candidate_email}</td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 font-mono text-[9px] uppercase tracking-widest rounded ${
-                            app.status === 'completed' ? 'hidden/20 text-verification' : 'bg-structure/20 text-[#0A0A0B]/60'
+                            app.status === 'completed' ? 'bg-verification/20 text-verification' : 'bg-structure/20 text-[#0A0A0B]/60'
                           }`}>
                             {app.status.replace('_', ' ')}
                           </span>

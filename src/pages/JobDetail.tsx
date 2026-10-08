@@ -167,7 +167,7 @@ export function JobDetail() {
               <button
                 onClick={generatePrepGuide}
                 disabled={isGeneratingPrep}
-                className="font-mono text-xs flex items-center gap-2 text-verification hidden/10 px-4 py-2 rounded-xl hover:hidden hover:text-white transition-all disabled:opacity-50"
+                className="font-mono text-xs flex items-center gap-2 text-verification bg-verification/10 px-4 py-2 rounded-xl hover:opacity-80 hover:text-white transition-all disabled:opacity-50"
               >
                 <span>✨</span>
                 {isGeneratingPrep ? 'Generating...' : 'AI Prep Guide'}
@@ -234,7 +234,7 @@ export function JobDetail() {
           >
             <div className="absolute inset-0 bg-white/40  -z-10" />
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 hidden/20 text-verification rounded-full font-mono text-[10px] uppercase tracking-[0.2em] mb-4 font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-verification/20 text-verification rounded-full font-mono text-[10px] uppercase tracking-[0.2em] mb-4 font-bold">
                 <span className="w-2 h-2 hidden rounded-full" /> Job Fit Summary
               </div>
               <h2 className="font-sans tracking-tight text-4xl md:text-5xl text-[#0A0A0B] mb-4 font-bold">Requirements Met</h2>

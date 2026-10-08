@@ -150,7 +150,7 @@ export const AIAssistantWidget: React.FC = () => {
                     <button
                       key={i}
                       onClick={() => handleSend(prompt)}
-                      className="text-[10px] font-mono uppercase tracking-widest text-[#0A0A0B]/70 bg-[#141415]0 border border-structure/30 hover:border-verification hover:text-verification hover:hidden/5 px-3 py-1.5 rounded-full transition-all duration-300"
+                      className="text-[10px] font-mono uppercase tracking-widest text-[#0A0A0B]/70 bg-[#141415]0 border border-structure/30 hover:border-verification hover:text-verification hover:bg-white/5 px-3 py-1.5 rounded-full transition-all duration-300"
                     >
                       {prompt}
                     </button>

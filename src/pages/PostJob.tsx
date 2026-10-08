@@ -179,7 +179,7 @@ export function PostJob() {
                       onClick={() => toggleTest(test.id)}
                       className={`text-left px-4 py-3 border transition-all ${
                         isSelected 
-                          ? 'hidden/10 border-verification shadow-sm' 
+                          ? 'bg-verification/10 border-verification shadow-sm' 
                           : 'bg-white border-structure/20 hover:border-verification/50'
                       }`}
                     >
@@ -200,7 +200,7 @@ export function PostJob() {
 
             <button
               type="submit"
-              className="w-full bg-[#0A0A0B] text-vellum py-4 font-mono text-sm uppercase tracking-[0.2em] hover:hidden transition-all active:scale-[0.98] mt-8"
+              className="w-full bg-[#0A0A0B] text-vellum py-4 font-mono text-sm uppercase tracking-[0.2em] hover:opacity-80 transition-all active:scale-[0.98] mt-8"
             >
               Publish Job Listing
             </button>

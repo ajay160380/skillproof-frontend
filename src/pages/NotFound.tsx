@@ -25,7 +25,7 @@ export function NotFound() {
         
         <Link 
           to="/" 
-          className="inline-block bg-[#0A0A0B] text-vellum px-8 py-3 font-medium hover:hidden transition-colors rounded-md shadow-md"
+          className="inline-block bg-[#0A0A0B] text-vellum px-8 py-3 font-medium hover:opacity-80 transition-colors rounded-md shadow-md"
         >
           Return to Registry
         </Link>

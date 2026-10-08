@@ -60,7 +60,7 @@ export function PracticalTest({ testId, testData, onSubmit }: PracticalTestProps
           <button
             onClick={submitTest}
             disabled={!projectUrl}
-            className="px-8 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-lg font-bold shadow-sm disabled:opacity-50"
+            className="px-8 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:opacity-80 transition-colors rounded-lg font-bold shadow-sm disabled:opacity-50"
           >
             Submit Project
           </button>

@@ -130,7 +130,7 @@ export function TestScreen() {
         <div className="border border-seal/30 rounded-lg p-8 max-w-md text-center">
           <div className="font-sans tracking-tight text-2xl mb-3">Session Not Found</div>
           <p className="font-mono text-xs text-data mb-6">This test session does not exist or you do not have access to it.</p>
-          <button onClick={() => navigate('/dashboard')} className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-md">
+          <button onClick={() => navigate('/dashboard')} className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:opacity-80 transition-colors rounded-md">
             Return to Dashboard
           </button>
         </div>

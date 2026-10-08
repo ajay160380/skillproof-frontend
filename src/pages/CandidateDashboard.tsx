@@ -66,7 +66,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 const DIFFICULTY_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  easy: { label: 'EASY', color: 'text-verification', bg: 'hidden/10' },
+  easy: { label: 'EASY', color: 'text-verification', bg: 'bg-verification/10' },
   medium: { label: 'MEDIUM', color: 'text-amber-600', bg: 'bg-amber-50' },
   hard: { label: 'HARD', color: 'text-seal', bg: 'bg-seal/10' },
 };

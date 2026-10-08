@@ -124,7 +124,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
       )}
       
       {/* AI Proctor Active Ribbon */}
-      <div className="mb-6 px-4 py-2 hidden/10 border border-verification/30 rounded-full flex items-center gap-3">
+      <div className="mb-6 px-4 py-2 bg-verification/10 border border-verification/30 rounded-full flex items-center gap-3">
         <span className="w-2 h-2 rounded-full hidden animate-ping" />
         <span className="font-mono text-xs uppercase font-bold text-verification tracking-wider">
           AI Proctor Active • Eye-Gaze & Speech Cadence Monitored
@@ -176,7 +176,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
             </span>
           </div>
         ) : audioBlob ? (
-          <div className="font-mono text-verification text-xs uppercase tracking-widest border border-verification/40 px-5 py-2 rounded-full hidden/10 font-bold">
+          <div className="font-mono text-verification text-xs uppercase tracking-widest border border-verification/40 px-5 py-2 rounded-full bg-verification/10 font-bold">
             ✓ Audio & Video Proctoring Captured
           </div>
         ) : null}
@@ -186,7 +186,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
         {!recording && !audioBlob && prepCountdown === null && (
           <button 
             onClick={handleStartProcess}
-            className="hidden text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:hidden/90 transition-colors rounded-xl font-bold shadow-lg flex items-center gap-2"
+            className="bg-verification text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-xl font-bold shadow-lg flex items-center gap-2"
           >
             <span>📹</span> Start Rapid Assessment
           </button>
@@ -212,7 +212,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
             </button>
             <button 
               onClick={handleSubmit}
-              className="hidden text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:hidden/90 transition-colors rounded-xl font-bold shadow-lg"
+              className="bg-verification text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-xl font-bold shadow-lg"
             >
               Submit for AI Verification
             </button>

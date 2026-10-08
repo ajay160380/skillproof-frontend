@@ -49,7 +49,7 @@ export function RecruiterSection() {
           <div className="w-full max-w-md bg-vellum/5 border border-structure/30  p-6  rounded-md">
             <div className="flex justify-between items-center mb-6 border-b border-structure/30 pb-4">
               <div className="font-mono text-xs text-vellum/70">MARKETPLACE QUERY</div>
-              <div className="text-xs px-2 py-1 hidden/20 text-verification font-mono uppercase rounded-md">Results: 142</div>
+              <div className="text-xs px-2 py-1 bg-verification/20 text-verification font-mono uppercase rounded-md">Results: 142</div>
             </div>
             
             <div className="space-y-4">

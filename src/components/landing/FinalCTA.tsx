@@ -48,7 +48,7 @@ export function FinalCTA() {
         >
           <Link 
             to="/register" 
-            className="bg-vellum text-[#0A0A0B] px-8 py-4 text-center font-medium hover:hidden hover:text-vellum transition-colors min-w-[200px] rounded-md shadow-lg shadow-black/20"
+            className="bg-vellum text-[#0A0A0B] px-8 py-4 text-center font-medium hover:opacity-80 hover:text-vellum transition-colors min-w-[200px] rounded-md shadow-lg shadow-black/20"
           >
             Start Verification
           </Link>
