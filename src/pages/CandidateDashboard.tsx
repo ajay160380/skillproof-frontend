@@ -704,14 +704,14 @@ const tabVariants = {
                 
                 {allBadges.length === 0 && (
                   <div className="max-w-5xl mx-auto px-8 mb-8">
-                    <div className="bg-verification/10 border border-verification/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-md">
                       <div>
-                        <h3 className="font-serif text-xl font-bold text-ink mb-1">Resume Analyzed! 🎯</h3>
-                        <p className="font-mono text-[10px] text-data uppercase tracking-widest">Take AI-proctored assessments to earn verified badges and start ranking.</p>
+                        <h3 className="text-xl font-bold text-white mb-1">Resume Analyzed! 🎯</h3>
+                        <p className="font-mono text-xs text-emerald-300/80 uppercase tracking-widest">Take AI-proctored assessments to earn verified badges and start ranking.</p>
                       </div>
                       <button 
                         onClick={() => setActiveTab('Certificates')}
-                        className="shrink-0 bg-ink text-white font-mono text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-ink/90 transition-transform hover:scale-105 shadow-md"
+                        className="shrink-0 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-mono text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-xl transition-transform hover:scale-105 shadow-lg shadow-emerald-500/20"
                       >
                         Take First Assessment
                       </button>

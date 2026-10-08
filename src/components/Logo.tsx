@@ -50,7 +50,7 @@ export function Logo({ className = '', size = 'md', theme = 'dark' }: LogoProps)
         {/* Central dot indicating precision/data */}
         <circle cx="12" cy="12" r="2" fill="var(--color-vellum)" />
       </motion.svg>
-      <span className={`font-serif tracking-tight ${textSizes[size]} ${textColor} select-none`}>
+      <span className={`font-sans font-extrabold tracking-tight ${textSizes[size]} ${textColor} select-none`}>
         SkillProof
       </span>
     </div>

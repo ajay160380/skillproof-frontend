@@ -17,9 +17,9 @@
   --color-brand-secondary: #8B5CF6;
   --color-brand-tertiary: #EC4899;
 
-  --font-sans: "Inter", "Public Sans", sans-serif;
-  --font-serif: "DM Serif Display", serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
 }
 
 /* Reset and Base Styles */
@@ -40,8 +40,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: var(--font-sans);
+  letter-spacing: -0.025em;
+  font-weight: 700;
 }
 
 code, pre, .font-mono {
