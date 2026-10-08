@@ -85,15 +85,15 @@ export function PostJob() {
 
   return (
     <div className="flex-1 bg-vellum flex flex-col md:flex-row">
-      <div className="w-full md:w-1/3 bg-ink text-vellum p-8 md:p-12 flex flex-col justify-center relative overflow-hidden min-h-[40vh] md:min-h-0">
+      <div className="w-full md:w-1/3 bg-[#0A0A0B] text-vellum p-8 md:p-12 flex flex-col justify-center relative overflow-hidden min-h-[40vh] md:min-h-0">
         <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4=')]" />
         
         <div className="relative z-10">
           <p className="font-mono text-xs uppercase tracking-widest text-verification mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 bg-verification rounded-full" />
+            <span className="w-2 h-2 hidden rounded-full" />
             Recruiter Portal
           </p>
-          <h1 className="font-serif text-5xl mb-6">Post a Role</h1>
+          <h1 className="font-sans tracking-tight text-5xl mb-6">Post a Role</h1>
           <p className="text-vellum/70 font-light leading-relaxed">
             Create a targeted job listing. Candidates will need to complete the specific AI-proctored skill tests you select to prove their fit for the role.
           </p>
@@ -105,7 +105,7 @@ export function PostJob() {
           <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-ink/70 mb-2">Role Title</label>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70 mb-2">Role Title</label>
                 <input
                   type="text"
                   required
@@ -116,7 +116,7 @@ export function PostJob() {
                 />
               </div>
               <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-ink/70 mb-2">Company Name</label>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70 mb-2">Company Name</label>
                 <input
                   type="text"
                   required
@@ -130,12 +130,12 @@ export function PostJob() {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block font-mono text-xs uppercase tracking-widest text-ink/70">Job Description</label>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70">Job Description</label>
                 <button
                   type="button"
                   onClick={generateAIDescription}
                   disabled={isGenerating || !roleTitle}
-                  className="font-mono text-xs flex items-center gap-1 text-verification hover:text-ink transition-colors disabled:opacity-50"
+                  className="font-mono text-xs flex items-center gap-1 text-verification hover:text-[#0A0A0B] transition-colors disabled:opacity-50"
                 >
                   <span className="text-sm">✨</span>
                   {isGenerating ? 'Generating...' : 'Generate with AI'}
@@ -153,7 +153,7 @@ export function PostJob() {
 
             <div className="pt-4 border-t border-structure/20">
               <div className="flex justify-between items-center mb-4">
-                <label className="block font-mono text-xs uppercase tracking-widest text-ink/70">
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70">
                   Required Skill Assessments
                 </label>
                 <input
@@ -179,17 +179,17 @@ export function PostJob() {
                       onClick={() => toggleTest(test.id)}
                       className={`text-left px-4 py-3 border transition-all ${
                         isSelected 
-                          ? 'bg-verification/10 border-verification shadow-sm' 
+                          ? 'hidden/10 border-verification shadow-sm' 
                           : 'bg-white border-structure/20 hover:border-verification/50'
                       }`}
                     >
                       <div className="flex justify-between items-center">
-                        <span className="font-serif text-ink">{test.title}</span>
-                        <div className={`w-4 h-4 border flex items-center justify-center ${isSelected ? 'bg-verification border-verification' : 'border-structure/30'}`}>
+                        <span className="font-sans tracking-tight text-[#0A0A0B]">{test.title}</span>
+                        <div className={`w-4 h-4 border flex items-center justify-center ${isSelected ? 'hidden border-verification' : 'border-structure/30'}`}>
                           {isSelected && <span className="text-white text-[10px]">✓</span>}
                         </div>
                       </div>
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-ink/50 mt-1 block">
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0B]/50 mt-1 block">
                         {test.category.name}
                       </span>
                     </button>
@@ -200,7 +200,7 @@ export function PostJob() {
 
             <button
               type="submit"
-              className="w-full bg-ink text-vellum py-4 font-mono text-sm uppercase tracking-[0.2em] hover:bg-verification transition-all active:scale-[0.98] mt-8"
+              className="w-full bg-[#0A0A0B] text-vellum py-4 font-mono text-sm uppercase tracking-[0.2em] hover:hidden transition-all active:scale-[0.98] mt-8"
             >
               Publish Job Listing
             </button>

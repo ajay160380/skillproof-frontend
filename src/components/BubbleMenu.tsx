@@ -230,7 +230,7 @@ export function BubbleMenu({
             'inline-flex items-center justify-center',
             'rounded-full',
             'bg-white',
-            'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
+            '',
             'pointer-events-auto',
             'h-12 md:h-14',
             'px-4 md:px-8',
@@ -268,7 +268,7 @@ export function BubbleMenu({
             'inline-flex flex-col items-center justify-center',
             'rounded-full',
             'bg-white',
-            'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
+            '',
             'pointer-events-auto',
             'w-12 h-12 md:w-14 md:h-14',
             'border-0 cursor-pointer p-0',
@@ -311,7 +311,7 @@ export function BubbleMenu({
             'pointer-events-auto',
             'z-[1000]',
             'bg-white/80',
-            'backdrop-blur-xl'
+            ''
           ].join(' ')}
           aria-hidden={!isMenuOpen}
         >
@@ -358,7 +358,7 @@ export function BubbleMenu({
                     'no-underline',
                     'bg-white',
                     'text-inherit',
-                    'shadow-[0_4px_24px_rgba(0,0,0,0.15)]',
+                    '',
                     'flex items-center justify-center',
                     'relative',
                     'transition-[background,color] duration-300 ease-in-out',
@@ -378,7 +378,7 @@ export function BubbleMenu({
                       padding: 'clamp(1.5rem, 3vw, 8rem) 0',
                       fontSize: 'clamp(1.5rem, 4vw, 4rem)',
                       fontWeight: 700,
-                      fontFamily: 'var(--font-serif)',
+                      fontFamily: 'var(--font-sans tracking-tight)',
                       lineHeight: 1,
                       willChange: 'transform',
                     } as CSSProperties

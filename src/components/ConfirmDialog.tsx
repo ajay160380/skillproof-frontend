@@ -52,7 +52,7 @@ export function ConfirmDialog({
           onClick={onCancel}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/60 " />
           
           {/* Dialog */}
           <motion.div
@@ -61,17 +61,17 @@ export function ConfirmDialog({
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md bg-[#1e293b] border border-white/10 rounded-2xl p-6 shadow-2xl"
+            className="relative w-full max-w-md bg-[#1e293b] border border-[#2A2A2D] rounded-2xl p-6 "
           >
             <div className="text-2xl mb-2">{styles.icon}</div>
-            <h3 className="font-serif text-xl text-white mb-2">{title}</h3>
-            <p className="text-sm text-white/60 leading-relaxed mb-6">{message}</p>
+            <h3 className="font-sans tracking-tight text-xl text-white mb-2">{title}</h3>
+            <p className="text-sm text-[#A0A0A3] leading-relaxed mb-6">{message}</p>
             
             <div className="flex gap-3 justify-end">
               <button
                 onClick={onCancel}
                 disabled={isLoading}
-                className="px-4 py-2 text-sm font-mono uppercase tracking-wider text-white/70 hover:text-white border border-white/10 hover:border-white/20 rounded-lg transition-all"
+                className="px-4 py-2 text-sm font-mono uppercase tracking-wider text-[#D4D4D8] hover:text-white border border-[#2A2A2D] hover:border-[#3A3A3D] rounded-lg transition-all"
               >
                 {cancelLabel}
               </button>

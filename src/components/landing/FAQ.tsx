@@ -36,7 +36,7 @@ export function FAQ() {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <h2 className="font-serif text-4xl mb-4">Frequently Asked Questions</h2>
+          <h2 className="font-sans tracking-tight text-4xl mb-4">Frequently Asked Questions</h2>
           <p className="font-mono text-xs text-data uppercase tracking-widest">
             Radical transparency is our core principle.
           </p>
@@ -56,7 +56,7 @@ export function FAQ() {
                 onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
                 className="w-full text-left py-6 flex justify-between items-center group focus:outline-none"
               >
-                <span className="font-serif text-xl group-hover:text-verification transition-colors">
+                <span className="font-sans tracking-tight text-xl group-hover:text-verification transition-colors">
                   {faq.q}
                 </span>
                 <span className="font-mono text-xl text-data ml-4">

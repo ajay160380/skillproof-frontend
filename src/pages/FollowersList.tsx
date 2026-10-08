@@ -35,21 +35,21 @@ export function FollowersList() {
 
   return (
     <div className="flex-1 bg-vellum bg-mesh">
-      <div className="relative overflow-hidden bg-ink text-white mb-8 border-b-4 border-verification">
+      <div className="relative overflow-hidden bg-[#0A0A0B] text-white mb-8 border-b-4 border-verification">
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px)`,
         }} />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-verification opacity-20 blur-3xl rounded-full" />
+        <div className="absolute top-0 right-0 w-96 h-96 hidden opacity-20 blur-3xl rounded-full" />
         
         <div className="relative max-w-4xl mx-auto px-8 py-16">
           <p className="font-mono text-[10px] text-verification uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-verification rounded-full" />
+            <span className="w-1.5 h-1.5 hidden rounded-full" />
             NETWORK ACTIVITY
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl mb-4 font-light tracking-tight">
+          <h1 className="font-sans tracking-tight text-5xl md:text-6xl mb-4 font-light tracking-tight">
             Network Followers
           </h1>
-          <p className="text-white/60 text-sm md:text-base font-light max-w-lg leading-relaxed">
+          <p className="text-[#A0A0A3] text-sm md:text-base font-light max-w-lg leading-relaxed">
             Recruiters actively tracking your verified skill profile.
           </p>
         </div>
@@ -62,7 +62,7 @@ export function FollowersList() {
           <div className="bg-white border border-structure/20 shadow-sm rounded-lg overflow-hidden animate-fade-in-up">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-ink text-white font-mono text-[10px] uppercase tracking-widest border-b border-structure/10">
+                <tr className="bg-[#0A0A0B] text-white font-mono text-[10px] uppercase tracking-widest border-b border-structure/10">
                   <th className="px-6 py-4">Recruiter</th>
                   <th className="px-6 py-4">Company</th>
                   <th className="px-6 py-4 text-right">Following Since</th>
@@ -77,16 +77,16 @@ export function FollowersList() {
                           {follower.avatar_url ? (
                             <img src={follower.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="font-serif text-ink">{follower.recruiter_name.charAt(0)}</span>
+                            <span className="font-sans tracking-tight text-[#0A0A0B]">{follower.recruiter_name.charAt(0)}</span>
                           )}
                         </div>
-                        <span className="font-serif text-lg text-ink font-semibold">
+                        <span className="font-sans tracking-tight text-lg text-[#0A0A0B] font-semibold">
                           {follower.recruiter_name}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <span className="font-mono text-xs uppercase tracking-widest text-ink/70">
+                      <span className="font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70">
                         {follower.company_name}
                       </span>
                     </td>

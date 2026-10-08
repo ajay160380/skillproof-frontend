@@ -40,7 +40,7 @@ export function Testimonials() {
               <div className="absolute top-0 right-0 p-4 opacity-50">
                 <BadgeIcon level={t.badge as any} size={32} />
               </div>
-              <p className="font-serif text-lg leading-relaxed mb-8 pr-8 text-ink/90 flex-1">
+              <p className="font-sans tracking-tight text-lg leading-relaxed mb-8 pr-8 text-[#0A0A0B]/90 flex-1">
                 "{t.quote}"
               </p>
               <div className="border-t border-structure pt-4 mt-auto">

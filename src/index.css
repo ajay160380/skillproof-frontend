@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  /* Premium Light Mode Palette */
-  --color-vellum: #F8FAFC; /* Slate-50 for background to make white cards pop */
-  --color-ink: #0F172A; /* Deep slate for crisp readable text */
-  --color-verification: #10B981; /* Vibrant Emerald for success */
-  --color-seal: #F43F5E; /* Vibrant Rose for alerts */
-  --color-data: #64748B; /* Slate gray for secondary text */
-  --color-structure: #E2E8F0; /* Soft borders */
-  --color-platinum: #FFFFFF; /* Pure white for cards */
+  /* Vercel/Linear Dark Mode Palette */
+  --color-vellum: #FFFFFF;
+  --color-ink: #0A0A0B; /* Deep dark background */
+  --color-verification: #E8E8EA; /* Neutral bright for actions */
+  --color-seal: #EF4444; /* Error */
+  --color-data: #A0A0A3; /* Secondary text */
+  --color-structure: #1E1E21; /* Borders */
+  --color-platinum: #141415; /* Cards background */
   --color-gold: #F59E0B;
   --color-silver: #94A3B8;
   --color-bronze: #D97706;
 
-  --color-brand-primary: #3B82F6;
-  --color-brand-secondary: #8B5CF6;
-  --color-brand-tertiary: #EC4899;
+  --color-brand-primary: #FFFFFF;
+  --color-brand-secondary: #D4D4D8;
+  --color-brand-tertiary: #A0A0A3;
 
-  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
 }
 
@@ -32,11 +32,6 @@ body {
   color: #ffffff;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  /* Premium subtle background gradient for dark mode */
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.06), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.06), transparent 25%);
-  background-attachment: fixed;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -49,15 +44,12 @@ code, pre, .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Glassmorphism Utilities — Dark Mode First */
+/* Utilities — Linear/Vercel Style */
 .glass-panel {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.6));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: var(--color-platinum);
+  border: 1px solid var(--color-structure);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
-
 /* Light variant — for landing page sections with light backgrounds */
 .glass-panel-light {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
@@ -68,17 +60,16 @@ code, pre, .font-mono {
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: var(--color-vellum);
+  color: var(--color-ink);
+  border: 1px solid var(--color-vellum);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease-in-out;
+  font-weight: 500;
 }
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  transform: translateY(-1px);
+  background: #E8E8EA;
+  border-color: #E8E8EA;
 }
 
 /* 1px Structural Borders */

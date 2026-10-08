@@ -46,7 +46,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({ profileUrl, profileName })
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-white/80 text-ink font-mono text-xs font-bold uppercase tracking-widest px-4 py-3.5 rounded-xl hover:bg-white transition-all shadow-md hover:shadow-lg border border-structure/30 flex items-center justify-center gap-2"
+        className="bg-white/80 text-[#0A0A0B] font-mono text-xs font-bold uppercase tracking-widest px-4 py-3.5 rounded-xl hover:bg-white transition-all shadow-md hover:shadow-lg border border-structure/30 flex items-center justify-center gap-2"
         title="Share Profile"
       >
         <Share2 size={16} />
@@ -74,7 +74,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({ profileUrl, profileName })
                     handleCopyLink();
                     setIsOpen(false);
                   }}
-                  className="flex items-center gap-3 w-full px-3 py-2 text-sm font-serif text-ink hover:bg-structure/10 rounded-lg transition-colors"
+                  className="flex items-center gap-3 w-full px-3 py-2 text-sm font-sans tracking-tight text-[#0A0A0B] hover:bg-structure/10 rounded-lg transition-colors"
                 >
                   {copied ? <Check size={16} className="text-verification" /> : <LinkIcon size={16} className="text-data" />}
                   {copied ? 'Copied!' : 'Copy Public Link'}
@@ -84,7 +84,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({ profileUrl, profileName })
                     handleShareLinkedin();
                     setIsOpen(false);
                   }}
-                  className="flex items-center gap-3 w-full px-3 py-2 text-sm font-serif text-ink hover:bg-[#0077b5]/10 hover:text-[#0077b5] rounded-lg transition-colors"
+                  className="flex items-center gap-3 w-full px-3 py-2 text-sm font-sans tracking-tight text-[#0A0A0B] hover:bg-[#0077b5]/10 hover:text-[#0077b5] rounded-lg transition-colors"
                 >
                   <LinkedinIcon size={16} />
                   Share to LinkedIn
@@ -94,7 +94,7 @@ export const ShareMenu: React.FC<ShareMenuProps> = ({ profileUrl, profileName })
                     handleShareTwitter();
                     setIsOpen(false);
                   }}
-                  className="flex items-center gap-3 w-full px-3 py-2 text-sm font-serif text-ink hover:bg-[#1DA1F2]/10 hover:text-[#1DA1F2] rounded-lg transition-colors"
+                  className="flex items-center gap-3 w-full px-3 py-2 text-sm font-sans tracking-tight text-[#0A0A0B] hover:bg-[#1DA1F2]/10 hover:text-[#1DA1F2] rounded-lg transition-colors"
                 >
                   <TwitterIcon size={16} />
                   Share to Twitter

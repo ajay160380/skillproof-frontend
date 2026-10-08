@@ -39,17 +39,17 @@ export function SearchInput({
           }
         }}
         placeholder={placeholder}
-        className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/20 transition-all"
+        className="w-full pl-10 pr-10 py-2.5 bg-[#141415] border border-[#2A2A2D] rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/20 transition-all"
       />
       
       {/* Loading spinner or clear button */}
       <div className="absolute right-3 top-1/2 -translate-y-1/2">
         {isLoading ? (
-          <div className="w-4 h-4 border-2 border-white/20 border-t-brand-primary rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-[#3A3A3D] border-t-brand-primary rounded-full animate-spin" />
         ) : value ? (
           <button
             onClick={() => onChange('')}
-            className="text-white/30 hover:text-white/60 transition-colors"
+            className="text-white/30 hover:text-[#A0A0A3] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

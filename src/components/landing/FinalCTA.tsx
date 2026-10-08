@@ -5,7 +5,7 @@ import { BadgeIcon } from '../BadgeIcon';
 
 export function FinalCTA() {
   return (
-    <section className="bg-ink text-vellum border-b border-structure py-24 px-8 overflow-hidden relative">
+    <section className="bg-[#0A0A0B] text-vellum border-b border-structure py-24 px-8 overflow-hidden relative">
       <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'linear-gradient(var(--color-structure) 1px, transparent 1px), linear-gradient(90deg, var(--color-structure) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
       
       <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
@@ -16,7 +16,7 @@ export function FinalCTA() {
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <BadgeIcon level="platinum" size={80} className="text-vellum drop-shadow-2xl" />
+          <BadgeIcon level="platinum" size={80} className="text-vellum drop-" />
         </motion.div>
         
         <motion.h2 
@@ -24,7 +24,7 @@ export function FinalCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="font-serif text-5xl md:text-6xl mb-6 leading-tight"
+          className="font-sans tracking-tight text-5xl md:text-6xl mb-6 leading-tight"
         >
           The end of resume fiction.
         </motion.h2>
@@ -48,7 +48,7 @@ export function FinalCTA() {
         >
           <Link 
             to="/register" 
-            className="bg-vellum text-ink px-8 py-4 text-center font-medium hover:bg-verification hover:text-vellum transition-colors min-w-[200px] rounded-md shadow-lg shadow-black/20"
+            className="bg-vellum text-[#0A0A0B] px-8 py-4 text-center font-medium hover:hidden hover:text-vellum transition-colors min-w-[200px] rounded-md shadow-lg shadow-black/20"
           >
             Start Verification
           </Link>

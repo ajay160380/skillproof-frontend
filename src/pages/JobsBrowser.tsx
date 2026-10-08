@@ -50,11 +50,11 @@ export function JobsBrowser() {
       className="flex-1 bg-mesh min-h-screen"
     >
       {/* Hero Banner */}
-      <div className="relative overflow-hidden bg-ink text-white mb-8 border-b-4 border-verification">
+      <div className="relative overflow-hidden bg-[#0A0A0B] text-white mb-8 border-b-4 border-verification">
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px)`,
         }} />
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-verification opacity-20 blur-3xl rounded-full" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 hidden opacity-20 blur-3xl rounded-full" />
         
         <div className="relative max-w-6xl mx-auto px-8 py-16">
           <motion.p 
@@ -63,14 +63,14 @@ export function JobsBrowser() {
             transition={{ delay: 0.1 }}
             className="font-mono text-[10px] text-verification uppercase tracking-[0.4em] mb-4 flex items-center gap-2"
           >
-            <span className="w-1.5 h-1.5 bg-verification rounded-full animate-pulse" />
+            <span className="w-1.5 h-1.5 hidden rounded-full animate-pulse" />
             OPPORTUNITY NETWORK
           </motion.p>
           <motion.h1 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="font-serif text-5xl md:text-6xl mb-4 font-light tracking-tight"
+            className="font-sans tracking-tight text-5xl md:text-6xl mb-4 font-light tracking-tight"
           >
             Targeted Roles
           </motion.h1>
@@ -78,7 +78,7 @@ export function JobsBrowser() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-white/60 text-sm md:text-base font-light max-w-lg leading-relaxed"
+            className="text-[#A0A0A3] text-sm md:text-base font-light max-w-lg leading-relaxed"
           >
             Browse roles from top companies and complete their specific required assessments to prove your fit.
           </motion.p>
@@ -125,11 +125,11 @@ export function JobsBrowser() {
               >
                 <div className="mb-6 flex-1">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-serif text-2xl text-ink leading-tight group-hover:text-verification transition-colors">
+                    <h3 className="font-sans tracking-tight text-2xl text-[#0A0A0B] leading-tight group-hover:text-verification transition-colors">
                       {job.role_title}
                     </h3>
                   </div>
-                  <p className="font-mono text-xs uppercase tracking-widest text-ink/60 mb-6 bg-white/50 px-3 py-1 rounded-full w-fit">
+                  <p className="font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/60 mb-6 bg-[#141415]0 px-3 py-1 rounded-full w-fit">
                     {job.company_name}
                   </p>
                   
@@ -137,7 +137,7 @@ export function JobsBrowser() {
                     <div className="text-[10px] font-mono text-data uppercase tracking-widest mb-1">Required Tests</div>
                     <div className="flex flex-wrap gap-2">
                       {job.required_tests.map(test => (
-                        <span key={test.id} className="px-2 py-1 bg-white/60 border border-structure/30 text-ink/70 font-mono text-[9px] uppercase tracking-widest rounded-md shadow-sm">
+                        <span key={test.id} className="px-2 py-1 bg-white/60 border border-structure/30 text-[#0A0A0B]/70 font-mono text-[9px] uppercase tracking-widest rounded-md shadow-sm">
                           {test.category.name}
                         </span>
                       ))}
@@ -147,7 +147,7 @@ export function JobsBrowser() {
                 
                 <Link
                   to={`/jobs/${job.id}`}
-                  className="w-full text-center px-4 py-4 bg-ink text-vellum font-mono text-xs uppercase tracking-widest hover:bg-gray-800 transition-all rounded-xl shadow-md mt-4"
+                  className="w-full text-center px-4 py-4 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:bg-gray-800 transition-all rounded-xl shadow-md mt-4"
                 >
                   View Details
                 </Link>

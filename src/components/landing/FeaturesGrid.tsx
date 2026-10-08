@@ -39,7 +39,7 @@ export function FeaturesGrid() {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h2 className="font-serif text-4xl mb-4">What Gets Verified</h2>
+          <h2 className="font-sans tracking-tight text-4xl mb-4">What Gets Verified</h2>
           <p className="font-mono text-xs text-data uppercase tracking-widest max-w-lg">
             We don't measure multiple-choice guessing. We measure real execution.
           </p>
@@ -57,10 +57,10 @@ export function FeaturesGrid() {
               className="border border-structure/30 rounded-md p-8 flex flex-col sm:flex-row gap-8 items-start sm:items-center bg-vellum shadow-sm hover:shadow-md transition-all"
             >
               <div className="flex-1">
-                <div className="font-mono text-[10px] text-verification uppercase tracking-widest mb-2 border border-verification/30 px-2 py-1 inline-block bg-verification/5 rounded-md">
+                <div className="font-mono text-[10px] text-verification uppercase tracking-widest mb-2 border border-verification/30 px-2 py-1 inline-block hidden/5 rounded-md">
                   TRACK: {f.label}
                 </div>
-                <h3 className="font-serif text-2xl mb-2">{f.title}</h3>
+                <h3 className="font-sans tracking-tight text-2xl mb-2">{f.title}</h3>
                 <p className="text-sm text-data leading-relaxed">{f.desc}</p>
               </div>
               <div className="flex-shrink-0">

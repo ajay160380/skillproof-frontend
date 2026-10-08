@@ -20,7 +20,7 @@ export function ScoringExplanation() {
           <div className="font-mono text-xs uppercase tracking-widest text-data mb-4">
             Auditable AI Scoring
           </div>
-          <h2 className="font-serif text-4xl mb-6">How Scoring Actually Works</h2>
+          <h2 className="font-sans tracking-tight text-4xl mb-6">How Scoring Actually Works</h2>
           <p className="text-data leading-relaxed">
             We don't use secret algorithms. Our AI evaluates candidates using the exact same rubrics a senior engineer or hiring manager would use, and we show you the receipts.
           </p>
@@ -39,10 +39,10 @@ export function ScoringExplanation() {
                 transition={{ delay: idx * 0.2 }}
                 className="flex-1 flex flex-col items-center relative z-10 bg-vellum px-6 py-8"
               >
-                <div className="w-16 h-16 border-2 border-ink flex items-center justify-center font-serif text-2xl bg-vellum mb-6">
+                <div className="w-16 h-16 border-2 border-ink flex items-center justify-center font-sans tracking-tight text-2xl bg-vellum mb-6">
                   {idx + 1}
                 </div>
-                <h3 className="font-serif text-xl mb-3">{step.title}</h3>
+                <h3 className="font-sans tracking-tight text-xl mb-3">{step.title}</h3>
                 <p className="text-sm text-data">{step.desc}</p>
               </motion.div>
               

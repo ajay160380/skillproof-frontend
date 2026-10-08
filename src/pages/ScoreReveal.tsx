@@ -60,11 +60,11 @@ export function ScoreReveal() {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <div className="border border-seal/30 rounded-lg p-12 max-w-lg text-center">
-          <div className="font-serif text-3xl mb-4 text-seal">Verification Failed</div>
+          <div className="font-sans tracking-tight text-3xl mb-4 text-seal">Verification Failed</div>
           <p className="font-mono text-xs text-data mb-6">{error}</p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-ink text-vellum font-mono text-xs uppercase tracking-widest hover:bg-verification transition-colors rounded-md"
+            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-md"
           >
             Return to Dashboard
           </button>
@@ -77,11 +77,11 @@ export function ScoreReveal() {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <div className="border border-seal/30 rounded-lg p-12 max-w-lg text-center">
-          <div className="font-serif text-3xl mb-4 text-seal">Verification Failed</div>
+          <div className="font-sans tracking-tight text-3xl mb-4 text-seal">Verification Failed</div>
           <p className="font-mono text-xs text-data mb-6">The AI engine was unable to process your submission. Please try again.</p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-ink text-vellum font-mono text-xs uppercase tracking-widest hover:bg-verification transition-colors rounded-md"
+            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-md"
           >
             Return to Dashboard
           </button>
@@ -116,7 +116,7 @@ export function ScoreReveal() {
 
   return (
     <div className="flex-1 p-8 flex items-center justify-center bg-vellum">
-      <div className="max-w-2xl w-full border border-structure shadow-2xl shadow-ink/10 relative overflow-hidden bg-vellum rounded-lg">
+      <div className="max-w-2xl w-full border border-structure  shadow-ink/10 relative overflow-hidden bg-vellum rounded-lg">
         
         {/* Header */}
         <div className="p-8 border-b border-structure bg-structure/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -124,12 +124,12 @@ export function ScoreReveal() {
             <div className="font-mono text-[10px] text-data uppercase tracking-widest mb-1 flex items-center gap-2">
               Assessment Complete
               {cheatingFlags && (
-                <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${isHighSuspicion ? 'bg-red-500/10 text-red-500 border border-red-500/20' : isLowSuspicion ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'bg-verification/10 text-verification border border-verification/20'}`}>
+                <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${isHighSuspicion ? 'bg-red-500/10 text-red-500 border border-red-500/20' : isLowSuspicion ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'hidden/10 text-verification border border-verification/20'}`}>
                   {isHighSuspicion ? 'Integrity Flagged' : isLowSuspicion ? 'Integrity Reviewed' : 'Integrity Clean'}
                 </span>
               )}
             </div>
-            <h1 className="font-serif text-2xl">{attempt?.test?.title || 'Official AI Evaluation'}</h1>
+            <h1 className="font-sans tracking-tight text-2xl">{attempt?.test?.title || 'Official AI Evaluation'}</h1>
           </div>
           <div className="font-mono text-[10px] text-data text-left md:text-right">
             <div>ID: {id}</div>
@@ -158,7 +158,7 @@ export function ScoreReveal() {
                       {stampText}
                     </textPath>
                   </text>
-                  <text x="150" y="160" textAnchor="middle" className="font-serif text-[80px]" fill="currentColor">
+                  <text x="150" y="160" textAnchor="middle" className="font-sans tracking-tight text-[80px]" fill="currentColor">
                     {score?.overall_score}
                   </text>
                   <text x="150" y="195" textAnchor="middle" className="font-mono text-sm uppercase font-bold tracking-widest" fill="currentColor">
@@ -177,7 +177,7 @@ export function ScoreReveal() {
                   {Object.entries(score?.sub_scores || {}).map(([key, val]) => (
                     <div key={key} className="border border-structure p-4 rounded-md bg-white/40">
                       <div className="font-mono text-[10px] text-data uppercase tracking-widest mb-1">{key.replace(/_/g, ' ')}</div>
-                      <div className="font-serif text-2xl font-bold">
+                      <div className="font-sans tracking-tight text-2xl font-bold">
                         {revealPhase === 'stamped' ? val as number : <AnimatedCounter target={val as number} duration={3} />}
                       </div>
                     </div>
@@ -185,7 +185,7 @@ export function ScoreReveal() {
                 </div>
 
                 {/* AI Auditor Feedback & Proctor Audit Warning */}
-                <div className="border border-structure p-6 rounded-md bg-white/60 backdrop-blur-md">
+                <div className="border border-structure p-6 rounded-md bg-white/60 ">
                   <div className="font-mono text-[10px] text-data uppercase tracking-widest mb-3 border-b border-structure pb-2 font-bold flex items-center justify-between">
                     <span>AI Auditor Feedback & Audit Trail</span>
                     {score?.ai_feedback_text?.includes('PROCTOR') && (
@@ -195,7 +195,7 @@ export function ScoreReveal() {
                     )}
                   </div>
                   
-                  <div className="font-mono text-xs text-ink leading-relaxed space-y-3">
+                  <div className="font-mono text-xs text-[#0A0A0B] leading-relaxed space-y-3">
                     <p>{score?.ai_feedback_text}</p>
                   </div>
                 </div>
@@ -231,7 +231,7 @@ export function ScoreReveal() {
             >
               <Link 
                 to="/dashboard"
-                className="px-6 py-3 border border-structure text-ink font-mono text-xs uppercase tracking-widest hover:bg-structure/30 transition-colors rounded-md"
+                className="px-6 py-3 border border-structure text-[#0A0A0B] font-mono text-xs uppercase tracking-widest hover:bg-structure/30 transition-colors rounded-md"
               >
                 Return to Dossier
               </Link>

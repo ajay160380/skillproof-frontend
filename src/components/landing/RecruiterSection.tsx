@@ -5,7 +5,7 @@ import { BadgeIcon } from '../BadgeIcon';
 
 export function RecruiterSection() {
   return (
-    <section id="recruiters" className="bg-ink text-vellum relative overflow-hidden scroll-mt-20">
+    <section id="recruiters" className="bg-[#0A0A0B] text-vellum relative overflow-hidden scroll-mt-20">
       {/* Smooth transition from vellum (previous section) to ink */}
       <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-vellum to-transparent pointer-events-none z-20"></div>
       
@@ -22,7 +22,7 @@ export function RecruiterSection() {
           <div className="font-mono text-xs uppercase tracking-widest text-data mb-6">
             For Hiring Teams
           </div>
-          <h2 className="font-serif text-4xl lg:text-5xl mb-6">
+          <h2 className="font-sans tracking-tight text-4xl lg:text-5xl mb-6">
             Stop guessing.<br/>Start verifying.
           </h2>
           <p className="text-data/80 leading-relaxed mb-8 max-w-md">
@@ -31,7 +31,7 @@ export function RecruiterSection() {
           <div>
             <Link 
               to="/login"
-              className="inline-block bg-vellum text-ink px-8 py-4 font-medium hover:bg-structure transition-colors rounded-md shadow-lg shadow-black/20"
+              className="inline-block bg-vellum text-[#0A0A0B] px-8 py-4 font-medium hover:bg-structure transition-colors rounded-md shadow-lg shadow-black/20"
             >
               Explore as a Recruiter
             </Link>
@@ -46,10 +46,10 @@ export function RecruiterSection() {
           transition={{ delay: 0.2 }}
           className="flex-1 p-12 lg:p-20 flex items-center justify-center relative z-10"
         >
-          <div className="w-full max-w-md bg-vellum/5 border border-structure/30 backdrop-blur-sm p-6 shadow-2xl rounded-md">
+          <div className="w-full max-w-md bg-vellum/5 border border-structure/30  p-6  rounded-md">
             <div className="flex justify-between items-center mb-6 border-b border-structure/30 pb-4">
               <div className="font-mono text-xs text-vellum/70">MARKETPLACE QUERY</div>
-              <div className="text-xs px-2 py-1 bg-verification/20 text-verification font-mono uppercase rounded-md">Results: 142</div>
+              <div className="text-xs px-2 py-1 hidden/20 text-verification font-mono uppercase rounded-md">Results: 142</div>
             </div>
             
             <div className="space-y-4">
@@ -58,7 +58,7 @@ export function RecruiterSection() {
                 { id: 'usr_104', badges: ['silver'] },
                 { id: 'usr_773', badges: ['gold', 'gold', 'silver'] }
               ].map((row, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 border border-structure/30 bg-ink/50 hover:border-verification/50 transition-colors cursor-pointer group rounded-md">
+                <div key={idx} className="flex items-center justify-between p-4 border border-structure/30 bg-[#0A0A0B]/50 hover:border-verification/50 transition-colors cursor-pointer group rounded-md">
                   <div className="font-mono text-sm text-vellum/90 group-hover:text-verification transition-colors">
                     {row.id}
                   </div>

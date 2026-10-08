@@ -20,8 +20,8 @@ export function Layout() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans bg-ink text-white overflow-x-hidden ${isDashboardRoute ? 'h-screen overflow-hidden' : ''}`}>
-      {!isDashboardRoute && <div className="fixed inset-0 bg-mesh-dark pointer-events-none z-0"></div>}
+    <div className={`min-h-screen flex flex-col font-sans bg-[#0A0A0B] text-white overflow-x-hidden ${isDashboardRoute ? 'h-screen overflow-hidden' : ''}`}>
+      {!isDashboardRoute && <div className="fixed inset-0 hidden pointer-events-none z-0"></div>}
       
       {/* Interactive Bubble Menu Header */}
       {(!isDashboardRoute && !isLandingRoute && !isAuthRoute) && (
@@ -89,7 +89,7 @@ export function Layout() {
 
       {/* Expanded Structural Footer — only on public pages */}
       {!isAuthenticated && !isLoading && !isAuthRoute && (
-      <footer className="border-t border-structure/30 bg-ink relative z-20">
+      <footer className="border-t border-structure/30 bg-[#0A0A0B] relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 py-12 border-b border-structure/30">
           <div className="col-span-1 md:col-span-2">
             <Logo size="sm" className="mb-4" theme="light" />

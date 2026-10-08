@@ -48,7 +48,7 @@ export function PublicProfile() {
     <div className="flex-1 pt-6 w-full">
       {isRecruiter && (
         <div className="max-w-5xl mx-auto px-4 mb-4">
-          <Link to="/recruiter" className="font-mono text-[10px] uppercase font-bold tracking-widest text-data hover:text-ink transition-colors">
+          <Link to="/recruiter" className="font-mono text-[10px] uppercase font-bold tracking-widest text-data hover:text-[#0A0A0B] transition-colors">
             &larr; Back to Dashboard
           </Link>
         </div>

@@ -121,18 +121,18 @@ export function JobDetail() {
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, var(--color-structure) 40px, var(--color-structure) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, var(--color-structure) 40px, var(--color-structure) 41px)`,
         }} />
-        <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-verification opacity-10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] hidden opacity-10 blur-[120px] rounded-full pointer-events-none" />
         
         <div className="relative max-w-5xl mx-auto px-8 py-16">
-          <button onClick={() => navigate('/jobs')} className="font-mono text-xs uppercase tracking-widest text-data mb-8 hover:text-ink transition-colors flex items-center gap-2">
+          <button onClick={() => navigate('/jobs')} className="font-mono text-xs uppercase tracking-widest text-data mb-8 hover:text-[#0A0A0B] transition-colors flex items-center gap-2">
             <span className="text-lg leading-none">&larr;</span> Back to Jobs
           </button>
           
           <motion.div initial={{ y: 20 }} animate={{ y: 0 }} transition={{ delay: 0.1 }}>
-            <h1 className="font-serif text-5xl md:text-7xl mb-4 font-light tracking-tight text-ink">
+            <h1 className="font-sans tracking-tight text-5xl md:text-7xl mb-4 font-light tracking-tight text-[#0A0A0B]">
               {job.role_title}
             </h1>
-            <div className="inline-block px-4 py-1.5 bg-white rounded-full font-mono text-[12px] uppercase tracking-widest text-ink/80 mb-8 border border-structure/30 shadow-sm">
+            <div className="inline-block px-4 py-1.5 bg-white rounded-full font-mono text-[12px] uppercase tracking-widest text-[#0A0A0B]/80 mb-8 border border-structure/30 shadow-sm">
               {job.company_name}
             </div>
           </motion.div>
@@ -141,12 +141,12 @@ export function JobDetail() {
             {!isApplied ? (
               <button
                 onClick={handleApply}
-                className="bg-ink text-white px-8 py-4 rounded-xl font-mono text-sm uppercase tracking-widest font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                className="bg-[#0A0A0B] text-white px-8 py-4 rounded-xl font-mono text-sm uppercase tracking-widest font-bold shadow-xl hover: hover:-translate-y-1 transition-all duration-300"
               >
                 Start Verification Process
               </button>
             ) : (
-              <div className="inline-block px-6 py-3 border border-verification text-verification rounded-xl font-mono text-xs uppercase tracking-widest shadow-sm bg-verification/5">
+              <div className="inline-block px-6 py-3 border border-verification text-verification rounded-xl font-mono text-xs uppercase tracking-widest shadow-sm hidden/5">
                 Status: <span className="font-bold">{progress.status.replace('_', ' ')}</span>
               </div>
             )}
@@ -161,13 +161,13 @@ export function JobDetail() {
             className="md:col-span-2 glass-panel rounded-[2rem] p-10 border-structure/30 flex flex-col"
           >
             <div className="flex justify-between items-start mb-6">
-              <h3 className="font-serif text-3xl text-ink flex items-center gap-3">
+              <h3 className="font-sans tracking-tight text-3xl text-[#0A0A0B] flex items-center gap-3">
                 <span className="text-2xl">📋</span> About the Role
               </h3>
               <button
                 onClick={generatePrepGuide}
                 disabled={isGeneratingPrep}
-                className="font-mono text-xs flex items-center gap-2 text-verification bg-verification/10 px-4 py-2 rounded-xl hover:bg-verification hover:text-white transition-all disabled:opacity-50"
+                className="font-mono text-xs flex items-center gap-2 text-verification hidden/10 px-4 py-2 rounded-xl hover:hidden hover:text-white transition-all disabled:opacity-50"
               >
                 <span>✨</span>
                 {isGeneratingPrep ? 'Generating...' : 'AI Prep Guide'}
@@ -175,9 +175,9 @@ export function JobDetail() {
             </div>
             
             {prepGuide && (
-              <div className="mb-8 p-6 bg-verification/5 border border-verification/20 rounded-2xl">
+              <div className="mb-8 p-6 hidden/5 border border-verification/20 rounded-2xl">
                 <h4 className="font-mono text-[10px] uppercase tracking-widest text-verification font-bold mb-4">AI Interview Prep</h4>
-                <div className="text-sm text-ink/80 whitespace-pre-wrap leading-relaxed font-serif">
+                <div className="text-sm text-[#0A0A0B]/80 whitespace-pre-wrap leading-relaxed font-sans tracking-tight">
                   {prepGuide}
                 </div>
               </div>
@@ -192,19 +192,19 @@ export function JobDetail() {
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}
             className="md:col-span-1 glass-panel rounded-[2rem] p-8 border-structure/30"
           >
-            <h3 className="font-serif text-2xl text-ink mb-6 flex items-center gap-2">
+            <h3 className="font-sans tracking-tight text-2xl text-[#0A0A0B] mb-6 flex items-center gap-2">
               <span className="text-xl">🏢</span> Company
             </h3>
             {companyReqs ? (
               <>
                 {companyReqs.company_description && (
-                  <p className="text-sm text-ink/70 mb-8 leading-relaxed">{companyReqs.company_description}</p>
+                  <p className="text-sm text-[#0A0A0B]/70 mb-8 leading-relaxed">{companyReqs.company_description}</p>
                 )}
                 
                 {companyReqs.preferred_min_score && (
-                  <div className="mb-8 p-4 bg-white/50 rounded-xl border border-structure/20">
+                  <div className="mb-8 p-4 bg-[#141415]0 rounded-xl border border-structure/20">
                     <span className="block font-mono text-[10px] text-data uppercase tracking-widest mb-1">Target Score</span>
-                    <span className="font-serif text-4xl text-verification font-bold">{companyReqs.preferred_min_score}+</span>
+                    <span className="font-sans tracking-tight text-4xl text-verification font-bold">{companyReqs.preferred_min_score}+</span>
                   </div>
                 )}
                 
@@ -213,7 +213,7 @@ export function JobDetail() {
                     <span className="block font-mono text-[10px] text-data uppercase tracking-widest mb-3">Core Stack</span>
                     <div className="flex flex-wrap gap-2">
                       {companyReqs.required_skills.map(s => (
-                        <span key={s.id} className="font-mono text-[10px] px-3 py-1.5 bg-white border border-structure/30 text-ink uppercase tracking-widest rounded-lg shadow-sm">
+                        <span key={s.id} className="font-mono text-[10px] px-3 py-1.5 bg-white border border-structure/30 text-[#0A0A0B] uppercase tracking-widest rounded-lg shadow-sm">
                           {s.name}
                         </span>
                       ))}
@@ -230,15 +230,15 @@ export function JobDetail() {
         {isCompleted && progress.overall_fit_score !== null && (
           <motion.div 
             initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-            className="mb-12 p-10 bg-gradient-to-r from-verification/10 to-emerald-400/10 border-2 border-verification/50 rounded-[2rem] flex flex-col md:flex-row items-center gap-8 justify-between shadow-2xl relative overflow-hidden"
+            className="mb-12 p-10 bg-gradient-to-r from-verification/10 to-emerald-400/10 border-2 border-verification/50 rounded-[2rem] flex flex-col md:flex-row items-center gap-8 justify-between  relative overflow-hidden"
           >
-            <div className="absolute inset-0 bg-white/40 backdrop-blur-sm -z-10" />
+            <div className="absolute inset-0 bg-white/40  -z-10" />
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-verification/20 text-verification rounded-full font-mono text-[10px] uppercase tracking-[0.2em] mb-4 font-bold">
-                <span className="w-2 h-2 bg-verification rounded-full" /> Job Fit Summary
+              <div className="inline-flex items-center gap-2 px-3 py-1 hidden/20 text-verification rounded-full font-mono text-[10px] uppercase tracking-[0.2em] mb-4 font-bold">
+                <span className="w-2 h-2 hidden rounded-full" /> Job Fit Summary
               </div>
-              <h2 className="font-serif text-4xl md:text-5xl text-ink mb-4 font-bold">Requirements Met</h2>
-              <p className="text-base text-ink/70 max-w-md leading-relaxed">You have successfully verified all the required skills for this role. Your profile has been prioritized for the recruiter.</p>
+              <h2 className="font-sans tracking-tight text-4xl md:text-5xl text-[#0A0A0B] mb-4 font-bold">Requirements Met</h2>
+              <p className="text-base text-[#0A0A0B]/70 max-w-md leading-relaxed">You have successfully verified all the required skills for this role. Your profile has been prioritized for the recruiter.</p>
             </div>
             <div className="shrink-0 relative z-10">
               <ScoreRing percentage={progress.overall_fit_score} size={160} label="FIT SCORE" strokeWidth={4} />
@@ -248,10 +248,10 @@ export function JobDetail() {
 
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
           <div className="flex items-center justify-between mb-8 border-b border-structure/30 pb-4">
-            <h3 className="font-serif text-3xl text-ink">
+            <h3 className="font-sans tracking-tight text-3xl text-[#0A0A0B]">
               Action Plan
             </h3>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-data bg-white/50 px-3 py-1 rounded-full border border-structure/30">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-data bg-[#141415]0 px-3 py-1 rounded-full border border-structure/30">
               {completedTestIds.length} / {job.required_tests.length} Completed
             </span>
           </div>
@@ -263,12 +263,12 @@ export function JobDetail() {
                 <motion.div 
                   initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6 + (index * 0.1) }}
                   key={test.id} 
-                  className={`glass-panel border-structure/30 rounded-2xl p-8 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 transition-all duration-300 relative overflow-hidden group hover:shadow-lg ${isTestDone ? 'border-verification/30 bg-verification/5' : ''}`}
+                  className={`glass-panel border-structure/30 rounded-2xl p-8 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 transition-all duration-300 relative overflow-hidden group hover:shadow-lg ${isTestDone ? 'border-verification/30 hidden/5' : ''}`}
                 >
-                  {isTestDone && <div className="absolute left-0 top-0 bottom-0 w-1 bg-verification shadow-[0_0_10px_rgba(16,185,129,0.5)]" />}
+                  {isTestDone && <div className="absolute left-0 top-0 bottom-0 w-1 hidden " />}
                   
                   <div>
-                    <h4 className="font-serif text-2xl text-ink mb-1 group-hover:text-verification transition-colors">{test.title}</h4>
+                    <h4 className="font-sans tracking-tight text-2xl text-[#0A0A0B] mb-1 group-hover:text-verification transition-colors">{test.title}</h4>
                     <p className="font-mono text-[10px] uppercase tracking-widest text-data">
                       {test.category.name}
                     </p>
@@ -284,7 +284,7 @@ export function JobDetail() {
                       disabled={!isApplied}
                       className={`px-8 py-3 rounded-xl font-mono text-xs uppercase tracking-widest font-bold transition-all shadow-md ${
                         isApplied 
-                        ? 'bg-ink text-white hover:bg-gray-800 hover:-translate-y-1' 
+                        ? 'bg-[#0A0A0B] text-white hover:bg-gray-800 hover:-translate-y-1' 
                         : 'bg-structure/50 text-data cursor-not-allowed border border-structure/30'
                       }`}
                     >

@@ -124,20 +124,20 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
       )}
       
       {/* AI Proctor Active Ribbon */}
-      <div className="mb-6 px-4 py-2 bg-verification/10 border border-verification/30 rounded-full flex items-center gap-3">
-        <span className="w-2 h-2 rounded-full bg-verification animate-ping" />
+      <div className="mb-6 px-4 py-2 hidden/10 border border-verification/30 rounded-full flex items-center gap-3">
+        <span className="w-2 h-2 rounded-full hidden animate-ping" />
         <span className="font-mono text-xs uppercase font-bold text-verification tracking-wider">
           AI Proctor Active • Eye-Gaze & Speech Cadence Monitored
         </span>
       </div>
 
-      <h2 className="font-serif text-3xl md:text-4xl mb-3">Introduce Yourself</h2>
+      <h2 className="font-sans tracking-tight text-3xl md:text-4xl mb-3">Introduce Yourself</h2>
       <p className="font-mono text-xs text-data/80 max-w-lg mb-8 leading-relaxed">
         Provide a 1-minute oral response covering your background, your tech stack, and a complex technical problem you solved recently.
       </p>
 
       {/* Live Video Proctoring Viewport */}
-      <div className="relative w-full max-w-md aspect-video bg-black/90 rounded-2xl overflow-hidden border border-structure/40 shadow-2xl mb-8 flex items-center justify-center">
+      <div className="relative w-full max-w-md aspect-video bg-black/90 rounded-2xl overflow-hidden border border-structure/40  mb-8 flex items-center justify-center">
         <video 
           ref={videoRef} 
           autoPlay 
@@ -148,19 +148,19 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
         
         {/* Facial Bounding Grid Overlay (AI Visualizer) */}
         <div className="absolute inset-0 border border-verification/20 m-4 rounded-xl pointer-events-none flex flex-col justify-between p-3">
-          <div className="flex justify-between font-mono text-[9px] text-verification uppercase tracking-widest bg-black/40 backdrop-blur-xs px-2 py-1 rounded w-fit">
+          <div className="flex justify-between font-mono text-[9px] text-verification uppercase tracking-widest bg-black/40  px-2 py-1 rounded w-fit">
             <span>LIVE CAM • 30 FPS</span>
           </div>
           <div className="flex justify-between items-end font-mono text-[9px] text-verification uppercase tracking-widest">
-            <span className="bg-black/40 backdrop-blur-xs px-2 py-1 rounded">CADENCE ANALYZER: READY</span>
-            <span className="bg-black/40 backdrop-blur-xs px-2 py-1 rounded">EYE TRACK: CENTERED</span>
+            <span className="bg-black/40  px-2 py-1 rounded">CADENCE ANALYZER: READY</span>
+            <span className="bg-black/40  px-2 py-1 rounded">EYE TRACK: CENTERED</span>
           </div>
         </div>
 
         {prepCountdown !== null && (
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center text-white z-20">
+          <div className="absolute inset-0 bg-black/80  flex flex-col items-center justify-center text-white z-20">
             <span className="font-mono text-xs text-amber-400 uppercase tracking-widest mb-2">RAPID PREPARATION TIMER</span>
-            <span className="font-serif text-6xl font-bold text-verification">{prepCountdown}s</span>
+            <span className="font-sans tracking-tight text-6xl font-bold text-verification">{prepCountdown}s</span>
             <span className="font-mono text-[10px] text-data uppercase tracking-wider mt-3">Recording starts automatically</span>
           </div>
         )}
@@ -176,7 +176,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
             </span>
           </div>
         ) : audioBlob ? (
-          <div className="font-mono text-verification text-xs uppercase tracking-widest border border-verification/40 px-5 py-2 rounded-full bg-verification/10 font-bold">
+          <div className="font-mono text-verification text-xs uppercase tracking-widest border border-verification/40 px-5 py-2 rounded-full hidden/10 font-bold">
             ✓ Audio & Video Proctoring Captured
           </div>
         ) : null}
@@ -186,7 +186,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
         {!recording && !audioBlob && prepCountdown === null && (
           <button 
             onClick={handleStartProcess}
-            className="bg-verification text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-xl font-bold shadow-lg flex items-center gap-2"
+            className="hidden text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:hidden/90 transition-colors rounded-xl font-bold shadow-lg flex items-center gap-2"
           >
             <span>📹</span> Start Rapid Assessment
           </button>
@@ -212,7 +212,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
             </button>
             <button 
               onClick={handleSubmit}
-              className="bg-verification text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-xl font-bold shadow-lg"
+              className="hidden text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:hidden/90 transition-colors rounded-xl font-bold shadow-lg"
             >
               Submit for AI Verification
             </button>

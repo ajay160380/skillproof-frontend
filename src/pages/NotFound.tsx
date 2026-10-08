@@ -18,14 +18,14 @@ export function NotFound() {
           </svg>
         </div>
         
-        <h1 className="font-serif text-4xl mb-4">Document Not Found</h1>
+        <h1 className="font-sans tracking-tight text-4xl mb-4">Document Not Found</h1>
         <p className="font-mono text-sm text-data mb-8 uppercase tracking-widest border-y border-structure py-4">
           Error 404: The requested dossier could not be located in our verified records.
         </p>
         
         <Link 
           to="/" 
-          className="inline-block bg-ink text-vellum px-8 py-3 font-medium hover:bg-verification transition-colors rounded-md shadow-md"
+          className="inline-block bg-[#0A0A0B] text-vellum px-8 py-3 font-medium hover:hidden transition-colors rounded-md shadow-md"
         >
           Return to Registry
         </Link>

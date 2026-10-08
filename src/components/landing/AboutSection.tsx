@@ -10,13 +10,13 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="w-12 h-12 mx-auto border border-ink flex items-center justify-center mb-8 bg-ink text-vellum">
+          <div className="w-12 h-12 mx-auto border border-ink flex items-center justify-center mb-8 bg-[#0A0A0B] text-vellum">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2L22 12L12 22L2 12L12 2Z" fill="currentColor" />
             </svg>
           </div>
-          <h2 className="font-serif text-3xl mb-6">Why we built SkillProof</h2>
-          <div className="font-serif text-xl leading-relaxed text-ink/80 space-y-6">
+          <h2 className="font-sans tracking-tight text-3xl mb-6">Why we built SkillProof</h2>
+          <div className="font-sans tracking-tight text-xl leading-relaxed text-[#0A0A0B]/80 space-y-6">
             <p>
               We built SkillProof because the modern hiring process is broken. Resumes are filled with unverifiable claims, and take-home assignments are easily gamed or outsourced.
             </p>

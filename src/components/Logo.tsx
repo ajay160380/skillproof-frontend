@@ -21,7 +21,7 @@ export function Logo({ className = '', size = 'md', theme = 'dark' }: LogoProps)
   };
 
   const currentSize = iconSizes[size];
-  const textColor = theme === 'dark' ? 'text-ink' : 'text-vellum';
+  const textColor = theme === 'dark' ? 'text-[#0A0A0B]' : 'text-vellum';
 
   return (
     <div className={`flex items-center gap-2 group ${className}`}>

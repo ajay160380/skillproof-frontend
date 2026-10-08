@@ -50,9 +50,9 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
       <div className="w-full md:w-1/3 border-r border-structure/20 p-6 flex flex-col">
         <IntegrityNotice />
         {/* Proctoring Active Banner */}
-        <div className="mb-4 p-3 bg-verification/10 border border-verification/30 rounded-lg flex items-center justify-between">
+        <div className="mb-4 p-3 hidden/10 border border-verification/30 rounded-lg flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-verification animate-ping" />
+            <span className="w-2 h-2 rounded-full hidden animate-ping" />
             <span className="font-mono text-[10px] uppercase font-bold text-verification tracking-wider">
               AI Proctor Active
             </span>
@@ -63,10 +63,10 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
           </div>
         </div>
 
-        <h2 className="font-serif text-2xl mb-2">{title}</h2>
+        <h2 className="font-sans tracking-tight text-2xl mb-2">{title}</h2>
         {testData?.difficulty && (
           <span className={`inline-block w-fit font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full mb-4 ${
-            testData.difficulty === 'easy' ? 'bg-verification/20 text-verification' :
+            testData.difficulty === 'easy' ? 'hidden/20 text-verification' :
             testData.difficulty === 'hard' ? 'bg-seal/20 text-seal' : 'bg-amber-100 text-amber-700'
           }`}>
             {testData.difficulty} • {testData.duration_minutes}min
@@ -80,7 +80,7 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
           <div className="mb-6 space-y-3">
             <div className="font-mono text-[10px] text-data uppercase tracking-widest">Test Cases</div>
             {testCases.map((tc: any, i: number) => (
-              <div key={i} className="bg-ink/5 border border-structure/20 rounded-md p-3 font-mono text-xs">
+              <div key={i} className="bg-[#0A0A0B]/5 border border-structure/20 rounded-md p-3 font-mono text-xs">
                 <div><span className="text-data">Input:</span> {tc.input}</div>
                 <div><span className="text-data">Expected:</span> {tc.expected_output}</div>
               </div>
@@ -92,7 +92,7 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
           <button 
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full bg-verification text-vellum py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-md disabled:opacity-50 font-bold shadow-md"
+            className="w-full hidden text-vellum py-4 font-mono text-xs uppercase tracking-widest hover:hidden/90 transition-colors rounded-md disabled:opacity-50 font-bold shadow-md"
           >
             {submitting ? 'Verifying Sandbox Execution...' : 'Submit for AI Verification'}
           </button>

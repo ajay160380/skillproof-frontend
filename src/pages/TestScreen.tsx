@@ -128,9 +128,9 @@ export function TestScreen() {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <div className="border border-seal/30 rounded-lg p-8 max-w-md text-center">
-          <div className="font-serif text-2xl mb-3">Session Not Found</div>
+          <div className="font-sans tracking-tight text-2xl mb-3">Session Not Found</div>
           <p className="font-mono text-xs text-data mb-6">This test session does not exist or you do not have access to it.</p>
-          <button onClick={() => navigate('/dashboard')} className="px-6 py-3 bg-ink text-vellum font-mono text-xs uppercase tracking-widest hover:bg-verification transition-colors rounded-md">
+          <button onClick={() => navigate('/dashboard')} className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-md">
             Return to Dashboard
           </button>
         </div>
@@ -141,13 +141,13 @@ export function TestScreen() {
   const testType = attempt.test.test_type;
 
   return (
-    <div className="flex-1 flex flex-col bg-ink text-vellum">
+    <div className="flex-1 flex flex-col bg-[#0A0A0B] text-vellum">
       <header className="px-6 py-4 border-b border-structure/20 flex justify-between items-center">
         <div className="font-mono text-xs uppercase tracking-widest text-data">
           Active Session: <span className="text-vellum">{attempt.test.title}</span>
         </div>
         <div className="font-mono text-[10px] uppercase text-verification flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-verification animate-pulse"></div>
+          <div className="w-2 h-2 rounded-full hidden animate-pulse"></div>
           Recording & Proctoring Active
         </div>
       </header>
@@ -160,7 +160,7 @@ export function TestScreen() {
         onContextMenu={(e) => handleAntiCheatAction(e, 'Right-click')}
       >
         {submitting && (
-          <div className="absolute inset-0 bg-ink/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+          <div className="absolute inset-0 bg-[#0A0A0B]/80  z-50 flex flex-col items-center justify-center">
             <Loader text="Submitting securely, this may take a moment..." size="lg" />
           </div>
         )}

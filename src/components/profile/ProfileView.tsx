@@ -254,7 +254,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         return (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
             <div className="max-w-2xl mx-auto mt-8">
-              <h2 className="font-serif text-2xl font-bold text-ink mb-6">Recent Activity</h2>
+              <h2 className="font-sans tracking-tight text-2xl font-bold text-[#0A0A0B] mb-6">Recent Activity</h2>
               <FeedWidget authorId={profile.id} hidePostInput={!isOwnProfile} />
             </div>
           </motion.div>
@@ -268,13 +268,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {displayBadges.map((badge: any, idx: number) => (
-                      <div key={idx} className="group relative bg-white/5 backdrop-blur-3xl rounded-3xl p-6 border border-white/10 shadow-sm hover:border-white/20 hover:-translate-y-1 transition-all duration-500 flex flex-col items-center gap-4 overflow-hidden">
+                      <div key={idx} className="group relative bg-[#111113] rounded-3xl p-6 border border-[#2A2A2D] shadow-sm hover:border-[#3A3A3D] hover:-translate-y-1 transition-all duration-500 flex flex-col items-center gap-4 overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         <div className="relative z-10">
                           <BadgeIcon level={badge.badge_level as BadgeLevel} size={80} />
                         </div>
                         <div className="text-center relative z-10">
-                          <div className="font-serif font-bold text-white text-lg">{badge.skill_category?.name || 'Skill Badge'}</div>
+                          <div className="font-sans tracking-tight font-bold text-white text-lg">{badge.skill_category?.name || 'Skill Badge'}</div>
                           <div className="font-mono text-[10px] text-brand-primary font-bold uppercase tracking-widest mt-2 bg-brand-primary/10 py-1 px-3 rounded-full inline-block border border-brand-primary/20">
                             Score: {badge.overall_score}/100 • {badge.badge_level}
                           </div>
@@ -285,8 +285,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 );
               } else {
                 return (
-                  <div className="text-center py-16 bg-white/5 backdrop-blur-md rounded-3xl border border-dashed border-white/20">
-                    <p className="font-mono text-xs uppercase tracking-widest text-white/50">No verified skills yet.</p>
+                  <div className="text-center py-16 bg-[#111113] rounded-3xl border border-dashed border-[#3A3A3D]">
+                    <p className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3]">No verified skills yet.</p>
                   </div>
                 );
               }
@@ -297,7 +297,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         return (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="font-serif text-xl font-bold text-white">Portfolio Projects</h3>
+              <h3 className="font-sans tracking-tight text-xl font-bold text-white">Portfolio Projects</h3>
               {isOwnProfile && !isAddingProject && (
                 <button 
                   onClick={() => setIsAddingProject(true)}
@@ -314,28 +314,28 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   initial={{ opacity: 0, height: 0 }} 
                   animate={{ opacity: 1, height: 'auto' }} 
                   exit={{ opacity: 0, height: 0 }}
-                  className="mb-8 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 shadow-sm overflow-hidden"
+                  className="mb-8 bg-[#111113] border border-[#2A2A2D] rounded-3xl p-6 shadow-sm overflow-hidden"
                 >
-                  <h4 className="font-serif font-bold text-lg text-white mb-4">New Project</h4>
+                  <h4 className="font-sans tracking-tight font-bold text-lg text-white mb-4">New Project</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div className="md:col-span-2">
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Title</label>
-                      <input type="text" value={newProject.title || ''} onChange={e => setNewProject({...newProject, title: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 font-serif text-sm text-white focus:outline-none focus:border-brand-primary" />
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-1">Title</label>
+                      <input type="text" value={newProject.title || ''} onChange={e => setNewProject({...newProject, title: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-lg px-4 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-brand-primary" />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Description</label>
-                      <textarea value={newProject.description || ''} onChange={e => setNewProject({...newProject, description: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 font-serif text-sm text-white focus:outline-none focus:border-brand-primary min-h-[80px]" />
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-1">Description</label>
+                      <textarea value={newProject.description || ''} onChange={e => setNewProject({...newProject, description: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-lg px-4 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-brand-primary min-h-[80px]" />
                     </div>
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Live URL (Optional)</label>
-                      <input type="text" value={newProject.project_url || ''} onChange={e => setNewProject({...newProject, project_url: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 font-serif text-sm text-white focus:outline-none focus:border-brand-primary" />
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-1">Live URL (Optional)</label>
+                      <input type="text" value={newProject.project_url || ''} onChange={e => setNewProject({...newProject, project_url: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-lg px-4 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-brand-primary" />
                     </div>
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Repository URL (Optional)</label>
-                      <input type="text" value={newProject.repository_url || ''} onChange={e => setNewProject({...newProject, repository_url: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 font-serif text-sm text-white focus:outline-none focus:border-brand-primary" />
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-1">Repository URL (Optional)</label>
+                      <input type="text" value={newProject.repository_url || ''} onChange={e => setNewProject({...newProject, repository_url: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-lg px-4 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-brand-primary" />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Technologies Used</label>
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-1">Technologies Used</label>
                       <div className="flex gap-2">
                         <input 
                           type="text" 
@@ -349,7 +349,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                             }
                           }}
                           placeholder="e.g. React (Press Enter)" 
-                          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 font-serif text-sm text-white focus:outline-none focus:border-brand-primary" 
+                          className="w-full bg-[#141415] border border-[#2A2A2D] rounded-lg px-4 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-brand-primary" 
                         />
                         <button 
                           onClick={() => {
@@ -358,7 +358,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                               setTechInput('');
                             }
                           }}
-                          className="bg-white/10 text-white px-4 py-2 rounded-lg font-mono text-[10px] font-bold uppercase hover:bg-white/20 transition-colors"
+                          className="bg-[#1E1E21] text-white px-4 py-2 rounded-lg font-mono text-[10px] font-bold uppercase hover:bg-white/20 transition-colors"
                         >
                           Add
                         </button>
@@ -377,8 +377,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-white/10">
-                    <button onClick={() => setIsAddingProject(false)} className="px-6 py-2.5 font-mono text-[10px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-colors">Cancel</button>
+                  <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-[#2A2A2D]">
+                    <button onClick={() => setIsAddingProject(false)} className="px-6 py-2.5 font-mono text-[10px] uppercase tracking-widest font-bold text-[#A0A0A3] hover:text-white transition-colors">Cancel</button>
                     <button onClick={handleSaveProject} disabled={!newProject.title || !newProject.description} className="bg-brand-primary text-white font-mono text-[10px] uppercase tracking-widest font-bold px-6 py-2.5 rounded-lg hover:bg-brand-secondary transition-colors disabled:opacity-50">
                       Save Project
                     </button>
@@ -389,8 +389,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.length === 0 && !isAddingProject && (
-                <div className="md:col-span-2 text-center py-16 bg-white/5 backdrop-blur-md rounded-3xl border border-dashed border-white/20">
-                  <p className="font-mono text-xs uppercase tracking-widest text-white/50">No projects added yet.</p>
+                <div className="md:col-span-2 text-center py-16 bg-[#111113] rounded-3xl border border-dashed border-[#3A3A3D]">
+                  <p className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3]">No projects added yet.</p>
                 </div>
               )}
               {projects.map((proj) => (
@@ -398,30 +398,30 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   key={proj.id} 
-                  className="bg-white/5 backdrop-blur-3xl rounded-3xl p-6 border border-white/10 shadow-sm hover:border-brand-primary/50 transition-all duration-300 flex flex-col group relative"
+                  className="bg-[#111113] rounded-3xl p-6 border border-[#2A2A2D] shadow-sm hover:border-brand-primary/50 transition-all duration-300 flex flex-col group relative"
                 >
                   {isOwnProfile && (
                     <button 
                       onClick={() => handleDeleteProject(proj.id)}
-                      className="absolute top-4 right-4 text-white/50 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-4 right-4 text-[#A0A0A3] hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Trash2 size={16} />
                     </button>
                   )}
-                  <h4 className="font-serif font-bold text-xl text-white pr-6 group-hover:text-brand-primary transition-colors">{proj.title}</h4>
-                  <p className="font-serif text-sm text-white/70 mt-2 flex-1 whitespace-pre-wrap">{proj.description}</p>
+                  <h4 className="font-sans tracking-tight font-bold text-xl text-white pr-6 group-hover:text-brand-primary transition-colors">{proj.title}</h4>
+                  <p className="font-sans tracking-tight text-sm text-[#D4D4D8] mt-2 flex-1 whitespace-pre-wrap">{proj.description}</p>
                   
                   {proj.technologies_used?.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-4">
                       {proj.technologies_used.map((tech, idx) => (
-                        <span key={idx} className="bg-white/10 text-white font-mono text-[9px] px-2.5 py-1 rounded-lg uppercase tracking-wide font-bold">
+                        <span key={idx} className="bg-[#1E1E21] text-white font-mono text-[9px] px-2.5 py-1 rounded-lg uppercase tracking-wide font-bold">
                           {tech}
                         </span>
                       ))}
                     </div>
                   )}
 
-                  <div className="flex items-center gap-4 mt-6 pt-4 border-t border-white/10">
+                  <div className="flex items-center gap-4 mt-6 pt-4 border-t border-[#2A2A2D]">
                     {proj.project_url && (
                       <a href={proj.project_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest font-bold text-brand-primary hover:text-brand-primary/80 transition-colors">
                         <LinkIcon size={12} /> Live Demo
@@ -440,11 +440,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         );
       case 'about':
         return (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-8 shadow-sm">
-            <h3 className="font-serif text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <Users size={20} className="text-white/50" /> About Me
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 bg-[#111113] border border-[#2A2A2D] rounded-3xl p-8 shadow-sm">
+            <h3 className="font-sans tracking-tight text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Users size={20} className="text-[#A0A0A3]" /> About Me
             </h3>
-            <p className="font-serif text-white/90 whitespace-pre-wrap leading-relaxed text-lg">
+            <p className="font-sans tracking-tight text-white/90 whitespace-pre-wrap leading-relaxed text-lg">
               {profile.bio || 'No bio provided.'}
             </p>
           </motion.div>
@@ -452,15 +452,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       case 'followers':
         return (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {followers.length === 0 && <p className="font-mono text-xs uppercase tracking-widest text-white/50 p-4 col-span-full text-center">No followers yet.</p>}
+            {followers.length === 0 && <p className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3] p-4 col-span-full text-center">No followers yet.</p>}
             {followers.map(f => (
-              <div key={f.id} className="bg-white/5 backdrop-blur-3xl p-4 rounded-3xl border border-white/10 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow hover:border-brand-primary/50">
-                <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center font-serif font-bold text-white text-lg shadow-inner">
+              <div key={f.id} className="bg-[#111113] p-4 rounded-3xl border border-[#2A2A2D] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow hover:border-brand-primary/50">
+                <div className="w-12 h-12 rounded-full bg-[#1E1E21] border border-[#3A3A3D] flex items-center justify-center font-sans tracking-tight font-bold text-white text-lg shadow-inner">
                   {(f.follower_detail?.full_name || 'U')[0].toUpperCase()}
                 </div>
                 <div>
-                  <div className="font-serif font-bold text-white">{f.follower_detail?.full_name}</div>
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-white/50">{f.follower_detail?.company_name || 'Candidate'}</div>
+                  <div className="font-sans tracking-tight font-bold text-white">{f.follower_detail?.full_name}</div>
+                  <div className="font-mono text-[9px] uppercase tracking-widest text-[#A0A0A3]">{f.follower_detail?.company_name || 'Candidate'}</div>
                 </div>
               </div>
             ))}
@@ -469,15 +469,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       case 'following':
         return (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {following.length === 0 && <p className="font-mono text-xs uppercase tracking-widest text-white/50 p-4 col-span-full text-center">Not following anyone yet.</p>}
+            {following.length === 0 && <p className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3] p-4 col-span-full text-center">Not following anyone yet.</p>}
             {following.map(f => (
-              <div key={f.id} className="bg-white/5 backdrop-blur-3xl p-4 rounded-3xl border border-white/10 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow hover:border-brand-primary/50">
-                <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center font-serif font-bold text-white text-lg shadow-inner">
+              <div key={f.id} className="bg-[#111113] p-4 rounded-3xl border border-[#2A2A2D] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow hover:border-brand-primary/50">
+                <div className="w-12 h-12 rounded-full bg-[#1E1E21] border border-[#3A3A3D] flex items-center justify-center font-sans tracking-tight font-bold text-white text-lg shadow-inner">
                   {(f.following_detail?.full_name || 'U')[0].toUpperCase()}
                 </div>
                 <div>
-                  <div className="font-serif font-bold text-white">{f.following_detail?.full_name}</div>
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-white/50">{f.following_detail?.company_name || 'Candidate'}</div>
+                  <div className="font-sans tracking-tight font-bold text-white">{f.following_detail?.full_name}</div>
+                  <div className="font-mono text-[9px] uppercase tracking-widest text-[#A0A0A3]">{f.following_detail?.company_name || 'Candidate'}</div>
                 </div>
               </div>
             ))}
@@ -489,7 +489,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   return (
     <div className="max-w-6xl mx-auto pb-24 px-4 sm:px-6 lg:px-8">
       {/* Cover Banner with premium styling */}
-      <div className="relative w-full h-56 md:h-80 rounded-b-[3rem] bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-emerald-500/20 overflow-hidden group shadow-[0_8px_32px_-12px_rgba(0,0,0,0.15)]">
+      <div className="relative w-full h-56 md:h-80 rounded-b-[3rem] bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-emerald-500/20 overflow-hidden group ">
         <div className="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
         {/* Animated glowing orbs in banner when no cover */}
         {!coverFile && !profile.cover_image && (
@@ -510,7 +510,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <>
             <button 
               onClick={() => coverInputRef.current?.click()}
-              className="absolute top-6 right-6 bg-white/20 hover:bg-white/40 text-ink backdrop-blur-md p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 shadow-xl border border-white/30"
+              className="absolute top-6 right-6 bg-white/20 hover:bg-white/40 text-[#0A0A0B]  p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 shadow-xl border border-white/30"
               title="Change Cover"
             >
               <Code size={20} />
@@ -527,11 +527,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       </div>
 
       {/* Identity Block - Glassmorphism */}
-      <div className="relative px-6 md:px-12 pb-8 pt-8 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] mx-4 md:mx-10 -mt-24 shadow-sm mb-12">
+      <div className="relative px-6 md:px-12 pb-8 pt-8 bg-[#111113] border border-[#2A2A2D] rounded-[2.5rem] mx-4 md:mx-10 -mt-24 shadow-sm mb-12">
         <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
           {/* Avatar */}
           <div className="relative -mt-24 group z-10">
-            <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-8 border-black/40 backdrop-blur-3xl bg-white/5 flex items-center justify-center font-serif font-bold text-white text-6xl overflow-hidden shrink-0 shadow-xl ring-2 ring-white/10">
+            <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-8 border-black/40  bg-[#141415] flex items-center justify-center font-sans tracking-tight font-bold text-white text-6xl overflow-hidden shrink-0 shadow-xl ring-2 ring-white/10">
               {(profile.avatar_url || avatarFile) ? (
                 <img 
                   src={avatarFile ? URL.createObjectURL(avatarFile) : profile.avatar_url} 
@@ -562,36 +562,36 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </div>
 
           <div className="flex-1">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold text-white tracking-tight">{profile.full_name || profile.username || 'Candidate'}</h1>
-            <p className="font-serif text-xl md:text-2xl text-white/70 mt-2 font-medium">{profile.headline || profile.company_name || 'Add a headline'}</p>
+            <h1 className="font-sans tracking-tight text-4xl md:text-5xl font-bold text-white tracking-tight">{profile.full_name || profile.username || 'Candidate'}</h1>
+            <p className="font-sans tracking-tight text-xl md:text-2xl text-[#D4D4D8] mt-2 font-medium">{profile.headline || profile.company_name || 'Add a headline'}</p>
             
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-4">
               {profile.location && (
-                <span className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-white/50 font-bold">
+                <span className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-[#A0A0A3] font-bold">
                   <MapPin size={14} /> {profile.location}
                 </span>
               )}
               {profile.company_name && (
-                <span className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-white/50 font-bold">
+                <span className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-[#A0A0A3] font-bold">
                   <Briefcase size={14} /> {profile.company_name}
                 </span>
               )}
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-4 mt-5 pt-5 border-t border-white/10">
+            <div className="flex items-center gap-4 mt-5 pt-5 border-t border-[#2A2A2D]">
               {profile.github_url && (
-                <a href={profile.github_url} target="_blank" rel="noreferrer" className="text-white/50 hover:text-white transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10 shadow-sm border border-white/10">
+                <a href={profile.github_url} target="_blank" rel="noreferrer" className="text-[#A0A0A3] hover:text-white transition-colors p-2 bg-[#141415] rounded-full hover:bg-[#1E1E21] shadow-sm border border-[#2A2A2D]">
                   <GithubIcon size={18} />
                 </a>
               )}
               {profile.linkedin_url && (
-                <a href={profile.linkedin_url} target="_blank" rel="noreferrer" className="text-white/50 hover:text-[#0077b5] transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10 shadow-sm border border-white/10">
+                <a href={profile.linkedin_url} target="_blank" rel="noreferrer" className="text-[#A0A0A3] hover:text-[#0077b5] transition-colors p-2 bg-[#141415] rounded-full hover:bg-[#1E1E21] shadow-sm border border-[#2A2A2D]">
                   <LinkedinIcon size={18} />
                 </a>
               )}
               {profile.website_url && (
-                <a href={profile.website_url} target="_blank" rel="noreferrer" className="text-white/50 hover:text-brand-primary transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10 shadow-sm border border-white/10">
+                <a href={profile.website_url} target="_blank" rel="noreferrer" className="text-[#A0A0A3] hover:text-brand-primary transition-colors p-2 bg-[#141415] rounded-full hover:bg-[#1E1E21] shadow-sm border border-[#2A2A2D]">
                   <Globe size={18} />
                 </a>
               )}
@@ -606,7 +606,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     setEditData(profile);
                     setIsEditing(true);
                   }}
-                  className="flex-1 min-w-[130px] bg-white/10 text-white font-mono text-xs font-bold uppercase tracking-widest px-6 py-3.5 rounded-xl hover:bg-white/20 transition-all shadow-sm border border-white/20 flex items-center justify-center gap-2"
+                  className="flex-1 min-w-[130px] bg-[#1E1E21] text-white font-mono text-xs font-bold uppercase tracking-widest px-6 py-3.5 rounded-xl hover:bg-white/20 transition-all shadow-sm border border-[#3A3A3D] flex items-center justify-center gap-2"
                 >
                   Edit Profile
                 </button>
@@ -629,14 +629,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <button 
                   onClick={toggleFollow}
                   className={`flex-1 font-mono text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 ${
-                    isFollowing ? 'bg-white/10 text-white hover:bg-white/20 border border-white/20' : 'bg-brand-primary text-white hover:bg-brand-secondary border border-transparent'
+                    isFollowing ? 'bg-[#1E1E21] text-white hover:bg-white/20 border border-[#3A3A3D]' : 'bg-brand-primary text-white hover:bg-brand-secondary border border-transparent'
                   }`}
                 >
                   <UserPlus size={16} /> {isFollowing ? 'Following' : 'Follow'}
                 </button>
                 <button
                   onClick={handleMessage}
-                  className="w-[52px] h-[52px] flex-shrink-0 bg-white/10 text-white hover:bg-white/20 border border-white/20 font-mono text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm flex items-center justify-center"
+                  className="w-[52px] h-[52px] flex-shrink-0 bg-[#1E1E21] text-white hover:bg-white/20 border border-[#3A3A3D] font-mono text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm flex items-center justify-center"
                   title="Message"
                 >
                   💬
@@ -644,15 +644,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <ShareMenu profileUrl={`${window.location.origin}/profile/${profile.username || profile.id}`} profileName={profile.full_name || profile.username || 'Candidate'} />
               </div>
             )}
-            <div className="flex justify-between md:justify-center gap-6 px-4 py-2 bg-white/5 rounded-xl border border-white/10 mt-2">
+            <div className="flex justify-between md:justify-center gap-6 px-4 py-2 bg-[#141415] rounded-xl border border-[#2A2A2D] mt-2">
               <button onClick={() => setActiveTab('followers')} className="text-center group">
-                <div className="font-serif text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{followers.length}</div>
-                <div className="font-mono text-[9px] uppercase tracking-widest text-white/50">Followers</div>
+                <div className="font-sans tracking-tight text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{followers.length}</div>
+                <div className="font-mono text-[9px] uppercase tracking-widest text-[#A0A0A3]">Followers</div>
               </button>
-              <div className="w-px bg-white/10"></div>
+              <div className="w-px bg-[#1E1E21]"></div>
               <button onClick={() => setActiveTab('following')} className="text-center group">
-                <div className="font-serif text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{following.length}</div>
-                <div className="font-mono text-[9px] uppercase tracking-widest text-white/50">Following</div>
+                <div className="font-sans tracking-tight text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{following.length}</div>
+                <div className="font-mono text-[9px] uppercase tracking-widest text-[#A0A0A3]">Following</div>
               </button>
             </div>
           </div>
@@ -660,12 +660,12 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       </div>
 
       {/* Premium Tabs */}
-      <div className="flex items-center gap-2 mb-8 overflow-x-auto no-scrollbar p-1.5 bg-white/5 rounded-2xl backdrop-blur-3xl border border-white/10 w-max max-w-full">
+      <div className="flex items-center gap-2 mb-8 overflow-x-auto no-scrollbar p-1.5 bg-[#141415] rounded-2xl  border border-[#2A2A2D] w-max max-w-full">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`relative px-6 py-3 font-mono text-[10px] uppercase tracking-widest font-bold whitespace-nowrap transition-all rounded-xl z-10 ${activeTab === tab.id ? 'text-black' : 'text-white/70 hover:text-white'}`}
+            className={`relative px-6 py-3 font-mono text-[10px] uppercase tracking-widest font-bold whitespace-nowrap transition-all rounded-xl z-10 ${activeTab === tab.id ? 'text-black' : 'text-[#D4D4D8] hover:text-white'}`}
           >
             {activeTab === tab.id && (
               <motion.div
@@ -699,61 +699,61 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+              className="absolute inset-0 bg-black/60 "
               onClick={() => setIsEditing(false)}
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-[#0f0f11] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-white/10"
+              className="relative w-full max-w-2xl bg-[#0f0f11] rounded-[2rem]  overflow-hidden flex flex-col max-h-[90vh] border border-[#2A2A2D]"
             >
-              <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
-                <h3 className="font-serif text-2xl font-bold text-white">Edit Profile</h3>
-                <button onClick={() => setIsEditing(false)} className="text-white/50 hover:text-white text-xl p-2 rounded-full hover:bg-white/10 transition-colors">✕</button>
+              <div className="p-6 border-b border-[#2A2A2D] flex justify-between items-center bg-[#141415]">
+                <h3 className="font-sans tracking-tight text-2xl font-bold text-white">Edit Profile</h3>
+                <button onClick={() => setIsEditing(false)} className="text-[#A0A0A3] hover:text-white text-xl p-2 rounded-full hover:bg-[#1E1E21] transition-colors">✕</button>
               </div>
               <div className="p-8 overflow-y-auto space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold">Full Name</label>
-                    <input type="text" value={editData.full_name || ''} onChange={e => setEditData({...editData, full_name: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Full Name</label>
+                    <input type="text" value={editData.full_name || ''} onChange={e => setEditData({...editData, full_name: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div>
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold">Headline</label>
-                    <input type="text" value={editData.headline || ''} onChange={e => setEditData({...editData, headline: e.target.value})} placeholder="e.g. AI & Web Developer" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Headline</label>
+                    <input type="text" value={editData.headline || ''} onChange={e => setEditData({...editData, headline: e.target.value})} placeholder="e.g. AI & Web Developer" className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div>
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold">Location</label>
-                    <input type="text" value={editData.location || ''} onChange={e => setEditData({...editData, location: e.target.value})} placeholder="e.g. Mumbai, India" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Location</label>
+                    <input type="text" value={editData.location || ''} onChange={e => setEditData({...editData, location: e.target.value})} placeholder="e.g. Mumbai, India" className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold">Company / University</label>
-                    <input type="text" value={editData.company_name || ''} onChange={e => setEditData({...editData, company_name: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Company / University</label>
+                    <input type="text" value={editData.company_name || ''} onChange={e => setEditData({...editData, company_name: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold">About / Bio</label>
-                    <textarea value={editData.bio || ''} onChange={e => setEditData({...editData, bio: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors min-h-[120px]" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">About / Bio</label>
+                    <textarea value={editData.bio || ''} onChange={e => setEditData({...editData, bio: e.target.value})} className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors min-h-[120px]" />
                   </div>
                   
-                  <div className="md:col-span-2 pt-4 border-t border-white/10">
-                    <h4 className="font-serif font-bold text-lg text-white mb-4">Social Links</h4>
+                  <div className="md:col-span-2 pt-4 border-t border-[#2A2A2D]">
+                    <h4 className="font-sans tracking-tight font-bold text-lg text-white mb-4">Social Links</h4>
                   </div>
                   <div>
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold flex items-center gap-1.5"><GithubIcon size={12}/> GitHub URL</label>
-                    <input type="url" value={editData.github_url || ''} onChange={e => setEditData({...editData, github_url: e.target.value})} placeholder="https://github.com/..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold flex items-center gap-1.5"><GithubIcon size={12}/> GitHub URL</label>
+                    <input type="url" value={editData.github_url || ''} onChange={e => setEditData({...editData, github_url: e.target.value})} placeholder="https://github.com/..." className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div>
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold flex items-center gap-1.5"><LinkedinIcon size={12}/> LinkedIn URL</label>
-                    <input type="url" value={editData.linkedin_url || ''} onChange={e => setEditData({...editData, linkedin_url: e.target.value})} placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold flex items-center gap-1.5"><LinkedinIcon size={12}/> LinkedIn URL</label>
+                    <input type="url" value={editData.linkedin_url || ''} onChange={e => setEditData({...editData, linkedin_url: e.target.value})} placeholder="https://linkedin.com/in/..." className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-2 font-bold flex items-center gap-1.5"><Globe size={12}/> Personal Website</label>
-                    <input type="url" value={editData.website_url || ''} onChange={e => setEditData({...editData, website_url: e.target.value})} placeholder="https://..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-serif text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold flex items-center gap-1.5"><Globe size={12}/> Personal Website</label>
+                    <input type="url" value={editData.website_url || ''} onChange={e => setEditData({...editData, website_url: e.target.value})} placeholder="https://..." className="w-full bg-[#141415] border border-[#2A2A2D] rounded-xl px-4 py-3 font-sans tracking-tight text-base text-white focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                 </div>
               </div>
-              <div className="p-6 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-                <button onClick={() => setIsEditing(false)} className="px-6 py-3 font-mono text-[11px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-colors rounded-xl hover:bg-white/10">Cancel</button>
+              <div className="p-6 border-t border-[#2A2A2D] bg-[#141415] flex justify-end gap-4">
+                <button onClick={() => setIsEditing(false)} className="px-6 py-3 font-mono text-[11px] uppercase tracking-widest font-bold text-[#A0A0A3] hover:text-white transition-colors rounded-xl hover:bg-[#1E1E21]">Cancel</button>
                 <button onClick={handleEditSave} disabled={isSaving} className="bg-brand-primary text-white font-mono text-[11px] uppercase tracking-widest font-bold px-8 py-3 rounded-xl hover:bg-brand-secondary transition-all shadow-sm disabled:opacity-50">
                   {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>

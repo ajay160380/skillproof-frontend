@@ -22,22 +22,22 @@ export function PracticalTest({ testId, testData, onSubmit }: PracticalTestProps
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-vellum text-ink flex items-center justify-center p-8">
+    <div className="flex-1 overflow-auto bg-vellum text-[#0A0A0B] flex items-center justify-center p-8">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-2xl bg-white border border-structure p-8 rounded-xl shadow-lg"
       >
-        <h2 className="font-serif text-3xl mb-4 text-ink">{testData.title}</h2>
+        <h2 className="font-sans tracking-tight text-3xl mb-4 text-[#0A0A0B]">{testData.title}</h2>
         
         <div className="bg-structure/10 p-6 rounded-lg font-mono text-sm mb-8 whitespace-pre-wrap text-data/90 border border-structure/20">
-          <h3 className="uppercase tracking-widest text-ink font-bold mb-2">Instructions</h3>
+          <h3 className="uppercase tracking-widest text-[#0A0A0B] font-bold mb-2">Instructions</h3>
           {testData.instructions || "Please complete the project and submit the repository or portfolio URL below."}
         </div>
 
         {testData.problem_statement && (
-           <div className="bg-structure/5 p-6 rounded-lg font-mono text-sm mb-8 whitespace-pre-wrap text-ink border border-structure/20">
-             <h3 className="uppercase tracking-widest text-ink font-bold mb-2">Problem Statement</h3>
+           <div className="bg-structure/5 p-6 rounded-lg font-mono text-sm mb-8 whitespace-pre-wrap text-[#0A0A0B] border border-structure/20">
+             <h3 className="uppercase tracking-widest text-[#0A0A0B] font-bold mb-2">Problem Statement</h3>
              {testData.problem_statement}
            </div>
         )}
@@ -50,7 +50,7 @@ export function PracticalTest({ testId, testData, onSubmit }: PracticalTestProps
             type="url"
             value={projectUrl}
             onChange={e => setProjectUrl(e.target.value)}
-            className="w-full bg-white border border-structure rounded-lg p-4 font-mono text-sm text-ink focus:outline-none focus:border-ink transition-colors"
+            className="w-full bg-white border border-structure rounded-lg p-4 font-mono text-sm text-[#0A0A0B] focus:outline-none focus:border-ink transition-colors"
             placeholder="https://github.com/username/project"
             required
           />
@@ -60,7 +60,7 @@ export function PracticalTest({ testId, testData, onSubmit }: PracticalTestProps
           <button
             onClick={submitTest}
             disabled={!projectUrl}
-            className="px-8 py-3 bg-ink text-vellum font-mono text-xs uppercase tracking-widest hover:bg-verification transition-colors rounded-lg font-bold shadow-sm disabled:opacity-50"
+            className="px-8 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:hidden transition-colors rounded-lg font-bold shadow-sm disabled:opacity-50"
           >
             Submit Project
           </button>

@@ -89,7 +89,7 @@ function App() {
           },
         }} 
       />
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-ink"><Loader /></div>}>
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]"><Loader /></div>}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Layout />}>

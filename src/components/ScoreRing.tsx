@@ -47,7 +47,7 @@ export function ScoreRing({
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center text-center">
-        <span className="font-serif text-3xl tabular-nums leading-none" style={{ color: 'var(--color-ink)' }}>
+        <span className="font-sans tracking-tight text-3xl tabular-nums leading-none" style={{ color: 'var(--color-ink)' }}>
           {percentage}
         </span>
         {label && (

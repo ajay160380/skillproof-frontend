@@ -21,9 +21,9 @@ export function TrustBar() {
             transition={{ delay: idx * 0.1, duration: 0.6 }}
             className="p-8 flex flex-col items-center justify-center text-center"
           >
-            <div className="font-serif text-4xl mb-2 flex items-baseline">
+            <div className="font-sans tracking-tight text-4xl mb-2 flex items-baseline">
               <AnimatedCounter target={stat.value} duration={2} />
-              <span className="font-serif ml-1">{stat.suffix}</span>
+              <span className="font-sans tracking-tight ml-1">{stat.suffix}</span>
             </div>
             <div className="font-mono text-xs text-data uppercase tracking-widest">
               {stat.label}

@@ -55,7 +55,7 @@ function MiniDemoCertificate() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <div className="font-mono text-[10px] text-data mb-2 tracking-widest">CERTIFICATE OF SKILL</div>
-          <div className="font-serif text-3xl font-medium text-ink">Python Engineering</div>
+          <div className="font-sans tracking-tight text-3xl font-medium text-[#0A0A0B]">Python Engineering</div>
         </div>
         <motion.div
           animate={demoStatus === 'CRYPTOGRAPHICALLY VERIFIED' ? { scale: [1.3, 1], rotate: [-15, 0] } : { scale: 1, rotate: 0 }}
@@ -72,7 +72,7 @@ function MiniDemoCertificate() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-data text-xs">VERIFIED SCORE</span>
-          <span className="text-2xl font-serif text-verification tabular-nums flex items-baseline gap-1">
+          <span className="text-2xl font-sans tracking-tight text-verification tabular-nums flex items-baseline gap-1">
             {demoScore} <span className="text-xs text-data font-sans">/ 100</span>
           </span>
         </div>
@@ -82,7 +82,7 @@ function MiniDemoCertificate() {
             {demoStatus === 'EVALUATING...' ? (
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse block"></span>
             ) : (
-              <span className="w-2 h-2 rounded-full bg-verification block"></span>
+              <span className="w-2 h-2 rounded-full hidden block"></span>
             )}
             {demoStatus}
           </span>
@@ -120,15 +120,15 @@ export function LandingPage() {
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }}
-      className="flex-1 flex flex-col relative bg-mesh text-ink"
+      className="flex-1 flex flex-col relative bg-mesh text-[#0A0A0B]"
     >
       <InteractiveHero />
 
       {/* How it Works - Staggered Cards */}
-      <section className="py-24 bg-white/50 backdrop-blur-sm border-y border-structure relative z-20">
+      <section className="py-24 bg-[#141415]0  border-y border-structure relative z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl mb-4">How it works</h2>
+            <h2 className="font-sans tracking-tight text-4xl md:text-5xl mb-4">How it works</h2>
             <p className="text-data text-lg max-w-2xl mx-auto">Three simple steps to replace your resume with verified proof.</p>
           </div>
           
@@ -146,8 +146,8 @@ export function LandingPage() {
                 transition={{ delay: idx * 0.2, duration: 0.6 }}
                 className="glass-panel p-10 rounded-3xl hover:-translate-y-2 transition-transform duration-300"
               >
-                <div className="font-serif text-5xl mb-6 text-brand-primary/40">{step.num}</div>
-                <h3 className="font-serif text-2xl mb-4">{step.title}</h3>
+                <div className="font-sans tracking-tight text-5xl mb-6 text-brand-primary/40">{step.num}</div>
+                <h3 className="font-sans tracking-tight text-2xl mb-4">{step.title}</h3>
                 <p className="text-data leading-relaxed">{step.desc}</p>
               </motion.div>
             ))}

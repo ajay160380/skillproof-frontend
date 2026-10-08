@@ -22,7 +22,7 @@ interface TabsProps {
  */
 export function Tabs({ tabs, activeTab, onChange, variant = 'default', className = '' }: TabsProps) {
   return (
-    <div className={`flex gap-1 ${variant === 'underline' ? 'border-b border-white/10' : ''} ${className}`} role="tablist">
+    <div className={`flex gap-1 ${variant === 'underline' ? 'border-b border-[#2A2A2D]' : ''} ${className}`} role="tablist">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         
@@ -36,7 +36,7 @@ export function Tabs({ tabs, activeTab, onChange, variant = 'default', className
               relative px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all rounded-lg
               ${isActive
                 ? 'text-white'
-                : 'text-white/50 hover:text-white/70'
+                : 'text-[#A0A0A3] hover:text-[#D4D4D8]'
               }
               ${variant === 'pills' ? 'rounded-full' : ''}
               ${variant === 'underline' ? 'rounded-none' : ''}
@@ -62,8 +62,8 @@ export function Tabs({ tabs, activeTab, onChange, variant = 'default', className
                   ${variant === 'underline'
                     ? 'top-auto h-0.5 bg-brand-primary rounded-full'
                     : variant === 'pills'
-                      ? 'bg-white/10 rounded-full'
-                      : 'bg-white/10 rounded-lg'
+                      ? 'bg-[#1E1E21] rounded-full'
+                      : 'bg-[#1E1E21] rounded-lg'
                   }
                 `}
               />

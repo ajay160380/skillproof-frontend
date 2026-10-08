@@ -25,5 +25,5 @@ export function AnimatedCounter({ target, duration = 2 }: AnimatedCounterProps) 
     return () => controls.stop();
   }, [target, duration]);
 
-  return <span ref={ref} className="tabular-nums font-serif">0</span>;
+  return <span ref={ref} className="tabular-nums font-sans tracking-tight">0</span>;
 }

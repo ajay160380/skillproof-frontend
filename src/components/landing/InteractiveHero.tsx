@@ -166,7 +166,7 @@ export function InteractiveHero() {
       </motion.header>
 
       {/* Mobile Nav Overlay */}
-      <div className={`fixed inset-0 z-[50] bg-white/95 backdrop-blur-md transition-all duration-300 md:hidden flex flex-col items-center justify-center gap-6 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`fixed inset-0 z-[50] bg-white/95  transition-all duration-300 md:hidden flex flex-col items-center justify-center gap-6 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <a href="#how-it-works" className="text-3xl text-black hover:opacity-60" onClick={() => setIsMobileMenuOpen(false)}>For Talent</a>
         <a href="#recruiters" className="text-3xl text-black hover:opacity-60" onClick={() => setIsMobileMenuOpen(false)}>For Business</a>
         <Link to="/login" className="text-3xl text-black hover:opacity-60 mt-4" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>

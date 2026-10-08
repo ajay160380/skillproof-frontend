@@ -47,9 +47,9 @@ export function VerifyCertificate() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center p-8 bg-vellum text-ink">
+    <div className="flex-1 flex flex-col items-center p-8 bg-vellum text-[#0A0A0B]">
       <div className="max-w-2xl w-full">
-        <h1 className="font-serif text-4xl mb-2 text-center text-ink">Verify Credential</h1>
+        <h1 className="font-sans tracking-tight text-4xl mb-2 text-center text-[#0A0A0B]">Verify Credential</h1>
         <p className="font-mono text-sm text-data text-center mb-8">
           Enter a Verification ID to securely validate a SkillProof Certificate.
         </p>
@@ -60,13 +60,13 @@ export function VerifyCertificate() {
             placeholder="e.g. 123e4567-e89b-12d3-a456-426614174000"
             value={verificationId}
             onChange={(e) => setVerificationId(e.target.value)}
-            className="flex-1 px-4 py-3 bg-white border border-structure/30 rounded-md font-mono text-sm focus:outline-none focus:border-ink transition-colors text-ink"
+            className="flex-1 px-4 py-3 bg-white border border-structure/30 rounded-md font-mono text-sm focus:outline-none focus:border-ink transition-colors text-[#0A0A0B]"
             required
           />
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-ink text-vellum font-mono text-xs uppercase tracking-widest rounded-md hover:bg-verification transition-colors disabled:opacity-50"
+            className="px-6 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest rounded-md hover:hidden transition-colors disabled:opacity-50"
           >
             {loading ? 'Verifying...' : 'Verify'}
           </button>
@@ -99,14 +99,14 @@ export function VerifyCertificate() {
               </div>
               
               <div className="flex-1">
-                <h2 className="font-serif text-3xl mb-1">{badge.skill_category.name}</h2>
+                <h2 className="font-sans tracking-tight text-3xl mb-1">{badge.skill_category.name}</h2>
                 <div className="font-mono text-sm text-data mb-6 uppercase tracking-wider">
                   {badge.badge_level} Level
                 </div>
                 
                 <div className="bg-vellum p-4 rounded-md border border-structure/20 mb-6 flex items-center justify-between">
                   <span className="font-mono text-sm font-bold">Overall Score</span>
-                  <span className="font-serif text-2xl text-verification">{badge.overall_score}%</span>
+                  <span className="font-sans tracking-tight text-2xl text-verification">{badge.overall_score}%</span>
                 </div>
 
                 {badge.sub_scores && Object.keys(badge.sub_scores).length > 0 && (

@@ -5,7 +5,7 @@ export function StatusPill({ status }: { status: Status }) {
     'not-started': 'border-structure text-data',
     'pending': 'border-structure text-data',
     'processing': 'border-verification text-verification',
-    'completed': 'bg-verification text-vellum border-verification',
+    'completed': 'hidden text-vellum border-verification',
     'failed': 'border-seal text-seal',
   };
 

@@ -169,25 +169,25 @@ export function MessagesView() {
   };
 
   return (
-    <div className="h-[calc(100vh-140px)] flex bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-xl overflow-hidden">
+    <div className="h-[calc(100vh-140px)] flex bg-[#111113] border border-[#2A2A2D] rounded-3xl shadow-xl overflow-hidden">
       
       {/* Conversations List Panel */}
-      <div className={`w-full md:w-[320px] lg:w-[350px] bg-transparent border-r border-white/10 flex flex-col flex-shrink-0 ${activeConversationId ? 'hidden md:flex' : 'flex'}`}>
+      <div className={`w-full md:w-[320px] lg:w-[350px] bg-transparent border-r border-[#2A2A2D] flex flex-col flex-shrink-0 ${activeConversationId ? 'hidden md:flex' : 'flex'}`}>
         <div className="p-6 pb-4 flex items-center justify-between">
-          <h2 className="font-serif text-2xl font-bold text-white">Chats</h2>
-          <button className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+          <h2 className="font-sans tracking-tight text-2xl font-bold text-white">Chats</h2>
+          <button className="w-8 h-8 rounded-full hover:bg-[#1E1E21] flex items-center justify-center text-white transition-colors">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
           </button>
         </div>
         
         <div className="flex-1 overflow-y-auto px-3 pb-4">
           {isLoading ? (
-            <div className="p-6 text-center text-white/50">Loading conversations...</div>
+            <div className="p-6 text-center text-[#A0A0A3]">Loading conversations...</div>
           ) : conversations.length === 0 ? (
             <div className="p-8 text-center flex flex-col items-center justify-center h-full">
               <span className="text-4xl mb-4 opacity-50">✉️</span>
               <h3 className="font-bold text-white mb-2">No chats yet</h3>
-              <p className="text-sm text-white/50">Start following people to message them.</p>
+              <p className="text-sm text-[#A0A0A3]">Start following people to message them.</p>
             </div>
           ) : (
             <ul className="space-y-1.5">
@@ -197,13 +197,13 @@ export function MessagesView() {
                   <li key={conv.id}>
                     <button
                       onClick={() => setActiveConversationId(conv.id)}
-                      className={`w-full text-left p-3 rounded-2xl transition-all flex items-center gap-3 ${isActive ? 'bg-white/10 shadow-md border border-white/10' : 'hover:bg-white/5 border border-transparent'}`}
+                      className={`w-full text-left p-3 rounded-2xl transition-all flex items-center gap-3 ${isActive ? 'bg-[#1E1E21] shadow-md border border-[#2A2A2D]' : 'hover:bg-[#141415] border border-transparent'}`}
                     >
                       <div className="relative flex-shrink-0">
                         {conv.other_participant?.avatar_url ? (
-                          <img src={getAvatarUrl(conv.other_participant.avatar_url)} alt="Profile" className="w-11 h-11 rounded-full object-cover bg-white/10 border border-white/20" />
+                          <img src={getAvatarUrl(conv.other_participant.avatar_url)} alt="Profile" className="w-11 h-11 rounded-full object-cover bg-[#1E1E21] border border-[#3A3A3D]" />
                         ) : (
-                          <div className={`w-11 h-11 rounded-full flex items-center justify-center font-bold border border-white/20 ${isActive ? 'bg-white/20 text-white' : 'bg-white/10 text-white'}`}>
+                          <div className={`w-11 h-11 rounded-full flex items-center justify-center font-bold border border-[#3A3A3D] ${isActive ? 'bg-white/20 text-white' : 'bg-[#1E1E21] text-white'}`}>
                             {getInitials(conv.other_participant?.full_name || '', conv.other_participant?.username || '')}
                           </div>
                         )}
@@ -215,13 +215,13 @@ export function MessagesView() {
                             {conv.other_participant?.full_name || conv.other_participant?.username}
                           </h3>
                           {conv.latest_message && (
-                            <span className={`text-[10px] whitespace-nowrap ml-2 ${isActive ? 'text-white/80' : 'text-white/50'}`}>
+                            <span className={`text-[10px] whitespace-nowrap ml-2 ${isActive ? 'text-white/80' : 'text-[#A0A0A3]'}`}>
                               {new Date(conv.latest_message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </span>
                           )}
                         </div>
                         <div className="flex justify-between items-center">
-                          <p className={`text-[12px] truncate ${isActive ? 'text-white/90' : (conv.unread_count > 0 ? 'font-bold text-white' : 'text-white/50')}`}>
+                          <p className={`text-[12px] truncate ${isActive ? 'text-white/90' : (conv.unread_count > 0 ? 'font-bold text-white' : 'text-[#A0A0A3]')}`}>
                             {conv.latest_message ? conv.latest_message.content : 'No messages yet'}
                           </p>
                           {conv.unread_count > 0 && (
@@ -245,24 +245,24 @@ export function MessagesView() {
         {!activeConversationId ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
             <span className="text-5xl mb-4 opacity-30">💬</span>
-            <h3 className="font-serif text-2xl font-bold text-white mb-2">Your Messages</h3>
-            <p className="text-white/50">Select a conversation to start chatting.</p>
+            <h3 className="font-sans tracking-tight text-2xl font-bold text-white mb-2">Your Messages</h3>
+            <p className="text-[#A0A0A3]">Select a conversation to start chatting.</p>
           </div>
         ) : (
           <>
             {/* Thread Header */}
-            <div className="p-4 px-6 border-b border-white/10 bg-white/5 flex justify-between items-center sticky top-0 z-10 shadow-sm backdrop-blur-md">
+            <div className="p-4 px-6 border-b border-[#2A2A2D] bg-[#141415] flex justify-between items-center sticky top-0 z-10 shadow-sm ">
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => setActiveConversationId(null)}
-                  className="md:hidden p-2 -ml-3 rounded-full hover:bg-white/10 text-white transition-colors"
+                  className="md:hidden p-2 -ml-3 rounded-full hover:bg-[#1E1E21] text-white transition-colors"
                 >
                   ←
                 </button>
                 {activeConversation?.other_participant?.avatar_url ? (
-                  <img src={getAvatarUrl(activeConversation.other_participant.avatar_url)} alt="Profile" className="w-10 h-10 rounded-full object-cover shadow-sm bg-white/10 border border-white/20" />
+                  <img src={getAvatarUrl(activeConversation.other_participant.avatar_url)} alt="Profile" className="w-10 h-10 rounded-full object-cover shadow-sm bg-[#1E1E21] border border-[#3A3A3D]" />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white font-bold shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-[#1E1E21] border border-[#3A3A3D] flex items-center justify-center text-white font-bold shadow-sm">
                     {getInitials(activeConversation?.other_participant?.full_name || '', activeConversation?.other_participant?.username || '')}
                   </div>
                 )}
@@ -270,7 +270,7 @@ export function MessagesView() {
                   <h3 className="font-bold text-white">
                     {activeConversation?.other_participant?.full_name || activeConversation?.other_participant?.username}
                   </h3>
-                  <p className="text-[11px] text-white/50 uppercase tracking-widest font-mono">
+                  <p className="text-[11px] text-[#A0A0A3] uppercase tracking-widest font-mono">
                     {activeConversation?.other_participant?.role}
                   </p>
                 </div>
@@ -278,13 +278,13 @@ export function MessagesView() {
               
               {/* Optional header actions */}
               <div className="hidden md:flex items-center gap-2">
-                <button className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+                <button className="w-9 h-9 rounded-full bg-[#141415] hover:bg-[#1E1E21] flex items-center justify-center text-white transition-colors">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                 </button>
-                <button className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+                <button className="w-9 h-9 rounded-full bg-[#141415] hover:bg-[#1E1E21] flex items-center justify-center text-white transition-colors">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                 </button>
-                <button className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+                <button className="w-9 h-9 rounded-full bg-[#141415] hover:bg-[#1E1E21] flex items-center justify-center text-white transition-colors">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
                 </button>
               </div>
@@ -322,15 +322,15 @@ export function MessagesView() {
                       )}
                       <div className={`max-w-[75%] ${isMine ? 'order-1' : 'order-2'}`}>
                         <div 
-                          className={`p-3 px-5 rounded-2xl shadow-sm backdrop-blur-sm border transition-all ${
+                          className={`p-3 px-5 rounded-2xl shadow-sm  border transition-all ${
                             isMine 
                               ? 'bg-gradient-to-br from-brand-primary to-brand-primary/80 border-brand-primary/20 text-white rounded-br-sm' 
-                              : 'bg-white/10 border-white/10 text-white rounded-bl-sm'
+                              : 'bg-[#1E1E21] border-[#2A2A2D] text-white rounded-bl-sm'
                           }`}
                         >
                           <p className="whitespace-pre-wrap break-words text-[15px] leading-relaxed">{msg.content}</p>
                         </div>
-                        <div className={`text-[10px] text-white/50 font-mono mt-1 ${isMine ? 'text-right' : 'text-left ml-1'}`}>
+                        <div className={`text-[10px] text-[#A0A0A3] font-mono mt-1 ${isMine ? 'text-right' : 'text-left ml-1'}`}>
                           {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </div>
                       </div>
@@ -344,13 +344,13 @@ export function MessagesView() {
             {/* Input Area */}
             <div className="p-4 pb-6 bg-transparent">
               <form onSubmit={handleSendMessage} className="relative flex items-center gap-3 max-w-4xl mx-auto">
-                <div className="flex-1 bg-white/5 rounded-full border border-white/10 flex items-center shadow-lg transition-shadow focus-within:border-brand-primary/50">
+                <div className="flex-1 bg-[#141415] rounded-full border border-[#2A2A2D] flex items-center shadow-lg transition-shadow focus-within:border-brand-primary/50">
                   <input
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Message..."
-                    className="flex-1 bg-transparent py-4 pl-6 pr-4 outline-none text-[15px] font-serif text-white placeholder-white/30 rounded-l-full"
+                    className="flex-1 bg-transparent py-4 pl-6 pr-4 outline-none text-[15px] font-sans tracking-tight text-white placeholder-white/30 rounded-l-full"
                     disabled={isSending}
                   />
                   
@@ -358,7 +358,7 @@ export function MessagesView() {
                     <button 
                       type="submit" 
                       disabled={!inputValue.trim() || isSending}
-                      className="w-10 h-10 rounded-full flex items-center justify-center bg-brand-primary text-white hover:bg-brand-primary/80 transition-colors disabled:opacity-50 disabled:bg-white/10"
+                      className="w-10 h-10 rounded-full flex items-center justify-center bg-brand-primary text-white hover:bg-brand-primary/80 transition-colors disabled:opacity-50 disabled:bg-[#1E1E21]"
                     >
                       <svg className="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                     </button>

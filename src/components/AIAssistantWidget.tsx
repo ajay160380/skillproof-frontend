@@ -81,25 +81,25 @@ export const AIAssistantWidget: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="mb-4 w-80 sm:w-96 bg-white/90 backdrop-blur-3xl border border-white/60 shadow-[0_16px_48px_-12px_rgba(0,0,0,0.15)] rounded-3xl overflow-hidden flex flex-col"
+              className="mb-4 w-80 sm:w-96 bg-white/90  border border-white/60  rounded-3xl overflow-hidden flex flex-col"
               style={{ height: '500px', maxHeight: 'calc(100vh - 120px)' }}
             >
               {/* Header */}
-              <div className="p-4 bg-ink text-white flex items-center justify-between shadow-md z-10 relative">
+              <div className="p-4 bg-[#0A0A0B] text-white flex items-center justify-between shadow-md z-10 relative">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-verification to-emerald-400 p-0.5 shadow-inner">
-                    <div className="w-full h-full bg-ink rounded-full flex items-center justify-center">
-                      <span className="text-white font-serif font-bold text-sm">S</span>
+                    <div className="w-full h-full bg-[#0A0A0B] rounded-full flex items-center justify-center">
+                      <span className="text-white font-sans tracking-tight font-bold text-sm">S</span>
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-sm tracking-tight">AI Assistant</h3>
-                    <p className="font-mono text-[9px] uppercase tracking-widest text-white/70">SkillProof Guide</p>
+                    <h3 className="font-sans tracking-tight font-bold text-sm tracking-tight">AI Assistant</h3>
+                    <p className="font-mono text-[9px] uppercase tracking-widest text-[#D4D4D8]">SkillProof Guide</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#1E1E21] transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -116,8 +116,8 @@ export const AIAssistantWidget: React.FC = () => {
                   >
                     <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
                       msg.is_user 
-                        ? 'bg-ink text-white rounded-br-none' 
-                        : 'bg-white border border-structure/30 text-ink rounded-bl-none'
+                        ? 'bg-[#0A0A0B] text-white rounded-br-none' 
+                        : 'bg-white border border-structure/30 text-[#0A0A0B] rounded-bl-none'
                     }`}>
                       {msg.is_user ? (
                         <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
@@ -134,9 +134,9 @@ export const AIAssistantWidget: React.FC = () => {
                 {isTyping && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
                     <div className="bg-white border border-structure/30 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 bg-ink/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="w-1.5 h-1.5 bg-ink/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-1.5 h-1.5 bg-ink/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <div className="w-1.5 h-1.5 bg-[#0A0A0B]/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-1.5 h-1.5 bg-[#0A0A0B]/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-1.5 h-1.5 bg-[#0A0A0B]/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </motion.div>
                 )}
@@ -150,7 +150,7 @@ export const AIAssistantWidget: React.FC = () => {
                     <button
                       key={i}
                       onClick={() => handleSend(prompt)}
-                      className="text-[10px] font-mono uppercase tracking-widest text-ink/70 bg-white/50 border border-structure/30 hover:border-verification hover:text-verification hover:bg-verification/5 px-3 py-1.5 rounded-full transition-all duration-300"
+                      className="text-[10px] font-mono uppercase tracking-widest text-[#0A0A0B]/70 bg-[#141415]0 border border-structure/30 hover:border-verification hover:text-verification hover:hidden/5 px-3 py-1.5 rounded-full transition-all duration-300"
                     >
                       {prompt}
                     </button>
@@ -159,7 +159,7 @@ export const AIAssistantWidget: React.FC = () => {
               )}
 
               {/* Input Area */}
-              <div className="p-4 bg-white/80 border-t border-structure/20 backdrop-blur-md">
+              <div className="p-4 bg-white/80 border-t border-structure/20 ">
                 <form 
                   onSubmit={(e) => { e.preventDefault(); handleSend(inputValue); }}
                   className="relative flex items-center"
@@ -169,13 +169,13 @@ export const AIAssistantWidget: React.FC = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Ask about your skills..."
-                    className="w-full bg-white border border-structure/30 rounded-full pl-4 pr-12 py-2.5 text-sm text-ink focus:outline-none focus:border-verification focus:ring-1 focus:ring-verification shadow-inner transition-all"
+                    className="w-full bg-white border border-structure/30 rounded-full pl-4 pr-12 py-2.5 text-sm text-[#0A0A0B] focus:outline-none focus:border-verification focus:ring-1 focus:ring-verification shadow-inner transition-all"
                     disabled={isTyping}
                   />
                   <button 
                     type="submit"
                     disabled={!inputValue.trim() || isTyping}
-                    className="absolute right-1 w-8 h-8 rounded-full bg-ink text-white flex items-center justify-center hover:bg-ink/90 disabled:opacity-50 disabled:hover:bg-ink transition-colors shadow-md"
+                    className="absolute right-1 w-8 h-8 rounded-full bg-[#0A0A0B] text-white flex items-center justify-center hover:bg-[#0A0A0B]/90 disabled:opacity-50 disabled:hover:bg-[#0A0A0B] transition-colors shadow-md"
                   >
                     <svg className="w-4 h-4 ml-0.5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                   </button>
@@ -188,7 +188,7 @@ export const AIAssistantWidget: React.FC = () => {
         {/* Floating Action Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="group relative w-14 h-14 rounded-full bg-gradient-to-tr from-ink to-ink/90 shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center ring-1 ring-white/10"
+          className="group relative w-14 h-14 rounded-full bg-gradient-to-tr from-ink to-ink/90  hover: hover:-translate-y-1 transition-all duration-300 flex items-center justify-center ring-1 ring-white/10"
         >
           {/* Subtle Pulse */}
           {!isOpen && (
@@ -202,8 +202,8 @@ export const AIAssistantWidget: React.FC = () => {
               </motion.svg>
             ) : (
               <motion.div key="open" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }} className="relative">
-                <span className="text-white text-2xl font-serif font-bold group-hover:scale-110 transition-transform block">S</span>
-                <div className="absolute -top-1 -right-2 w-3 h-3 bg-verification rounded-full border-2 border-ink shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse" />
+                <span className="text-white text-2xl font-sans tracking-tight font-bold group-hover:scale-110 transition-transform block">S</span>
+                <div className="absolute -top-1 -right-2 w-3 h-3 hidden rounded-full border-2 border-ink  animate-pulse" />
               </motion.div>
             )}
           </AnimatePresence>
