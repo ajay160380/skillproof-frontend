@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, User, Briefcase, CheckCircle2, XCircle, ArrowRight, ShieldCheck, Sparkles, ChevronRight, Zap } from 'lucide-react';
 import { api } from '../services/api';
-import { Logo } from '../components/Logo';
 import toast from 'react-hot-toast';
 
 export function RegisterPage() {
@@ -17,45 +15,28 @@ export function RegisterPage() {
   const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string }>({});
   const navigate = useNavigate();
 
-  // Debounced username availability check
+  // Debounced username check
   useEffect(() => {
     const val = username.trim();
     if (val.length < 3) {
       setUsernameStatus({ checking: false });
       return;
     }
-
     setUsernameStatus({ checking: true });
     const timer = setTimeout(() => {
       api.get(`/auth/check-username/?username=${encodeURIComponent(val)}`)
-        .then((res) => {
-          setUsernameStatus({ checking: false, available: res.data.available, error: res.data.error });
-        })
-        .catch(() => {
-          setUsernameStatus({ checking: false });
-        });
+        .then((res) => setUsernameStatus({ checking: false, available: res.data.available, error: res.data.error }))
+        .catch(() => setUsernameStatus({ checking: false }));
     }, 450);
-
     return () => clearTimeout(timer);
   }, [username]);
 
   const validate = () => {
     const newErrors: typeof errors = {};
-    const cleanUser = username.trim();
-    if (cleanUser.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters';
-    } else if (usernameStatus.available === false && usernameStatus.error) {
-      newErrors.username = usernameStatus.error;
-    } else if (usernameStatus.available === false) {
-      newErrors.username = 'Username is already taken';
-    }
-
-    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-    if (password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    }
+    if (username.trim().length < 3) newErrors.username = 'At least 3 characters';
+    else if (usernameStatus.available === false) newErrors.username = usernameStatus.error || 'Already taken';
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = 'Enter a valid email';
+    if (password.length < 8) newErrors.password = 'At least 8 characters';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -63,398 +44,234 @@ export function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
     setLoading(true);
     try {
-      await api.post('/auth/register/', {
-        username: username.trim(),
-        email: email.trim(),
-        password,
-        role
-      });
-      toast.success('Account created! Please sign in to verify your identity.', {
-        icon: '🚀',
-        style: {
-          background: '#0F172A',
-          color: '#fff',
-          border: '1px solid rgba(16, 185, 129, 0.4)'
-        }
-      });
+      await api.post('/auth/register/', { username: username.trim(), email: email.trim(), password, role });
+      toast.success('Account created. Sign in to continue.');
       navigate('/login');
     } catch (err: any) {
-      toast.error(err.response?.data?.error || 'Registration failed. Please check inputs.');
+      toast.error(err.response?.data?.error || 'Registration failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#07090E] relative overflow-hidden flex flex-col justify-between text-white selection:bg-emerald-500/30 selection:text-emerald-200">
-      {/* Ambient Aurora Gradients */}
-      <div className="absolute -top-40 -right-40 w-[30rem] h-[30rem] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/2 -left-40 w-[32rem] h-[32rem] bg-indigo-500/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute -bottom-40 right-1/4 w-[28rem] h-[28rem] bg-cyan-500/10 rounded-full blur-[150px] pointer-events-none" />
+    <div className="min-h-screen bg-[#0A0A0B] flex">
+      {/* Left: Form */}
+      <div className="flex-1 flex flex-col justify-center px-6 sm:px-16 lg:px-24 max-w-xl mx-auto w-full">
 
-      {/* Subtle Matrix Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
-
-      {/* Top Header */}
-      <header className="relative z-20 flex items-center justify-between px-6 sm:px-12 py-6 max-w-7xl mx-auto w-full">
-        <Link to="/" className="flex items-center gap-3 group">
-          <Logo theme="light" size="md" />
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2.5 mb-14 group">
+          <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+            <span className="text-[#0A0A0B] font-bold text-sm">S</span>
+          </div>
+          <span className="text-white font-semibold text-lg tracking-tight">SkillProof</span>
         </Link>
 
-        <div className="flex items-center gap-4">
-          <span className="text-xs text-slate-400 hidden sm:inline font-mono">ALREADY REGISTERED?</span>
-          <Link
-            to="/login"
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-emerald-500/40 transition-all flex items-center gap-2 group"
-          >
-            Sign In
-            <ChevronRight className="w-3.5 h-3.5 text-emerald-400 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
+        {/* Heading */}
+        <div className="mb-8">
+          <h1 className="text-[28px] font-semibold text-white tracking-tight leading-tight">
+            Create your account
+          </h1>
+          <p className="text-[#7A7A7D] text-[15px] mt-2">
+            Get started with verified skill assessments.
+          </p>
         </div>
-      </header>
 
-      {/* Main Content Area */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 py-8 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
-
-          {/* Form Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="lg:col-span-6 xl:col-span-5 w-full max-w-md mx-auto"
+        {/* Role Toggle */}
+        <div className="flex bg-[#141415] border border-[#2A2A2D] rounded-lg p-1 mb-7">
+          <button
+            type="button"
+            onClick={() => setRole('candidate')}
+            className={`flex-1 py-2 text-[13px] font-medium rounded-md transition-all ${
+              role === 'candidate'
+                ? 'bg-[#2A2A2D] text-white shadow-sm'
+                : 'text-[#6A6A6D] hover:text-[#A0A0A3]'
+            }`}
           >
-            <div className="bg-slate-900/60 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 sm:p-10 shadow-2xl shadow-black/80 relative overflow-hidden">
-              {/* Top Accent Glow Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500" />
+            Candidate
+          </button>
+          <button
+            type="button"
+            onClick={() => setRole('recruiter')}
+            className={`flex-1 py-2 text-[13px] font-medium rounded-md transition-all ${
+              role === 'recruiter'
+                ? 'bg-[#2A2A2D] text-white shadow-sm'
+                : 'text-[#6A6A6D] hover:text-[#A0A0A3]'
+            }`}
+          >
+            Recruiter
+          </button>
+        </div>
 
-              <div className="mb-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4 tracking-wide uppercase font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Account Registration
-                </div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                  Join SkillProof
-                </h1>
-                <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-                  Create your profile to unlock proctored AI skill certifications or hire verified talent.
-                </p>
-              </div>
-
-              {/* Role Toggle Selector */}
-              <div className="grid grid-cols-2 gap-2 p-1 bg-slate-950/80 rounded-2xl border border-slate-800 mb-6">
-                <button
-                  type="button"
-                  onClick={() => setRole('candidate')}
-                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold transition-all ${
-                    role === 'candidate'
-                      ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30 shadow-md'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <User className="w-3.5 h-3.5" />
-                  Candidate
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('recruiter')}
-                  className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold transition-all ${
-                    role === 'recruiter'
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 text-cyan-400 border border-cyan-500/30 shadow-md'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <Briefcase className="w-3.5 h-3.5" />
-                  Recruiter / Hiring
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Username */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider font-mono">
-                      Username
-                    </label>
-                    {usernameStatus.checking ? (
-                      <span className="text-[10px] text-amber-400 font-mono animate-pulse">Checking...</span>
-                    ) : username.length >= 3 && usernameStatus.available ? (
-                      <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3" /> Available
-                      </span>
-                    ) : username.length >= 3 && usernameStatus.available === false ? (
-                      <span className="text-[10px] text-rose-400 font-mono flex items-center gap-1">
-                        <XCircle className="w-3 h-3" /> Unavailable
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="relative flex items-center">
-                    <User className="w-4 h-4 text-slate-400 absolute left-4 pointer-events-none" />
-                    <input
-                      type="text"
-                      value={username}
-                      onChange={(e) => {
-                        const val = e.target.value.replace(/\s+/g, '').toLowerCase();
-                        setUsername(val);
-                        if (errors.username) setErrors({ ...errors, username: undefined });
-                      }}
-                      placeholder="e.g. alexdev"
-                      className={`w-full bg-slate-950/70 border ${
-                        errors.username ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-emerald-500'
-                      } text-white text-sm rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:ring-2 ${
-                        errors.username ? 'focus:ring-rose-500/20' : 'focus:ring-emerald-500/20'
-                      } placeholder:text-slate-600 transition-all font-sans`}
-                    />
-                  </div>
-                  <AnimatePresence>
-                    {errors.username && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="text-rose-400 text-xs mt-1.5 font-sans"
-                      >
-                        {errors.username}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 font-mono">
-                    Email Address
-                  </label>
-                  <div className="relative flex items-center">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-4 pointer-events-none" />
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        if (errors.email) setErrors({ ...errors, email: undefined });
-                      }}
-                      placeholder="alex@company.com"
-                      className={`w-full bg-slate-950/70 border ${
-                        errors.email ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-emerald-500'
-                      } text-white text-sm rounded-xl pl-11 pr-4 py-3.5 focus:outline-none focus:ring-2 ${
-                        errors.email ? 'focus:ring-rose-500/20' : 'focus:ring-emerald-500/20'
-                      } placeholder:text-slate-600 transition-all font-sans`}
-                    />
-                  </div>
-                  <AnimatePresence>
-                    {errors.email && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="text-rose-400 text-xs mt-1.5 font-sans"
-                      >
-                        {errors.email}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 font-mono">
-                    Password (Min. 8 Characters)
-                  </label>
-                  <div className="relative flex items-center">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-4 pointer-events-none" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        if (errors.password) setErrors({ ...errors, password: undefined });
-                      }}
-                      placeholder="••••••••••••"
-                      className={`w-full bg-slate-950/70 border ${
-                        errors.password ? 'border-rose-500/80 focus:border-rose-500' : 'border-slate-800 focus:border-emerald-500'
-                      } text-white text-sm rounded-xl pl-11 pr-11 py-3.5 focus:outline-none focus:ring-2 ${
-                        errors.password ? 'focus:ring-rose-500/20' : 'focus:ring-emerald-500/20'
-                      } placeholder:text-slate-600 transition-all font-sans`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 text-slate-400 hover:text-white transition-colors p-1"
-                      aria-label="Toggle password visibility"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                  <AnimatePresence>
-                    {errors.password && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="text-rose-400 text-xs mt-1.5 font-sans"
-                      >
-                        {errors.password}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Submit Button */}
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  type="submit"
-                  disabled={loading}
-                  className="w-full mt-4 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-500/20 disabled:opacity-50 transition-all flex items-center justify-center gap-2 text-sm tracking-wide"
-                >
-                  {loading ? (
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" />
-                      <span>Creating Profile...</span>
-                    </div>
-                  ) : (
-                    <>
-                      <span>Create {role === 'recruiter' ? 'Recruiter' : 'Candidate'} Account</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </motion.button>
-              </form>
-
-              {/* Bottom Login Prompt */}
-              <div className="mt-6 pt-5 border-t border-white/5 text-center">
-                <p className="text-xs text-slate-400 font-sans">
-                  Already have an account?{' '}
-                  <Link to="/login" className="text-emerald-400 font-semibold hover:text-emerald-300 hover:underline transition-colors">
-                    Sign In
-                  </Link>
-                </p>
-              </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Username */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-[13px] font-medium text-[#A0A0A3]">Username</label>
+              {usernameStatus.checking ? (
+                <span className="text-[11px] text-[#6A6A6D]">Checking…</span>
+              ) : username.length >= 3 && usernameStatus.available ? (
+                <span className="text-[11px] text-emerald-400">Available</span>
+              ) : username.length >= 3 && usernameStatus.available === false ? (
+                <span className="text-[11px] text-red-400">Taken</span>
+              ) : null}
             </div>
-          </motion.div>
-
-          {/* Right Column: Dynamic Preview by Role */}
-          <div className="hidden lg:flex lg:col-span-6 xl:col-span-7 flex-col justify-center items-center relative pl-4">
-            <motion.div
-              key={role}
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="w-full max-w-lg bg-gradient-to-b from-slate-900/80 to-slate-950/90 border border-white/10 rounded-3xl p-8 shadow-2xl backdrop-blur-xl relative"
-            >
-              {role === 'candidate' ? (
-                <>
-                  <div className="flex items-center justify-between pb-6 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                        <ShieldCheck className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h3 className="text-base font-bold text-white tracking-tight">Candidate Verification Journey</h3>
-                        <p className="text-xs text-slate-400 font-mono">Proof Over Guesswork</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-medium">
-                      FREE TIER
-                    </span>
-                  </div>
-
-                  <div className="space-y-4 my-6">
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-mono font-bold text-xs flex-shrink-0">1</div>
-                      <div>
-                        <div className="text-sm font-bold text-white">Upload Resume & AI Skill Parse</div>
-                        <div className="text-xs text-slate-400 mt-0.5">Automated deep extraction with matched technical assessments.</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5">
-                      <div className="w-7 h-7 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-400 font-mono font-bold text-xs flex-shrink-0">2</div>
-                      <div>
-                        <div className="text-sm font-bold text-white">Complete Proctored Coding Tests</div>
-                        <div className="text-xs text-slate-400 mt-0.5">Real code challenges with live webcam and tab anti-cheat detection.</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5">
-                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-mono font-bold text-xs flex-shrink-0">3</div>
-                      <div>
-                        <div className="text-sm font-bold text-white">Receive Undeniable Proof Badge</div>
-                        <div className="text-xs text-slate-400 mt-0.5">Share cryptographic certificate directly on LinkedIn and job applications.</div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center justify-between pb-6 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-                        <Briefcase className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h3 className="text-base font-bold text-white tracking-tight">Recruiter Intelligence Hub</h3>
-                        <p className="text-xs text-slate-400 font-mono">Zero Resume Fraud</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono font-medium">
-                      ENTERPRISE READY
-                    </span>
-                  </div>
-
-                  <div className="space-y-4 my-6">
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5">
-                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-mono font-bold text-xs flex-shrink-0">1</div>
-                      <div>
-                        <div className="text-sm font-bold text-white">Post Verified Job Openings</div>
-                        <div className="text-xs text-slate-400 mt-0.5">Set minimum benchmark scores required to apply automatically.</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5">
-                      <div className="w-7 h-7 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-mono font-bold text-xs flex-shrink-0">2</div>
-                      <div>
-                        <div className="text-sm font-bold text-white">Auto-Rank Candidates by Proof</div>
-                        <div className="text-xs text-slate-400 mt-0.5">Inspect verified code submissions, anti-cheat confidence & percentile ranks.</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/5">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-mono font-bold text-xs flex-shrink-0">3</div>
-                      <div>
-                        <div className="text-sm font-bold text-white">Schedule 1-Click Interviews</div>
-                        <div className="text-xs text-slate-400 mt-0.5">Directly connect with pre-vetted engineers without screening overhead.</div>
-                      </div>
-                    </div>
-                  </div>
-                </>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value.replace(/\s+/g, '').toLowerCase());
+                if (errors.username) setErrors({ ...errors, username: undefined });
+              }}
+              placeholder="alexdev"
+              className={`w-full bg-[#141415] border ${
+                errors.username ? 'border-red-500/60' : 'border-[#2A2A2D] focus:border-[#505055]'
+              } text-white text-[15px] rounded-lg px-3.5 py-2.5 focus:outline-none placeholder:text-[#4A4A4D] transition-colors`}
+            />
+            <AnimatePresence>
+              {errors.username && (
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-red-400 text-xs mt-1">
+                  {errors.username}
+                </motion.p>
               )}
-
-              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400 font-mono">
-                <span>🛡️ SHA-256 Verified Ledger</span>
-                <span>🔒 GDPR & Anti-Cheat Compliant</span>
-              </div>
-            </motion.div>
-
-            {/* Quick Trust Badges */}
-            <div className="flex items-center gap-6 mt-8 text-xs text-slate-400 font-mono">
-              <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-400" /> Bank-grade encryption</span>
-              <span className="flex items-center gap-1.5"><Zap className="w-4 h-4 text-cyan-400" /> Instant activation</span>
-            </div>
+            </AnimatePresence>
           </div>
 
-        </div>
-      </main>
+          {/* Email */}
+          <div>
+            <label className="block text-[13px] font-medium text-[#A0A0A3] mb-1.5">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email) setErrors({ ...errors, email: undefined });
+              }}
+              placeholder="you@company.com"
+              className={`w-full bg-[#141415] border ${
+                errors.email ? 'border-red-500/60' : 'border-[#2A2A2D] focus:border-[#505055]'
+              } text-white text-[15px] rounded-lg px-3.5 py-2.5 focus:outline-none placeholder:text-[#4A4A4D] transition-colors`}
+            />
+            <AnimatePresence>
+              {errors.email && (
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-red-400 text-xs mt-1">
+                  {errors.email}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
 
-      {/* Footer Minimal */}
-      <footer className="relative z-20 px-6 sm:px-12 py-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-mono max-w-7xl mx-auto w-full">
-        <div>&copy; {new Date().getFullYear()} SkillProof. End-to-end verified skill infrastructure.</div>
-        <div className="flex items-center gap-6 mt-2 sm:mt-0">
-          <Link to="/" className="hover:text-slate-300 transition-colors">Home</Link>
-          <Link to="/login" className="hover:text-slate-300 transition-colors">Sign In</Link>
-          <a href="mailto:hello@skillproof.app" className="hover:text-slate-300 transition-colors">Support</a>
+          {/* Password */}
+          <div>
+            <label className="block text-[13px] font-medium text-[#A0A0A3] mb-1.5">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errors.password) setErrors({ ...errors, password: undefined });
+                }}
+                placeholder="Min. 8 characters"
+                className={`w-full bg-[#141415] border ${
+                  errors.password ? 'border-red-500/60' : 'border-[#2A2A2D] focus:border-[#505055]'
+                } text-white text-[15px] rounded-lg px-3.5 py-2.5 pr-10 focus:outline-none placeholder:text-[#4A4A4D] transition-colors`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6A6A6D] hover:text-white transition-colors text-xs font-medium"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+            <AnimatePresence>
+              {errors.password && (
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-red-400 text-xs mt-1">
+                  {errors.password}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-white hover:bg-[#E8E8EA] text-[#0A0A0B] font-medium py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 text-[15px] mt-3"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+                Creating account…
+              </span>
+            ) : 'Create account'}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-[14px] text-[#6A6A6D]">
+            Already have an account?{' '}
+            <Link to="/login" className="text-white hover:underline font-medium">Sign in</Link>
+          </p>
         </div>
-      </footer>
+
+        <p className="text-[12px] text-[#4A4A4D] mt-6 leading-relaxed">
+          By creating an account, you agree to our Terms of Service and Privacy Policy.
+        </p>
+      </div>
+
+      {/* Right: Visual panel */}
+      <div className="hidden lg:flex flex-1 bg-[#111113] border-l border-[#1E1E21] items-center justify-center p-16 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-[100px]" />
+
+        <div className="max-w-md relative z-10">
+          {/* Feature showcase */}
+          <h2 className="text-[22px] font-semibold text-white tracking-tight mb-3">
+            {role === 'candidate' ? 'Prove what you can build.' : 'Hire with confidence.'}
+          </h2>
+          <p className="text-[#7A7A7D] text-[15px] leading-relaxed mb-12">
+            {role === 'candidate'
+              ? 'Take proctored coding assessments, earn verified badges, and get discovered by top companies — no resume fluff needed.'
+              : 'Post roles, set skill benchmarks, and let verified candidates come to you. No more resume guesswork.'}
+          </p>
+
+          <div className="space-y-6">
+            {(role === 'candidate' ? [
+              { title: 'AI-proctored assessments', desc: 'Real coding challenges with live integrity monitoring' },
+              { title: 'Verified skill badges', desc: 'Shareable proof of competency on your profile' },
+              { title: 'Get discovered', desc: 'Top companies find you based on verified scores' },
+            ] : [
+              { title: 'Skill-verified talent pool', desc: 'Browse candidates ranked by proven ability' },
+              { title: 'Custom job benchmarks', desc: 'Set minimum scores that candidates must meet' },
+              { title: 'Faster hiring pipeline', desc: 'Skip screening rounds — go straight to interviews' },
+            ]).map((item, i) => (
+              <div key={i} className="flex items-start gap-3.5">
+                <div className="w-5 h-5 rounded-full border border-[#2A2A2D] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-white text-[14px] font-medium">{item.title}</p>
+                  <p className="text-[#6A6A6D] text-[13px] mt-0.5">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom trusted companies */}
+          <div className="mt-16 pt-8 border-t border-[#1E1E21]">
+            <p className="text-[12px] text-[#4A4A4D] uppercase tracking-wider font-medium mb-4">Trusted by teams at</p>
+            <div className="flex items-center gap-6 text-[#3A3A3D]">
+              {['Google', 'Microsoft', 'Amazon', 'Stripe'].map((name) => (
+                <span key={name} className="text-[14px] font-semibold tracking-tight">{name}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
