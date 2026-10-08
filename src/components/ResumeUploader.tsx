@@ -5,9 +5,19 @@ import { Loader } from './Loader';
 
 interface Props {
   onUploadSuccess: () => void;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  className?: string;
 }
 
-export function ResumeUploader({ onUploadSuccess }: Props) {
+export function ResumeUploader({ 
+  onUploadSuccess, 
+  title = "Upload your resume",
+  subtitle = "PDF OR DOCX • MAX 5MB",
+  buttonText = "BROWSE FILES",
+  className = ""
+}: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -39,11 +49,10 @@ export function ResumeUploader({ onUploadSuccess }: Props) {
   };
 
   const handleFile = async (file: File) => {
-    const validTypes = [
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    ];
-    if (!validTypes.includes(file.type)) {
+    const validExtensions = ['.pdf', '.docx'];
+    const hasValidExt = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+    
+    if (!hasValidExt) {
       toast.error('Only PDF and DOCX files are allowed.');
       return;
     }
@@ -56,11 +65,12 @@ export function ResumeUploader({ onUploadSuccess }: Props) {
     try {
       setIsUploading(true);
       await uploadResume(file);
-      toast.success('Resume uploaded successfully!');
+      toast.success('Resume uploaded & analyzed successfully!');
       onUploadSuccess();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      toast.error('Failed to upload resume.');
+      const errorMsg = err?.response?.data?.detail || err?.response?.data?.message || 'Failed to upload resume. Please try again.';
+      toast.error(errorMsg);
     } finally {
       setIsUploading(false);
     }
@@ -72,11 +82,11 @@ export function ResumeUploader({ onUploadSuccess }: Props) {
       onDragLeave={handleDrag}
       onDragOver={handleDrag}
       onDrop={handleDrop}
-      className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
+      className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 overflow-hidden ${
         isDragging
-          ? 'border-brand-primary bg-brand-primary/10 shadow-[0_0_30px_rgba(59,130,246,0.15)] scale-[1.02]'
-          : 'border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-brand-primary/40 hover:shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]'
-      }`}
+          ? 'border-emerald-400 bg-emerald-500/10 shadow-[0_0_40px_rgba(16,185,129,0.25)] scale-[1.01]'
+          : 'border-white/15 bg-white/5 backdrop-blur-xl hover:bg-white/[0.08] hover:border-emerald-500/40 hover:shadow-[0_8px_32px_-8px_rgba(16,185,129,0.15)]'
+      } ${className}`}
     >
       <input
         type="file"
@@ -87,32 +97,37 @@ export function ResumeUploader({ onUploadSuccess }: Props) {
         disabled={isUploading}
       />
       
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-4">
         {isUploading ? (
-          <Loader text="Uploading & Analyzing..." size="sm" />
+          <div className="py-4 flex flex-col items-center gap-3">
+            <Loader text="Uploading & AI Parsing..." size="sm" />
+            <p className="font-mono text-[10px] text-white/50 tracking-wider animate-pulse">
+              Extracting skills & mapping assessments...
+            </p>
+          </div>
         ) : (
           <>
-            <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500 bg-white/10 shadow-sm border border-white/20`}>
-              <span className="text-2xl drop-shadow-sm">📄</span>
+            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 bg-gradient-to-tr from-emerald-500/20 to-brand-primary/20 border border-white/20 shadow-lg group-hover:scale-105`}>
+              <span className="text-3xl drop-shadow-md">📄</span>
             </div>
             
             <div>
-              <h3 className="font-serif text-lg text-white font-bold mb-1">
-                Upload your resume
+              <h3 className="font-serif text-xl text-white font-bold mb-1">
+                {title}
               </h3>
-              <p className="font-mono text-[9px] text-white/50 uppercase tracking-widest mb-4">
-                PDF OR DOCX • MAX 5MB
+              <p className="font-mono text-[10px] text-emerald-400/80 font-bold uppercase tracking-widest mb-4">
+                {subtitle}
               </p>
               
               <label 
                 htmlFor="resume-upload" 
-                className="cursor-pointer bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-lg border border-white/10 transition-colors inline-block"
+                className="cursor-pointer bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-ink font-mono text-xs font-bold uppercase tracking-widest px-7 py-3 rounded-xl shadow-[0_4px_20px_rgba(16,185,129,0.3)] transition-all duration-300 inline-flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
               >
-                BROWSE FILES
+                <span>↑</span> {buttonText}
               </label>
               
-              <div className="mt-4 font-mono text-[9px] text-white/40 uppercase tracking-[0.2em]">
-                OR DRAG AND DROP HERE
+              <div className="mt-4 font-mono text-[9px] text-white/40 uppercase tracking-[0.25em]">
+                DRAG & DROP RESUME HERE
               </div>
             </div>
           </>
@@ -121,3 +136,4 @@ export function ResumeUploader({ onUploadSuccess }: Props) {
     </div>
   );
 }
+

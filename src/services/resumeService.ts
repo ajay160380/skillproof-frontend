@@ -38,3 +38,9 @@ export const getSuggestedTests = async (): Promise<SuggestedTest[]> => {
 export const deleteResume = async (): Promise<void> => {
   await api.delete('/resumes/my-resume/');
 };
+
+export const reparseResume = async (): Promise<Resume> => {
+  const response = await api.post('/resumes/reparse/');
+  return response.data;
+};
+

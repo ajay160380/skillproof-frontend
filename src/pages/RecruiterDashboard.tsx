@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { NetworkDiscoveryWidget, FeedWidget } from '../components/network/NetworkWidgets';
 import { useAuthStore } from '../store/authStore';
+import { LogOut } from 'lucide-react';
 
 // Interfaces
 interface PublicBadge {
@@ -109,13 +110,18 @@ export function RecruiterDashboard() {
   const [savingReqs, setSavingReqs] = useState(false);
 
   // Settings State
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const [profile, setProfile] = useState<any>(null);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editProfileData, setEditProfileData] = useState({ full_name: '', company_name: '', bio: '', avatar_url: '' });
   const [isSavingProfile, setIsSavingProfile] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const availableSkills = stats?.trending_skills.map(s => ({ value: s.slug, label: s.name })) || [
     { value: 'python', label: 'Python' }, { value: 'react', label: 'React' }, { value: 'sql', label: 'SQL' }, { value: 'communication', label: 'Communication' }
@@ -340,21 +346,26 @@ export function RecruiterDashboard() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-73px)] overflow-hidden bg-mesh">
+    <div className="flex h-screen w-full overflow-hidden bg-ink text-white relative">
+      <div className="absolute inset-0 bg-mesh-dark opacity-100 pointer-events-none" />
+
       {/* Sidebar */}
-      <div className="w-72 glass-panel border-r border-structure/30 flex flex-col h-full shrink-0 relative z-10">
+      <div className="w-72 bg-white/5 backdrop-blur-3xl border-r border-white/10 flex flex-col h-full shrink-0 relative z-20 shadow-2xl">
         <div className="p-8 pb-6">
           <div className="flex items-center gap-3">
-             <div className="w-10 h-10 bg-gradient-to-tr from-ink to-ink/80 rounded-xl flex items-center justify-center shadow-lg shadow-ink/20 ring-1 ring-white/50">
+             <div className="w-10 h-10 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)] ring-1 ring-white/20">
                <span className="font-serif font-bold text-white text-xl">S</span>
              </div>
-             <h3 className="font-serif text-2xl font-bold text-ink tracking-tight">SkillProof</h3>
+             <div>
+               <h3 className="font-serif text-2xl font-bold text-white tracking-tight leading-none">SkillProof</h3>
+               <span className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 font-bold">Recruiter Suite</span>
+             </div>
           </div>
         </div>
         <div className="flex-1 overflow-y-auto px-4 py-2 space-y-8 scrollbar-hide">
           {sidebarItems.map(group => (
             <div key={group.category}>
-              <h4 className="font-mono text-[10px] text-data/70 font-bold uppercase tracking-[0.25em] mb-3 px-4">{group.category}</h4>
+              <h4 className="font-mono text-[10px] text-white/40 font-bold uppercase tracking-[0.25em] mb-3 px-4">{group.category}</h4>
               <ul className="space-y-1">
                 {group.items.map(item => {
                   const isActive = activeTab === item.id;
@@ -363,7 +374,7 @@ export function RecruiterDashboard() {
                       {item.isLink ? (
                         <a
                           href={item.url}
-                          className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative text-ink/60 hover:bg-white/50 hover:text-ink hover:shadow-[0_2px_10px_-4px_rgba(0,0,0,0.04)]"
+                          className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative text-white/50 hover:bg-white/5 hover:text-white"
                         >
                           <span className="text-xl opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
                           <span className="tracking-wide">{item.label}</span>
@@ -374,21 +385,21 @@ export function RecruiterDashboard() {
                           {isActive && (
                             <motion.div 
                               layoutId="activeTabIndicatorRecruiter" 
-                              className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-3/4 bg-ink rounded-r-full shadow-[0_0_12px_rgba(15,23,42,0.6)]" 
+                              className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-3/4 bg-brand-primary rounded-r-full shadow-[0_0_12px_rgba(59,130,246,0.8)]" 
                             />
                           )}
                           <button
                             onClick={() => setActiveTab(item.id)}
                             className={`w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
                               isActive
-                                ? 'bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)] text-ink' 
-                                : 'text-ink/60 hover:bg-white/50 hover:text-ink hover:shadow-[0_2px_10px_-4px_rgba(0,0,0,0.04)]'
+                                ? 'bg-white/10 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.3)] text-white border border-white/5 font-bold' 
+                                : 'text-white/50 hover:bg-white/5 hover:text-white'
                             }`}
                           >
-                            <span className={`text-xl transition-all duration-300 ${isActive ? 'scale-110 drop-shadow-sm' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
+                            <span className={`text-xl transition-all duration-300 ${isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
                               {item.icon}
                             </span>
-                            <span className={`tracking-wide ${isActive ? 'font-bold' : ''}`}>{item.label}</span>
+                            <span className="tracking-wide">{item.label}</span>
                           </button>
                         </>
                       )}
@@ -401,29 +412,30 @@ export function RecruiterDashboard() {
         </div>
         
         {/* User Profile Snippet */}
-        <div className="p-4 mx-4 mb-6 rounded-2xl bg-white/70 border border-white/80 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)] backdrop-blur-md flex items-center justify-between group hover:bg-white hover:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.12)] transition-all cursor-pointer relative overflow-hidden">
-          {/* Subtle hover gradient mask */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-          
+        <div className="p-3.5 mx-4 mb-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-between group hover:bg-white/10 transition-all duration-300 relative overflow-hidden">
           <div className="flex items-center gap-3 relative z-10">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-verification to-emerald-400 p-0.5 shadow-sm">
-               <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-verification font-serif font-bold text-lg">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-sm">
+               <div className="w-full h-full bg-ink rounded-[10px] flex items-center justify-center text-emerald-400 font-serif font-bold text-lg">
                  {user?.email?.charAt(0).toUpperCase() || 'R'}
                </div>
             </div>
             <div>
-              <div className="text-sm font-bold text-ink truncate w-24 tracking-tight">{user?.email ? user.email.split('@')[0] : 'Recruiter'}</div>
-              <div className="text-[9.5px] font-mono font-bold text-data uppercase tracking-widest mt-0.5">Recruiter</div>
+              <div className="text-sm font-bold text-white truncate w-24 tracking-tight">{user?.email ? user.email.split('@')[0] : 'Recruiter'}</div>
+              <div className="text-[9.5px] font-mono font-bold text-emerald-400 uppercase tracking-widest mt-0.5">Recruiter</div>
             </div>
           </div>
-          <button className="text-data opacity-0 group-hover:opacity-100 transition-all duration-300 hover:text-ink hover:bg-structure/10 p-1.5 rounded-lg relative z-10">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg>
+          <button 
+            onClick={handleLogout}
+            title="Log Out"
+            className="text-white/40 hover:text-rose-400 hover:bg-rose-500/10 p-2 rounded-xl transition-colors relative z-10"
+          >
+            <LogOut size={16} />
           </button>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 h-full overflow-y-auto relative bg-transparent">
+      <div className="flex-1 h-full overflow-y-auto relative bg-transparent scrollbar-hide">
         <AnimatePresence mode="wait">
           
           {/* Dashboard Tab */}
@@ -432,25 +444,25 @@ export function RecruiterDashboard() {
               <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative overflow-hidden bg-ink text-white mb-8 rounded-b-3xl shadow-2xl mx-4 mt-0"
+                className="relative overflow-hidden bg-gradient-to-r from-white/[0.08] to-white/[0.02] border-b border-white/10 text-white mb-8 shadow-2xl mx-4 mt-0 rounded-b-3xl"
               >
                 <div className="absolute inset-0 opacity-10" style={{
                   backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px)`,
                 }} />
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-verification opacity-20 blur-3xl rounded-full" />
+                <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-500/20 blur-3xl rounded-full pointer-events-none" />
                 
                 <div className="relative max-w-5xl mx-auto px-8 py-12">
                   <div className="flex flex-col md:flex-row items-start justify-between gap-6">
                     <div>
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-verification mb-3 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-verification animate-pulse" />
-                        Hiring Overview
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mb-3 flex items-center gap-2 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        HIRING INTELLIGENCE & TALENT PIPELINE
                       </div>
-                      <h1 className="font-serif text-5xl font-bold mb-4 tracking-tight">
-                        Welcome, {profile?.full_name || (user?.email ? user.email.split('@')[0] : 'Recruiter')}
+                      <h1 className="font-serif text-4xl md:text-5xl font-bold mb-3 tracking-tight text-white">
+                        Welcome, {profile?.full_name || (user?.email ? user.email.split('@')[0] : 'Partner')}
                       </h1>
-                      <p className="text-lg text-white/70 max-w-xl leading-relaxed">
-                        Track your talent pipeline, connect with verified candidates, and manage your open roles.
+                      <p className="text-sm md:text-base text-white/70 max-w-xl leading-relaxed">
+                        Track verified talent benchmarks, explore skill-certified candidates, and manage proctored requisitions.
                       </p>
                     </div>
                   </div>
@@ -461,27 +473,30 @@ export function RecruiterDashboard() {
                 {/* Stats Grid */}
                 {stats && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <motion.div whileHover={{ y: -5 }} className="glass-panel rounded-3xl p-6 shadow-sm transition-all duration-300">
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-data mb-2">Total Verified</div>
-                      <div className="text-4xl text-ink font-serif font-bold"><AnimatedCounter target={stats.total_verified_candidates} /></div>
+                    <motion.div whileHover={{ y: -5 }} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/10 hover:border-emerald-500/30 rounded-3xl p-6 shadow-xl transition-all">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-2">Total Verified Talent</div>
+                      <div className="text-4xl text-white font-serif font-bold"><AnimatedCounter target={stats.total_verified_candidates} /></div>
+                      <p className="font-mono text-[9px] text-white/40 uppercase tracking-widest mt-2">Active proctored candidate pool</p>
                     </motion.div>
-                    <motion.div whileHover={{ y: -5 }} className="glass-panel rounded-3xl p-6 shadow-sm transition-all duration-300">
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-data mb-2">Following</div>
-                      <div className="text-4xl text-ink font-serif font-bold"><AnimatedCounter target={stats.candidates_saved} /></div>
+                    <motion.div whileHover={{ y: -5 }} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/10 hover:border-amber-500/30 rounded-3xl p-6 shadow-xl transition-all">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-amber-400 font-bold mb-2">Shortlisted Talent</div>
+                      <div className="text-4xl text-white font-serif font-bold"><AnimatedCounter target={stats.candidates_saved} /></div>
+                      <p className="font-mono text-[9px] text-white/40 uppercase tracking-widest mt-2">Saved profiles in requisition pipeline</p>
                     </motion.div>
-                    <motion.div whileHover={{ y: -5 }} className="glass-panel rounded-3xl p-6 shadow-sm transition-all duration-300">
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-data mb-2">Platform Avg Score</div>
-                      <div className="text-4xl text-ink font-serif font-bold flex items-baseline gap-1">
+                    <motion.div whileHover={{ y: -5 }} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/10 hover:border-brand-primary/30 rounded-3xl p-6 shadow-xl transition-all">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-brand-primary font-bold mb-2">Platform Score Benchmark</div>
+                      <div className="text-4xl text-white font-serif font-bold flex items-baseline gap-1">
                         <AnimatedCounter target={stats.average_verified_score} />
-                        <span className="text-lg text-data font-mono">/100</span>
+                        <span className="text-lg text-white/40 font-mono">/100</span>
                       </div>
+                      <p className="font-mono text-[9px] text-white/40 uppercase tracking-widest mt-2">Verified candidate median score</p>
                     </motion.div>
                   </div>
                 )}
 
                 {/* Talent Match AI Spotlight */}
                 <div>
-                  <h3 className="font-serif text-2xl font-bold text-ink mb-6">Top Matches</h3>
+                  <h3 className="font-serif text-2xl font-bold text-white mb-6">Top AI Verified Matches</h3>
                   {isSearching ? (
                     <div className="py-20 flex justify-center"><Loader /></div>
                   ) : talentMatches.length === 0 ? (
@@ -492,25 +507,26 @@ export function RecruiterDashboard() {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {talentMatches.slice(0, 4).map((match, i) => (
-                        <motion.div whileHover={{ y: -5 }} key={match.user_id} className="glass-panel rounded-3xl p-6 hover:shadow-lg transition-all duration-300">
+                        <motion.div whileHover={{ y: -5 }} key={match.user_id} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/10 hover:border-emerald-500/40 rounded-3xl p-6 hover:shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-300">
                           <div className="flex justify-between items-start mb-4">
                             <div>
-                              <h3 className="font-serif text-xl text-ink font-bold">{match.name || match.email.split('@')[0]}</h3>
-                              <div className="font-mono text-[10px] text-data uppercase tracking-widest">{match.email}</div>
+                              <h3 className="font-serif text-xl text-white font-bold">{match.name || match.email.split('@')[0]}</h3>
+                              <div className="font-mono text-[10px] text-white/50 uppercase tracking-widest">{match.email}</div>
                             </div>
                             <div className="text-right">
-                              <div className="font-mono text-xs uppercase text-verification font-bold tracking-widest">Global Rank</div>
-                              <div className="font-serif text-2xl text-ink">#{match.global_rank}</div>
+                              <div className="font-mono text-[10px] uppercase text-emerald-400 font-bold tracking-widest">Global Rank</div>
+                              <div className="font-serif text-2xl text-white font-bold">#{match.global_rank}</div>
                             </div>
                           </div>
 
                           <div className="mb-6">
-                            <div className="font-mono text-[10px] text-data uppercase tracking-widest mb-2">Top Verified Skills</div>
+                            <div className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-2.5">Top Verified Skills</div>
                             <div className="flex flex-wrap gap-2">
                               {match.top_skills.map((skill: any, idx: number) => (
-                                <div key={idx} className="flex items-center gap-1.5 border border-structure px-2 py-1 bg-structure/5 rounded text-[10px] uppercase font-bold text-ink">
+                                <div key={idx} className="flex items-center gap-1.5 border border-white/10 px-2.5 py-1.5 bg-white/5 rounded-xl text-[11px] font-mono font-bold text-white shadow-sm">
                                   <BadgeIcon level={skill.badge_level.toLowerCase() as BadgeLevel} size={14} />
-                                  {skill.skill_name} ({skill.score}%)
+                                  <span>{skill.skill_name}</span>
+                                  <span className="text-emerald-400 font-mono">({skill.score}%)</span>
                                 </div>
                               ))}
                             </div>
@@ -519,14 +535,14 @@ export function RecruiterDashboard() {
                           <div className="flex gap-3">
                             <Link 
                               to={`/profile/${match.user_id}`} 
-                              className="flex-1 py-2 glass-button text-ink text-center rounded-xl font-mono text-xs uppercase tracking-widest hover:border-ink transition-colors"
+                              className="flex-1 py-2.5 bg-white/10 hover:bg-white/20 text-white text-center rounded-xl font-mono text-xs font-bold uppercase tracking-widest border border-white/10 transition-colors"
                             >
                               Dossier
                             </Link>
                             <button
                               onClick={() => handleProposeInterview(match.user_id.toString())}
                               disabled={sendingInvite === match.user_id}
-                              className="flex-1 py-2 bg-ink text-vellum text-center rounded-xl font-mono text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors shadow-lg disabled:opacity-50"
+                              className="flex-1 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-ink text-center rounded-xl font-mono text-xs font-bold uppercase tracking-widest transition-all shadow-[0_4px_16px_rgba(16,185,129,0.3)] hover:scale-[1.02] disabled:opacity-50"
                             >
                               {sendingInvite === match.user_id ? 'Proposing...' : 'Propose Interview'}
                             </button>
@@ -543,7 +559,7 @@ export function RecruiterDashboard() {
           {/* Explore Network Tab */}
           {activeTab === 'Explore Network' && (
             <motion.div key="explore-network" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
-              <h2 className="font-serif text-2xl font-bold text-ink">Explore Network</h2>
+              <h2 className="font-serif text-2xl font-bold text-white">Explore Verified Network</h2>
               <NetworkDiscoveryWidget />
             </motion.div>
           )}
@@ -559,29 +575,32 @@ export function RecruiterDashboard() {
           {activeTab === 'Job Listings' && (
             <motion.div key="jobs" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
                <div className="flex justify-between items-center">
-                  <h2 className="font-serif text-2xl font-bold text-ink">Your Job Listings</h2>
-                  <button className="bg-ink text-white px-6 py-2 rounded-lg font-mono text-[10px] uppercase tracking-widest font-bold hover:bg-ink/90 transition-colors">
+                  <div>
+                    <h2 className="font-serif text-2xl font-bold text-white">Your Requisitions</h2>
+                    <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-0.5">Manage open roles and incoming applicant matches</p>
+                  </div>
+                  <button className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-ink px-6 py-2.5 rounded-xl font-mono text-xs uppercase tracking-widest font-bold shadow-lg transition-all hover:scale-105">
                     + Post New Job
                   </button>
                </div>
                
-               <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-8 shadow-sm min-h-[400px]">
+               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-sm min-h-[400px]">
                  {jobs.length > 0 ? (
                    <div className="space-y-4">
                      {jobs.map(job => (
-                       <div key={job.id} className="flex flex-col md:flex-row justify-between items-start md:items-center border border-structure/20 rounded-xl p-6 bg-white gap-4 hover:border-verification transition-all">
+                       <div key={job.id} className="flex flex-col md:flex-row justify-between items-start md:items-center border border-white/10 rounded-2xl p-6 bg-white/5 hover:bg-white/[0.08] hover:border-emerald-500/30 transition-all gap-4 text-white">
                          <div>
-                           <h3 className="font-serif text-xl font-bold text-ink">{job.role_title}</h3>
-                           <p className="font-mono text-[10px] text-data uppercase tracking-widest mt-1">Posted: {new Date(job.created_at).toLocaleDateString()}</p>
+                           <h3 className="font-serif text-xl font-bold text-white">{job.role_title}</h3>
+                           <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-1">Posted: {new Date(job.created_at).toLocaleDateString()}</p>
                          </div>
                          <div className="flex gap-3 w-full md:w-auto">
                            <button 
                              onClick={() => fetchApplicantsForJob(job.id)}
-                             className="flex-1 md:flex-none px-6 py-2 bg-ink text-white rounded-lg font-mono text-[10px] uppercase tracking-widest hover:bg-ink/90 transition-colors"
+                             className="flex-1 md:flex-none px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-ink rounded-xl font-mono text-xs uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-md"
                            >
                              View Applicants
                            </button>
-                           <button className="flex-1 md:flex-none px-4 py-2 border border-structure text-ink rounded-lg font-mono text-[10px] uppercase tracking-widest hover:border-ink transition-colors">
+                           <button className="flex-1 md:flex-none px-4 py-2.5 border border-white/15 hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors">
                              Edit
                            </button>
                          </div>
@@ -589,7 +608,7 @@ export function RecruiterDashboard() {
                      ))}
                    </div>
                  ) : (
-                   <EmptyState title="No active job listings" description="Post a job to start attracting talent." />
+                   <EmptyState title="No active job listings" description="Post a job to start attracting verified talent." />
                  )}
                </div>
             </motion.div>
@@ -599,33 +618,33 @@ export function RecruiterDashboard() {
           {activeTab === 'Applicants' && (
             <motion.div key="applicants" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
                <div className="flex gap-4 items-center mb-6">
-                 <button onClick={() => setActiveTab('Job Listings')} className="w-10 h-10 rounded-full border border-structure/20 flex items-center justify-center text-ink hover:bg-structure/10 transition-colors">
+                 <button onClick={() => setActiveTab('Job Listings')} className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
                    ←
                  </button>
-                 <h2 className="font-serif text-2xl font-bold text-ink">Applicants</h2>
+                 <h2 className="font-serif text-2xl font-bold text-white">Job Applicants</h2>
                </div>
                
-               <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-8 shadow-sm min-h-[400px]">
+               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-sm min-h-[400px]">
                  {applicants.length > 0 ? (
                    <div className="space-y-4">
                      {applicants.map(app => (
-                       <div key={app.id} className="flex justify-between items-center border border-structure/20 rounded-xl p-6 bg-white">
+                       <div key={app.id} className="flex justify-between items-center border border-white/10 rounded-2xl p-6 bg-white/5 hover:bg-white/[0.08] text-white">
                          <div className="flex items-center gap-4">
                            {app.overall_fit_score ? (
                              <ScoreRing percentage={app.overall_fit_score} size={60} strokeWidth={3} />
                            ) : (
-                             <div className="w-[60px] h-[60px] rounded-full bg-structure/20 flex items-center justify-center font-mono text-[10px] text-data">TBD</div>
+                             <div className="w-[60px] h-[60px] rounded-full bg-white/10 flex items-center justify-center font-mono text-[10px] text-white/50">TBD</div>
                            )}
                            <div>
-                             <h3 className="font-serif text-lg font-bold text-ink">{app.candidate_name || app.candidate_email}</h3>
-                             <p className="font-mono text-[9px] uppercase tracking-widest text-data">Status: {app.status}</p>
+                             <h3 className="font-serif text-lg font-bold text-white">{app.candidate_name || app.candidate_email}</h3>
+                             <p className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 font-bold mt-0.5">Status: {app.status}</p>
                            </div>
                          </div>
                          <div className="flex gap-2">
-                           <Link to={`/profile/${app.candidate_id}`} className="px-4 py-2 border border-structure text-ink rounded-lg font-mono text-[10px] uppercase tracking-widest hover:border-ink transition-colors">
-                             Profile
+                           <Link to={`/profile/${app.candidate_id}`} className="px-4 py-2.5 border border-white/15 hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors">
+                             Dossier
                            </Link>
-                           <button onClick={() => handleProposeInterview(app.candidate_id.toString(), selectedJobIdForApplicants || undefined)} className="px-4 py-2 bg-ink text-white rounded-lg font-mono text-[10px] uppercase tracking-widest hover:bg-ink/90 transition-colors">
+                           <button onClick={() => handleProposeInterview(app.candidate_id.toString(), selectedJobIdForApplicants || undefined)} className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-ink rounded-xl font-mono text-xs uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-md">
                              Propose Interview
                            </button>
                          </div>
@@ -642,34 +661,34 @@ export function RecruiterDashboard() {
           {/* Interviews Tab */}
           {activeTab === 'Interviews' && (
             <motion.div key="interviews" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
-              <h2 className="font-serif text-2xl font-bold text-ink">Proposed & Upcoming Interviews</h2>
-              <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-8 shadow-sm min-h-[400px]">
+              <h2 className="font-serif text-2xl font-bold text-white">Proposed & Upcoming Interviews</h2>
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-sm min-h-[400px]">
                 {interviews.length > 0 ? (
                   <div className="space-y-4">
                     {interviews.map((interview, i) => (
-                      <div key={i} className="flex flex-col md:flex-row justify-between md:items-center border border-structure/20 rounded-xl p-6 bg-white gap-4">
+                      <div key={i} className="flex flex-col md:flex-row justify-between md:items-center border border-white/10 rounded-2xl p-6 bg-white/5 hover:bg-white/[0.08] gap-4 text-white">
                         <div className="flex gap-6 items-center">
-                          <div className="w-16 h-16 rounded-xl bg-ink text-white flex flex-col items-center justify-center leading-none">
+                          <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/15 text-white flex flex-col items-center justify-center leading-none shadow-sm">
                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-70">
                               {new Date(interview.proposed_time).toLocaleDateString(undefined, { month: 'short' })}
                             </span>
-                            <span className="font-serif font-bold text-xl">
+                            <span className="font-serif font-bold text-xl mt-0.5">
                               {new Date(interview.proposed_time).getDate()}
                             </span>
                           </div>
                           <div>
-                            <h3 className="font-serif text-xl font-bold text-ink">{interview.candidate_name || 'Candidate'}</h3>
-                            <p className="font-mono text-[10px] text-ink uppercase tracking-widest mt-1 mb-1">{interview.job_role || 'General Interview'}</p>
-                            <p className="font-mono text-[9px] text-data uppercase tracking-widest">
+                            <h3 className="font-serif text-xl font-bold text-white">{interview.candidate_name || 'Candidate'}</h3>
+                            <p className="font-mono text-[10px] text-emerald-400 uppercase tracking-widest mt-1 mb-1 font-bold">{interview.job_role || 'General Interview'}</p>
+                            <p className="font-mono text-[9px] text-white/50 uppercase tracking-widest">
                               Time: {new Date(interview.proposed_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                             </p>
-                            <div className="mt-2 inline-block px-2 py-0.5 rounded font-mono text-[9px] uppercase tracking-widest font-bold border border-structure/20 bg-structure/5">
-                              Status: <span className={interview.status === 'accepted' ? 'text-verification' : interview.status === 'declined' ? 'text-red-500' : 'text-data'}>{interview.status}</span>
+                            <div className="mt-2 inline-block px-2.5 py-0.5 rounded font-mono text-[9px] uppercase tracking-widest font-bold border border-white/15 bg-white/5">
+                              Status: <span className={interview.status === 'accepted' ? 'text-emerald-400' : interview.status === 'declined' ? 'text-rose-400' : 'text-amber-400'}>{interview.status}</span>
                             </div>
                           </div>
                         </div>
                         <div>
-                           <Link to={`/profile/${interview.candidate}`} className="px-6 py-2 border border-structure rounded-lg font-mono text-[10px] uppercase tracking-widest hover:border-ink transition-colors">
+                           <Link to={`/profile/${interview.candidate}`} className="px-6 py-2.5 border border-white/15 hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors inline-block">
                              View Candidate
                            </Link>
                         </div>
@@ -686,7 +705,7 @@ export function RecruiterDashboard() {
           {/* Feed Tab */}
           {activeTab === 'Feed' && (
             <motion.div key="feed" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-3xl mx-auto px-8 py-10 space-y-8">
-              <h2 className="font-serif text-2xl font-bold text-ink">Professional Network</h2>
+              <h2 className="font-serif text-2xl font-bold text-white">Professional Network</h2>
               <FeedWidget />
             </motion.div>
           )}
@@ -694,44 +713,44 @@ export function RecruiterDashboard() {
           {/* Company Profile Tab */}
           {activeTab === 'Company Profile' && (
             <motion.div key="company" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-3xl mx-auto px-8 py-10 space-y-8">
-              <h2 className="font-serif text-2xl font-bold text-ink">Company Requirements Profile</h2>
-              <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-8 shadow-sm">
+              <h2 className="font-serif text-2xl font-bold text-white">Company Requirements Profile</h2>
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-sm text-white">
                 <form onSubmit={handleSaveRequirements} className="space-y-6">
                   <div>
-                    <label className="block font-mono text-xs uppercase tracking-widest text-ink mb-2">Company Name</label>
+                    <label className="block font-mono text-xs uppercase tracking-widest text-white/70 mb-2">Company Name</label>
                     <input
                       type="text" value={reqCompany} onChange={e => setReqCompany(e.target.value)}
-                      className="w-full border border-structure/30 rounded-xl p-4 focus:outline-none focus:border-verification font-mono text-sm bg-white/50"
+                      className="w-full border border-white/10 rounded-xl p-4 focus:outline-none focus:border-emerald-400 font-mono text-sm bg-white/5 text-white placeholder-white/30"
                       placeholder="e.g. TechCorp" required
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-xs uppercase tracking-widest text-ink mb-2">Company Description</label>
+                    <label className="block font-mono text-xs uppercase tracking-widest text-white/70 mb-2">Company Description</label>
                     <textarea
                       value={reqDesc} onChange={e => setReqDesc(e.target.value)}
-                      className="w-full border border-structure/30 rounded-xl p-4 focus:outline-none focus:border-verification text-sm min-h-[120px] bg-white/50"
+                      className="w-full border border-white/10 rounded-xl p-4 focus:outline-none focus:border-emerald-400 text-sm min-h-[120px] bg-white/5 text-white placeholder-white/30"
                       placeholder="Tell candidates what you do..."
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-xs uppercase tracking-widest text-ink mb-2">Minimum Preferred Score</label>
+                    <label className="block font-mono text-xs uppercase tracking-widest text-white/70 mb-2">Minimum Preferred Score</label>
                     <input
                       type="number" min="0" max="100" value={reqMinScore} onChange={e => setReqMinScore(e.target.value ? Number(e.target.value) : '')}
-                      className="w-full md:w-1/3 border border-structure/30 rounded-xl p-4 focus:outline-none focus:border-verification font-mono text-sm bg-white/50"
+                      className="w-full md:w-1/3 border border-white/10 rounded-xl p-4 focus:outline-none focus:border-emerald-400 font-mono text-sm bg-white/5 text-white placeholder-white/30"
                       placeholder="e.g. 75"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-xs uppercase tracking-widest text-ink mb-2">Required Core Skills</label>
+                    <label className="block font-mono text-xs uppercase tracking-widest text-white/70 mb-2">Required Core Skills</label>
                     <div className="flex flex-wrap gap-2">
                       {allCategories.map(cat => (
                         <button
                           key={cat.id} type="button"
                           onClick={() => setReqSkills(prev => prev.includes(cat.id.toString()) ? prev.filter(id => id !== cat.id.toString()) : [...prev, cat.id.toString()])}
-                          className={`px-4 py-2 border rounded-lg font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                          className={`px-4 py-2 border rounded-xl font-mono text-[10px] uppercase tracking-widest transition-all ${
                             reqSkills.includes(cat.id.toString()) 
-                            ? 'bg-verification/10 border-verification text-verification font-bold' 
-                            : 'bg-white/50 border-structure/30 text-data hover:border-ink'
+                            ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-bold shadow-sm' 
+                            : 'bg-white/5 border-white/10 text-white/60 hover:border-white/30 hover:text-white'
                           }`}
                         >
                           {cat.name}
@@ -739,8 +758,8 @@ export function RecruiterDashboard() {
                       ))}
                     </div>
                   </div>
-                  <div className="pt-6 border-t border-structure/20">
-                    <button type="submit" disabled={savingReqs} className="bg-ink text-white px-8 py-4 rounded-xl font-mono text-[10px] uppercase font-bold tracking-widest hover:bg-ink/90 disabled:opacity-50">
+                  <div className="pt-6 border-t border-white/10">
+                    <button type="submit" disabled={savingReqs} className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-ink px-8 py-3.5 rounded-xl font-mono text-xs uppercase font-bold tracking-widest shadow-lg transition-all hover:scale-105 disabled:opacity-50">
                       {savingReqs ? 'Saving...' : 'Save Profile'}
                     </button>
                   </div>
@@ -752,13 +771,13 @@ export function RecruiterDashboard() {
           {/* Settings Tab */}
           {activeTab === 'Settings' && (
             <motion.div key="settings" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-3xl mx-auto px-8 py-10 space-y-8">
-              <h2 className="font-serif text-2xl font-bold text-ink">Settings</h2>
+              <h2 className="font-serif text-2xl font-bold text-white">Settings</h2>
               
-              <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-8 shadow-sm">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-sm text-white">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="font-serif text-lg font-bold text-ink">Personal Profile</h3>
+                  <h3 className="font-serif text-lg font-bold text-white">Personal Profile</h3>
                   {!isEditingProfile && (
-                    <button onClick={() => setIsEditingProfile(true)} className="text-xs font-mono uppercase tracking-widest text-data hover:text-ink underline">
+                    <button onClick={() => setIsEditingProfile(true)} className="text-xs font-mono uppercase tracking-widest text-emerald-400 hover:text-emerald-300 underline font-bold">
                       Edit Profile
                     </button>
                   )}
@@ -767,18 +786,18 @@ export function RecruiterDashboard() {
                 {isEditingProfile ? (
                   <div className="space-y-4">
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-data mb-1">Full Name</label>
-                      <input type="text" value={editProfileData.full_name} onChange={e => setEditProfileData({...editProfileData, full_name: e.target.value})} className="w-full p-3 rounded-lg border border-structure/30 bg-white/50 font-mono text-sm" />
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Full Name</label>
+                      <input type="text" value={editProfileData.full_name} onChange={e => setEditProfileData({...editProfileData, full_name: e.target.value})} className="w-full p-3.5 rounded-xl border border-white/10 bg-white/5 text-white font-mono text-sm focus:outline-none focus:border-emerald-400" />
                     </div>
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-data mb-1">Bio</label>
-                      <textarea value={editProfileData.bio} onChange={e => setEditProfileData({...editProfileData, bio: e.target.value})} className="w-full p-3 rounded-lg border border-structure/30 bg-white/50 font-mono text-sm" rows={3} />
+                      <label className="block font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1">Bio</label>
+                      <textarea value={editProfileData.bio} onChange={e => setEditProfileData({...editProfileData, bio: e.target.value})} className="w-full p-3.5 rounded-xl border border-white/10 bg-white/5 text-white font-mono text-sm focus:outline-none focus:border-emerald-400" rows={3} />
                     </div>
                     <div className="flex gap-3 pt-4">
-                      <button onClick={handleSaveProfile} disabled={isSavingProfile} className="px-6 py-2 bg-ink text-white rounded-lg font-mono text-[10px] uppercase font-bold tracking-widest">
+                      <button onClick={handleSaveProfile} disabled={isSavingProfile} className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-ink rounded-xl font-mono text-xs uppercase font-bold tracking-widest shadow-lg hover:scale-105 transition-all">
                         {isSavingProfile ? 'Saving...' : 'Save'}
                       </button>
-                      <button onClick={() => setIsEditingProfile(false)} className="px-6 py-2 border border-structure/30 text-ink rounded-lg font-mono text-[10px] uppercase font-bold tracking-widest">
+                      <button onClick={() => setIsEditingProfile(false)} className="px-6 py-2.5 border border-white/15 text-white rounded-xl font-mono text-xs uppercase font-bold tracking-widest hover:border-white/30 transition-colors">
                         Cancel
                       </button>
                     </div>
@@ -786,16 +805,16 @@ export function RecruiterDashboard() {
                 ) : (
                   <div className="space-y-4">
                     <div className="flex gap-4 items-center">
-                      <div className="w-16 h-16 rounded-full bg-ink text-white flex items-center justify-center font-serif text-2xl">
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-brand-primary/20 border border-white/20 text-white flex items-center justify-center font-serif text-2xl shadow-md">
                         {profile?.full_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
                       </div>
                       <div>
-                        <div className="font-serif font-bold text-xl text-ink">{profile?.full_name || (user?.email ? user.email.split('@')[0] : 'User')}</div>
-                        <div className="font-mono text-xs text-data">{user?.email}</div>
+                        <div className="font-serif font-bold text-xl text-white">{profile?.full_name || (user?.email ? user.email.split('@')[0] : 'User')}</div>
+                        <div className="font-mono text-xs text-white/50">{user?.email}</div>
                       </div>
                     </div>
                     {profile?.bio && (
-                      <div className="mt-4 p-4 bg-structure/5 rounded-xl border border-structure/20 text-sm text-ink/80 italic">
+                      <div className="mt-4 p-4 bg-white/5 rounded-2xl border border-white/10 text-sm text-white/80 italic">
                         "{profile.bio}"
                       </div>
                     )}
@@ -803,16 +822,14 @@ export function RecruiterDashboard() {
                 )}
               </div>
               
-              <div className="bg-white/60 backdrop-blur-xl border border-structure/30 rounded-2xl p-8 shadow-sm">
-                 <h3 className="font-serif text-lg font-bold text-ink mb-6">Account Actions</h3>
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-sm">
+                 <h3 className="font-serif text-lg font-bold text-white mb-2">Account Actions</h3>
+                 <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-6">Sign out of active session</p>
                  <button 
-                  onClick={() => {
-                    useAuthStore.getState().logout();
-                    navigate('/login');
-                  }} 
-                  className="px-6 py-3 border border-red-500/30 text-red-600 rounded-lg font-mono text-[10px] uppercase font-bold tracking-widest hover:bg-red-50 transition-colors"
+                  onClick={handleLogout} 
+                  className="px-6 py-3 border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 rounded-xl font-mono text-xs uppercase font-bold tracking-widest transition-colors flex items-center gap-2"
                 >
-                   Log Out
+                   <LogOut size={16} /> Log Out
                  </button>
               </div>
             </motion.div>

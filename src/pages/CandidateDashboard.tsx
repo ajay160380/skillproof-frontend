@@ -9,7 +9,7 @@ import { AnimatedCounter } from '../components/AnimatedCounter';
 import { ScoreRing } from '../components/ScoreRing';
 import { StatusPill } from '../components/StatusPill';
 import { ResumeUploader } from '../components/ResumeUploader';
-import { getMyResume, getSuggestedTests, deleteResume, type Resume, type SuggestedTest } from '../services/resumeService';
+import { getMyResume, getSuggestedTests, deleteResume, reparseResume, type Resume, type SuggestedTest } from '../services/resumeService';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import toast from 'react-hot-toast';
 
@@ -316,15 +316,42 @@ const tabVariants = {
     }
   };
 
+  const [isReparsing, setIsReparsing] = useState(false);
+
+  const handleReparseResume = async () => {
+    try {
+      setIsReparsing(true);
+      toast.loading('Analyzing resume competencies with AI...', { id: 'reparse' });
+      const updated = await reparseResume();
+      setResume(updated);
+      if (updated && updated.parsing_status === 'completed') {
+        toast.success('Resume analyzed successfully!', { id: 'reparse' });
+        const tests = await getSuggestedTests();
+        setSuggestedTests(tests);
+      } else if (updated && updated.parsing_status === 'processing') {
+        toast.loading('AI engine is processing your resume...', { id: 'reparse' });
+      } else {
+        toast.error('AI analysis encountered an issue. You can re-upload or try again.', { id: 'reparse' });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to analyze resume.', { id: 'reparse' });
+    } finally {
+      setIsReparsing(false);
+    }
+  };
+
   const handleDeleteResume = async () => {
     try {
       if (window.confirm("Are you sure you want to delete your resume and matched tests?")) {
         await deleteResume();
         setResume(null);
         setSuggestedTests([]);
+        toast.success('Resume record removed');
       }
     } catch (err) {
       console.error('Failed to delete resume:', err);
+      toast.error('Failed to delete resume');
     }
   };
 
@@ -1053,104 +1080,256 @@ const tabVariants = {
 
         {/* Resume Tab */}
         {activeTab === 'Resume' && (
-          <motion.div key="resume" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
-            <h2 className="font-serif text-2xl font-bold text-white">Resume</h2>
-            
-            <div id="tests-section" className="mb-10">
-              {!resume ? (
-                <div className="bg-white/5 backdrop-blur-3xl p-6 rounded-3xl border border-white/10 shadow-sm hover:border-white/20 transition-all">
-                  <ResumeUploader onUploadSuccess={handleResumeUploadSuccess} />
+          <motion.div key="resume" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-6 lg:px-8 py-10 space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400 font-bold mb-1 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Neural Competency Engine
                 </div>
-              ) : (
-                <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-8 shadow-sm">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="flex gap-4 items-center">
-                      <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-2xl border border-white/20">
-                        📄
+                <h2 className="font-serif text-3xl font-bold text-white tracking-tight">Executive Resume Dossier</h2>
+                <p className="font-serif text-sm text-white/60 mt-1 max-w-xl">
+                  Upload your CV to automatically benchmark your skills against verified proctored assessments.
+                </p>
+              </div>
+
+              {resume && (
+                <div className="flex flex-wrap items-center gap-3">
+                  {resume.parsing_status === 'failed' && (
+                    <button
+                      onClick={handleReparseResume}
+                      disabled={isReparsing}
+                      className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-ink font-mono text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-[0_4px_16px_rgba(16,185,129,0.3)] flex items-center gap-2 disabled:opacity-50"
+                    >
+                      <span className={isReparsing ? 'animate-spin' : ''}>🔄</span>
+                      {isReparsing ? 'Analyzing...' : 'Re-Analyze with AI'}
+                    </button>
+                  )}
+                  {resume.file && (
+                    <a
+                      href={resume.file.startsWith('http') ? resume.file : `${api.defaults.baseURL?.replace('/api', '') || ''}${resume.file}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-white/10 hover:bg-white/15 text-white font-mono text-[11px] font-bold uppercase tracking-widest rounded-xl border border-white/10 transition-colors flex items-center gap-2"
+                    >
+                      <span>👁️</span> Preview Document
+                    </a>
+                  )}
+                  <button
+                    onClick={handleDeleteResume}
+                    className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-mono text-[11px] font-bold uppercase tracking-widest rounded-xl border border-rose-500/20 transition-colors flex items-center gap-2"
+                  >
+                    <span>🗑️</span> Remove
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div id="tests-section" className="space-y-8">
+              {!resume ? (
+                <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl p-8 lg:p-12 rounded-3xl border border-white/15 shadow-2xl">
+                  <div className="max-w-2xl mx-auto">
+                    <ResumeUploader 
+                      onUploadSuccess={handleResumeUploadSuccess}
+                      title="Upload Your Executive Resume"
+                      subtitle="PDF OR DOCX • MAX 5MB • PROCESSED BY GROQ AI"
+                      buttonText="SELECT RESUME FILE"
+                    />
+                    <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center border-t border-white/10 pt-6">
+                      <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
+                        <div className="text-2xl mb-1">⚡</div>
+                        <div className="font-serif font-bold text-sm text-white">Instant AI Extraction</div>
+                        <div className="font-mono text-[9px] text-white/40 uppercase mt-0.5">Top skills parsed in seconds</div>
                       </div>
-                      <div>
-                        <h3 className="font-serif text-lg text-white font-bold leading-tight">Your Resume</h3>
-                        <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-0.5">
-                          Uploaded on {new Date(resume.uploaded_at).toLocaleDateString()}
-                        </p>
+                      <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
+                        <div className="text-2xl mb-1">🎯</div>
+                        <div className="font-serif font-bold text-sm text-white">Assessment Mapping</div>
+                        <div className="font-mono text-[9px] text-white/40 uppercase mt-0.5">Tests matched to your stack</div>
                       </div>
-                    </div>
-                    <div>
-                      <span className={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full border ${
-                        resume.parsing_status === 'completed' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/20' :
-                        resume.parsing_status === 'failed' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-gold/10 text-gold border-gold/20'
-                      }`}>
-                        {resume.parsing_status === 'processing' && <div className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />}
-                        {resume.parsing_status}
-                      </span>
+                      <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
+                        <div className="text-2xl mb-1">🛡️</div>
+                        <div className="font-serif font-bold text-sm text-white">Verified Proof</div>
+                        <div className="font-mono text-[9px] text-white/40 uppercase mt-0.5">Showcase verified skill scores</div>
+                      </div>
                     </div>
                   </div>
-                  
-                  {resume.parsing_status === 'completed' && resume.extracted_skills && (
-                    <div className="mt-4 pt-4 border-t border-white/10">
-                      <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-3">Extracted Skills</p>
-                      <div className="flex flex-wrap gap-2">
-                        {resume.extracted_skills.map((skill: string, i: number) => (
-                          <span key={i} className="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 bg-white/5 border border-white/10 text-white rounded-lg shadow-sm">
-                            {skill}
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Resume Overview Card */}
+                  <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/15 rounded-3xl p-8 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                    
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-white/10 relative z-10">
+                      <div className="flex gap-4 items-center">
+                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-brand-primary/20 border border-white/20 flex items-center justify-center text-3xl shadow-lg">
+                          📄
+                        </div>
+                        <div>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <h3 className="font-serif text-xl text-white font-bold leading-tight">Active Resume Record</h3>
+                            <span className={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border font-bold ${
+                              resume.parsing_status === 'completed' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 shadow-[0_0_12px_rgba(16,185,129,0.2)]' :
+                              resume.parsing_status === 'failed' ? 'bg-rose-500/15 text-rose-400 border-rose-500/30' : 
+                              'bg-amber-500/15 text-amber-300 border-amber-500/30 animate-pulse'
+                            }`}>
+                              {resume.parsing_status === 'completed' && <span>✓</span>}
+                              {resume.parsing_status === 'processing' && <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />}
+                              {resume.parsing_status === 'failed' && <span>⚠️</span>}
+                              {resume.parsing_status === 'completed' ? 'AI Parsed & Verified' :
+                               resume.parsing_status === 'processing' ? 'Analyzing Competencies...' :
+                               'Analysis Interrupted'}
+                            </span>
+                          </div>
+                          <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-1">
+                            Uploaded on {new Date(resume.uploaded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                        {resume.file && (
+                          <a
+                            href={resume.file.startsWith('http') ? resume.file : `${api.defaults.baseURL?.replace('/api', '') || ''}${resume.file}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl border border-white/10 transition-all flex items-center gap-2 shadow-sm hover:scale-[1.02]"
+                          >
+                            <span>👁️</span> Preview PDF
+                          </a>
+                        )}
+                        <button
+                          onClick={handleDeleteResume}
+                          className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-mono text-xs font-bold uppercase tracking-wider rounded-xl border border-rose-500/20 transition-all flex items-center gap-2 hover:scale-[1.02]"
+                        >
+                          <span>🗑️</span> Remove
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Failed Recovery Banner */}
+                    {resume.parsing_status === 'failed' && (
+                      <div className="mt-6 p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-white">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                          <div>
+                            <h4 className="font-serif font-bold text-base text-amber-300 flex items-center gap-2">
+                              <span>⚡</span> AI Skills Extraction Ready to Re-Run
+                            </h4>
+                            <p className="font-mono text-[11px] text-white/70 mt-1 max-w-xl">
+                              Our AI parser can extract skills from this file immediately, or you can drop in a clean updated copy below.
+                            </p>
+                          </div>
+                          <button
+                            onClick={handleReparseResume}
+                            disabled={isReparsing}
+                            className="shrink-0 px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-ink font-mono text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg hover:scale-105 disabled:opacity-50 flex items-center gap-2"
+                          >
+                            <span className={isReparsing ? 'animate-spin' : ''}>🔄</span>
+                            {isReparsing ? 'Analyzing...' : 'Re-Analyze with AI'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Extracted Skills Section */}
+                    {resume.parsing_status === 'completed' && resume.extracted_skills && (
+                      <div className="mt-6 pt-6 border-t border-white/10">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <h4 className="font-serif text-lg font-bold text-white">Extracted Technical Competencies</h4>
+                            <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mt-0.5">
+                              {resume.extracted_skills.length} Hard Skills Identified by Neural AI
+                            </p>
+                          </div>
+                          <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-bold">
+                            Live Match Active
                           </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2.5">
+                          {resume.extracted_skills.map((skill: string, i: number) => (
+                            <span 
+                              key={i} 
+                              className="font-mono text-xs font-bold tracking-wide px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/15 hover:border-emerald-500/50 text-white rounded-xl shadow-sm transition-all duration-300 hover:scale-105 flex items-center gap-2 group cursor-default"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:scale-125 transition-transform" />
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* AI Suggested Assessments */}
+                  {suggestedTests.length > 0 && (
+                    <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-2xl border border-white/15 rounded-3xl p-8 shadow-xl">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+                        <div>
+                          <div className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-1">
+                            Recommended Next Steps
+                          </div>
+                          <h3 className="font-serif text-2xl font-bold text-white">AI-Matched Skill Assessments</h3>
+                        </div>
+                        <span className="font-mono text-xs text-white/50">
+                          {suggestedTests.length} Tests Ready
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {suggestedTests.map((st) => (
+                          <div
+                            key={st.id} 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleStartTest(st.id);
+                            }}
+                            className="text-left flex items-center justify-between p-5 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 hover:border-emerald-500/40 transition-all duration-300 group cursor-pointer shadow-sm hover:shadow-lg hover:scale-[1.01]"
+                          >
+                            <div className="flex items-center gap-4">
+                              <span className="text-3xl bg-white/10 p-3 rounded-2xl border border-white/20 group-hover:scale-110 transition-transform">
+                                {CATEGORY_ICONS[st.test_type] || '🧠'}
+                              </span>
+                              <div>
+                                <div className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 font-bold mb-1">
+                                  {st.category} • {st.difficulty || 'Intermediate'}
+                                </div>
+                                <h4 className="font-serif font-bold text-white text-base group-hover:text-emerald-300 transition-colors">
+                                  {st.title}
+                                </h4>
+                                <div className="font-mono text-[10px] text-white/40 mt-1 flex items-center gap-2">
+                                  <span>⏱ {st.duration_minutes} Mins</span>
+                                  <span>•</span>
+                                  <span className="text-emerald-400/80">Proctored Proof</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex items-center pl-4">
+                              <span className="w-10 h-10 rounded-xl bg-white/5 group-hover:bg-emerald-500 group-hover:text-ink text-white flex items-center justify-center font-bold text-lg transition-all duration-300 group-hover:translate-x-1 shadow-sm">
+                                →
+                              </span>
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  <div className="mt-6 flex items-center gap-6 pt-4 border-t border-white/10">
-                    {resume.file && (
-                      <a
-                        href={resume.file.startsWith('http') ? resume.file : `${api.defaults.baseURL?.replace('/api', '') || ''}${resume.file}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-mono text-[10px] uppercase tracking-widest text-white hover:text-brand-primary flex items-center gap-2 font-bold transition-colors"
-                      >
-                        <span className="text-sm">👁️</span> View Resume
-                      </a>
-                    )}
-                    <button
-                      onClick={handleDeleteResume}
-                      className="font-mono text-[10px] uppercase tracking-widest text-red-400 hover:text-red-500 flex items-center gap-2 font-bold transition-colors"
-                    >
-                      <span className="text-sm">🗑️</span> Delete Resume Record
-                    </button>
+                  {/* Replace Resume Card */}
+                  <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all">
+                    <h4 className="font-serif text-lg font-bold text-white mb-2">Update or Replace Resume</h4>
+                    <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-6">
+                      Upload an updated version to re-sync your profile and refresh skill matches
+                    </p>
+                    <ResumeUploader 
+                      onUploadSuccess={handleResumeUploadSuccess}
+                      title="Upload Replacement Resume"
+                      subtitle="PDF OR DOCX • MAX 5MB"
+                      buttonText="REPLACE CURRENT RESUME"
+                    />
                   </div>
                 </div>
               )}
             </div>
-            
-            {resume?.parsing_status === 'completed' && suggestedTests.length > 0 && (
-              <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-8 shadow-sm">
-                <h3 className="font-serif text-lg font-bold text-white mb-1">AI Matched From Resume</h3>
-                <p className="font-mono text-[10px] text-white/50 uppercase tracking-widest mb-6">Assessments recommended based on your uploaded skills</p>
-                <div className="space-y-3">
-                  {suggestedTests.map((st) => (
-                    <button 
-                      key={st.id} 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleStartTest(st.id);
-                      }}
-                      className="w-full text-left flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:border-brand-primary/50 transition-all group cursor-pointer"
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="text-2xl bg-white/10 p-2 rounded-xl border border-white/20">{CATEGORY_ICONS[st.test_type] || '🧠'}</span>
-                        <div>
-                          <div className="font-mono text-[9px] uppercase tracking-widest text-white/50 mb-1">{st.category}</div>
-                          <h4 className="font-serif font-bold text-white text-sm group-hover:text-brand-primary transition-colors">{st.title}</h4>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="font-mono text-[10px] text-white/50"><span className="text-sm">⏱</span> {st.duration_minutes} MINS</span>
-                        <span className="text-brand-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </motion.div>
         )}
 
