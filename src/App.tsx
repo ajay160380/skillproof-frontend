@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Loader } from './components/Loader';
@@ -25,6 +26,21 @@ const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate').then(m 
 
 import { useAuthStore } from './store/authStore';
 import { api } from './services/api';
+
+function ErrorFallback({ error, resetErrorBoundary }: any) {
+  // If it's a chunk load error, automatically refresh the page once
+  if (error.name === 'ChunkLoadError' || error.message.includes('dynamically imported module')) {
+    window.location.reload();
+    return null;
+  }
+  return (
+    <div className="h-screen w-screen flex flex-col items-center justify-center bg-ink text-vellum p-8 text-center">
+      <div className="font-sans text-3xl mb-4 text-red-500">Application Error</div>
+      <p className="font-mono text-sm text-data max-w-md mb-8">{error.message}</p>
+      <button onClick={() => window.location.reload()} className="px-6 py-3 bg-verification text-ink rounded-md font-bold uppercase tracking-widest font-mono text-xs">Reload App</button>
+    </div>
+  );
+}
 
 function ScrollToHash() {
   const { hash, pathname } = useLocation();
@@ -89,6 +105,7 @@ function App() {
           },
         }} 
       />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]"><Loader /></div>}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
@@ -116,6 +133,7 @@ function App() {
         </Routes>
       </AnimatePresence>
       </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

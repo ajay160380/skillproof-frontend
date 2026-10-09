@@ -178,7 +178,7 @@ export function ScoreReveal() {
                     <div key={key} className="border border-structure p-4 rounded-md bg-white/40">
                       <div className="font-mono text-[10px] text-data uppercase tracking-widest mb-1">{key.replace(/_/g, ' ')}</div>
                       <div className="font-sans tracking-tight text-2xl font-bold">
-                        {revealPhase === 'stamped' ? val as number : <AnimatedCounter target={val as number} duration={3} />}
+                        {revealPhase === 'stamped' ? Number(val) : <AnimatedCounter target={Number(val)} duration={3} />}
                       </div>
                     </div>
                   ))}
