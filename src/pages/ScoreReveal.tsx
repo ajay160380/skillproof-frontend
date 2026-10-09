@@ -116,7 +116,7 @@ export function ScoreReveal() {
 
   return (
     <div className="flex-1 p-8 flex items-center justify-center bg-vellum">
-      <div className="max-w-2xl w-full border border-structure  shadow-ink/10 relative overflow-hidden bg-vellum rounded-lg">
+      <div className="max-w-2xl w-full border border-structure  shadow-ink/10 relative overflow-hidden bg-vellum rounded-lg text-[#0A0A0B]">
         
         {/* Header */}
         <div className="p-8 border-b border-structure bg-structure/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

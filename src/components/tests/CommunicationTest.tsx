@@ -212,7 +212,7 @@ export function CommunicationTest({ onSubmit }: CommunicationTestProps) {
             </button>
             <button 
               onClick={handleSubmit}
-              className="bg-verification text-vellum px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-xl font-bold shadow-lg"
+              className="bg-verification text-[#0A0A0B] px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-xl font-bold shadow-lg"
             >
               Submit for AI Verification
             </button>

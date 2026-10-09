@@ -92,7 +92,7 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
           <button 
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full bg-verification text-vellum py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-md disabled:opacity-50 font-bold shadow-md"
+            className="w-full bg-verification text-[#0A0A0B] py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-md disabled:opacity-50 font-bold shadow-md"
           >
             {submitting ? 'Verifying Sandbox Execution...' : 'Submit for AI Verification'}
           </button>
