@@ -43,17 +43,33 @@ export function Layout() {
               rotation: -5,
               hoverStyles: { bgColor: '#10b981', textColor: '#ffffff' }
             },
-            ...(user?.role === 'candidate' ? [{
-              label: 'Jobs',
-              href: '/jobs',
-              rotation: 5,
-              hoverStyles: { bgColor: '#3b82f6', textColor: '#ffffff' }
-            }] : []),
-            ...(user?.role === 'recruiter' ? [{
-              label: 'Job Listings',
-              href: '/jobs/my-listings',
-              rotation: 5,
-              hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' }
+            ...(user?.role === 'candidate' ? [
+              {
+                label: 'Jobs & Matching',
+                href: '/jobs',
+                rotation: 5,
+                hoverStyles: { bgColor: '#3b82f6', textColor: '#ffffff' }
+              }
+            ] : []),
+            ...(user?.role === 'recruiter' ? [
+              {
+                label: 'Post Job',
+                href: '/jobs/post',
+                rotation: 3,
+                hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' }
+              },
+              {
+                label: 'Job Listings',
+                href: '/jobs/my-listings',
+                rotation: -3,
+                hoverStyles: { bgColor: '#8b5cf6', textColor: '#ffffff' }
+              }
+            ] : []),
+            ...(Boolean(user && (['admin', 'superadmin', 'manager', 'auditor'].includes(user.role) || (user as any).is_staff || (user as any).is_superuser)) ? [{
+              label: 'Admin Suite',
+              href: '/admin',
+              rotation: -2,
+              hoverStyles: { bgColor: '#10b981', textColor: '#000000' }
             }] : []),
             {
               label: 'Logout',

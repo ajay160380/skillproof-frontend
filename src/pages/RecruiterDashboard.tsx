@@ -121,6 +121,12 @@ export function RecruiterDashboard() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user && user.role === 'candidate') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
+
   const handleLogout = () => {
     logout();
     navigate('/login');

@@ -46,53 +46,53 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col md:flex-row">
-      <div className="w-full md:w-1/3 border-r border-structure/20 p-6 flex flex-col">
+    <div className="flex-1 flex flex-col md:flex-row bg-[#0A0A0B] text-white min-h-[calc(100vh-65px)]">
+      <div className="w-full md:w-1/3 border-r border-[#2A2A2D] bg-[#141415] p-6 flex flex-col overflow-y-auto">
         <IntegrityNotice />
         {/* Proctoring Active Banner */}
-        <div className="mb-4 p-3 bg-verification/10 border border-verification/30 rounded-lg flex items-center justify-between">
+        <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-verification animate-ping" />
-            <span className="font-mono text-[10px] uppercase font-bold text-verification tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="font-mono text-[10px] uppercase font-bold text-emerald-400 tracking-wider">
               AI Proctor Active
             </span>
           </div>
-          <div className="flex items-center gap-3 font-mono text-[10px] text-data">
-            <span>Switches: <strong className={tabSwitches > 0 ? 'text-red-500' : ''}>{tabSwitches}</strong></span>
-            <span>Pastes: <strong className={pasteCount > 0 ? 'text-amber-600' : ''}>{pasteCount}</strong></span>
+          <div className="flex items-center gap-3 font-mono text-[10px] text-[#A0A0A3]">
+            <span>Switches: <strong className={tabSwitches > 0 ? 'text-red-400' : 'text-white'}>{tabSwitches}</strong></span>
+            <span>Pastes: <strong className={pasteCount > 0 ? 'text-amber-400' : 'text-white'}>{pasteCount}</strong></span>
           </div>
         </div>
 
-        <h2 className="font-sans tracking-tight text-2xl mb-2">{title}</h2>
+        <h2 className="font-sans font-bold text-2xl text-white mb-2">{title}</h2>
         {testData?.difficulty && (
-          <span className={`inline-block w-fit font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full mb-4 ${
-            testData.difficulty === 'easy' ? 'bg-verification/20 text-verification' :
-            testData.difficulty === 'hard' ? 'bg-seal/20 text-seal' : 'bg-amber-100 text-amber-700'
+          <span className={`inline-block w-fit font-mono text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full mb-4 border ${
+            testData.difficulty === 'easy' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+            testData.difficulty === 'hard' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
           }`}>
-            {testData.difficulty} • {testData.duration_minutes}min
+            {testData.difficulty} • {testData.duration_minutes || 45}min
           </span>
         )}
-        <div className="font-mono text-sm text-data/80 leading-relaxed mb-6">
+        <div className="font-mono text-xs text-[#D4D4D8] leading-relaxed mb-6 bg-[#0A0A0B] p-4 rounded-xl border border-[#2A2A2D]">
           <p>{statement}</p>
         </div>
 
         {testCases.length > 0 && (
           <div className="mb-6 space-y-3">
-            <div className="font-mono text-[10px] text-data uppercase tracking-widest">Test Cases</div>
+            <div className="font-mono text-[10px] text-[#A0A0A3] uppercase tracking-widest font-bold">Sample Test Cases</div>
             {testCases.map((tc: any, i: number) => (
-              <div key={i} className="bg-[#0A0A0B]/5 border border-structure/20 rounded-md p-3 font-mono text-xs">
-                <div><span className="text-data">Input:</span> {tc.input}</div>
-                <div><span className="text-data">Expected:</span> {tc.expected_output}</div>
+              <div key={i} className="bg-[#0A0A0B] border border-[#2A2A2D] rounded-xl p-3 font-mono text-xs text-[#D4D4D8] space-y-1">
+                <div><span className="text-[#A0A0A3]">Input:</span> <code className="text-emerald-400">{tc.input}</code></div>
+                <div><span className="text-[#A0A0A3]">Expected:</span> <code className="text-white font-bold">{tc.expected_output}</code></div>
               </div>
             ))}
           </div>
         )}
         
-        <div className="mt-auto">
+        <div className="mt-auto pt-4">
           <button 
             onClick={handleSubmit}
             disabled={submitting}
-            className="w-full bg-verification text-[#0A0A0B] py-4 font-mono text-xs uppercase tracking-widest hover:bg-verification/90 transition-colors rounded-md disabled:opacity-50 font-bold shadow-md"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] py-3.5 font-mono text-xs uppercase tracking-widest transition-all rounded-xl disabled:opacity-50 font-bold shadow-lg shadow-emerald-500/10 hover:scale-[1.02] active:scale-[0.98]"
           >
             {submitting ? 'Verifying Sandbox Execution...' : 'Submit for AI Verification'}
           </button>
@@ -110,7 +110,7 @@ export function CodingTest({ testData, onSubmit }: CodingTestProps) {
           options={{
             minimap: { enabled: false },
             fontSize: 14,
-            fontFamily: 'IBM Plex Mono',
+            fontFamily: 'JetBrains Mono, monospace',
             padding: { top: 24 },
           }}
         />

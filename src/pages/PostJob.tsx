@@ -16,6 +16,9 @@ export function PostJob() {
   const [roleTitle, setRoleTitle] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('Remote');
+  const [salaryRange, setSalaryRange] = useState('$120,000 - $160,000');
+  const [minScore, setMinScore] = useState<number>(70);
   const [availableTests, setAvailableTests] = useState<SkillTest[]>([]);
   const [selectedTests, setSelectedTests] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,8 +27,13 @@ export function PostJob() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.role !== 'recruiter') {
-      navigate('/');
+    if (user?.role === 'candidate') {
+      navigate('/dashboard');
+      return;
+    }
+    const isAuthorized = user?.role === 'recruiter' || ['admin', 'superadmin', 'manager'].includes(user?.role || '') || (user as any)?.is_staff;
+    if (!isAuthorized) {
+      navigate('/dashboard');
       return;
     }
     api.get('/skills/tests/')
@@ -73,10 +81,13 @@ export function PostJob() {
         role_title: roleTitle,
         company_name: companyName,
         description,
+        location,
+        salary_range: salaryRange,
+        min_score: minScore,
         required_test_ids: selectedTests,
         is_active: true
       });
-      toast.success('Job listing created successfully!');
+      toast.success('Job listing created successfully with verified score requirement!');
       navigate('/jobs/my-listings');
     } catch (err) {
       toast.error('Failed to create job listing');
@@ -84,61 +95,102 @@ export function PostJob() {
   };
 
   return (
-    <div className="flex-1 bg-vellum flex flex-col md:flex-row">
-      <div className="w-full md:w-1/3 bg-[#0A0A0B] text-vellum p-8 md:p-12 flex flex-col justify-center relative overflow-hidden min-h-[40vh] md:min-h-0">
-        <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4=')]" />
+    <div className="flex-1 bg-[#0A0A0B] text-white flex flex-col md:flex-row min-h-[calc(100vh-73px)]">
+      {/* Left Hero Panel */}
+      <div className="w-full md:w-1/3 bg-[#141415] border-r border-[#2A2A2D] p-8 md:p-12 flex flex-col justify-center relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10">
-          <p className="font-mono text-xs uppercase tracking-widest text-verification mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 hidden rounded-full" />
-            Recruiter Portal
-          </p>
-          <h1 className="font-sans tracking-tight text-5xl mb-6">Post a Role</h1>
-          <p className="text-vellum/70 font-light leading-relaxed">
-            Create a targeted job listing. Candidates will need to complete the specific AI-proctored skill tests you select to prove their fit for the role.
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-mono text-[10px] uppercase tracking-wider mb-6 font-bold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            Recruiter Suite
+          </div>
+          <h1 className="font-sans font-bold text-4xl sm:text-5xl text-white mb-6 tracking-tight">Post a Role</h1>
+          <p className="text-[#A0A0A3] font-sans leading-relaxed text-sm">
+            Create a targeted competency-based job listing. Candidates will need to complete the AI-proctored skill tests you select and meet your minimum verified score threshold to unlock direct application.
           </p>
         </div>
       </div>
 
-      <div className="w-full md:w-2/3 p-8 md:p-16 flex items-center bg-white shadow-xl z-10">
+      {/* Right Form Panel */}
+      <div className="w-full md:w-2/3 p-8 md:p-12 flex items-center justify-center bg-[#0A0A0B]">
         <div className="w-full max-w-2xl mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70 mb-2">Role Title</label>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Role Title</label>
                 <input
                   type="text"
                   required
                   value={roleTitle}
                   onChange={e => setRoleTitle(e.target.value)}
-                  className="w-full px-4 py-3 bg-vellum border border-structure/30 focus:outline-none focus:border-verification font-mono text-sm transition-colors"
-                  placeholder="e.g. Frontend Engineer"
+                  className="w-full px-4 py-3 bg-[#141415] border border-[#2A2A2D] rounded-xl focus:outline-none focus:border-emerald-500 font-sans text-sm text-white placeholder-[#71717A] transition-colors"
+                  placeholder="e.g. Senior AI Platform Engineer"
                 />
               </div>
               <div>
-                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70 mb-2">Company Name</label>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Company Name</label>
                 <input
                   type="text"
                   required
                   value={companyName}
                   onChange={e => setCompanyName(e.target.value)}
-                  className="w-full px-4 py-3 bg-vellum border border-structure/30 focus:outline-none focus:border-verification font-mono text-sm transition-colors"
-                  placeholder={user?.company_name || 'Company Inc.'}
+                  className="w-full px-4 py-3 bg-[#141415] border border-[#2A2A2D] rounded-xl focus:outline-none focus:border-emerald-500 font-sans text-sm text-white placeholder-[#71717A] transition-colors"
+                  placeholder={user?.company_name || 'Anthropic Core'}
                 />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Location</label>
+                <input
+                  type="text"
+                  value={location}
+                  onChange={e => setLocation(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#141415] border border-[#2A2A2D] rounded-xl focus:outline-none focus:border-emerald-500 font-sans text-sm text-white placeholder-[#71717A] transition-colors"
+                  placeholder="e.g. Remote / SF"
+                />
+              </div>
+              <div>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">Salary Range</label>
+                <input
+                  type="text"
+                  value={salaryRange}
+                  onChange={e => setSalaryRange(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#141415] border border-[#2A2A2D] rounded-xl focus:outline-none focus:border-emerald-500 font-sans text-sm text-white placeholder-[#71717A] transition-colors"
+                  placeholder="e.g. $140,000 - $180,000"
+                />
+              </div>
+              <div>
+                <label className="block font-mono text-xs uppercase tracking-widest text-emerald-400 mb-2 font-bold">
+                  Min Score Threshold
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min={40}
+                    max={100}
+                    value={minScore}
+                    onChange={e => setMinScore(Number(e.target.value))}
+                    className="w-full px-4 py-3 bg-[#141415] border border-emerald-500/40 rounded-xl focus:outline-none focus:border-emerald-400 font-mono text-sm font-bold text-emerald-400 transition-colors"
+                  />
+                  <span className="font-mono text-sm font-bold text-emerald-400">%</span>
+                </div>
               </div>
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70">Job Description</label>
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] font-bold">Job Description</label>
                 <button
                   type="button"
                   onClick={generateAIDescription}
                   disabled={isGenerating || !roleTitle}
-                  className="font-mono text-xs flex items-center gap-1 text-verification hover:text-[#0A0A0B] transition-colors disabled:opacity-50"
+                  className="font-mono text-xs flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-xl hover:bg-emerald-500/20 transition-all disabled:opacity-50"
                 >
                   <span className="text-sm">✨</span>
-                  {isGenerating ? 'Generating...' : 'Generate with AI'}
+                  {isGenerating ? 'Generating...' : 'AI Generate'}
                 </button>
               </div>
               <textarea
@@ -146,25 +198,25 @@ export function PostJob() {
                 rows={4}
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-                className="w-full px-4 py-3 bg-vellum border border-structure/30 focus:outline-none focus:border-verification font-mono text-sm transition-colors resize-none"
+                className="w-full px-4 py-3 bg-[#141415] border border-[#2A2A2D] rounded-xl focus:outline-none focus:border-emerald-500 font-sans text-sm text-white placeholder-[#71717A] transition-colors resize-none leading-relaxed"
                 placeholder="Briefly describe the responsibilities and requirements..."
               />
             </div>
 
-            <div className="pt-4 border-t border-structure/20">
+            <div className="pt-4 border-t border-[#2A2A2D]">
               <div className="flex justify-between items-center mb-4">
-                <label className="block font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70">
-                  Required Skill Assessments
+                <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] font-bold">
+                  Required Skill Assessments ({selectedTests.length} selected)
                 </label>
                 <input
                   type="text"
-                  placeholder="Search skills..."
+                  placeholder="Filter skills..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className="px-3 py-1 bg-vellum border border-structure/30 focus:outline-none focus:border-verification font-mono text-xs transition-colors w-48"
+                  className="px-3.5 py-1.5 bg-[#141415] border border-[#2A2A2D] rounded-xl focus:outline-none focus:border-emerald-500 font-mono text-xs text-white placeholder-[#71717A] transition-colors w-48"
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">
                 {availableTests
                   .filter(test => 
                     test.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -177,19 +229,19 @@ export function PostJob() {
                       type="button"
                       key={test.id}
                       onClick={() => toggleTest(test.id)}
-                      className={`text-left px-4 py-3 border transition-all ${
+                      className={`text-left p-3.5 rounded-xl border transition-all ${
                         isSelected 
-                          ? 'bg-verification/10 border-verification shadow-sm' 
-                          : 'bg-white border-structure/20 hover:border-verification/50'
+                          ? 'bg-emerald-500/10 border-emerald-500 text-white' 
+                          : 'bg-[#141415] border-[#2A2A2D] text-[#D4D4D8] hover:border-[#3A3A3D]'
                       }`}
                     >
                       <div className="flex justify-between items-center">
-                        <span className="font-sans tracking-tight text-[#0A0A0B]">{test.title}</span>
-                        <div className={`w-4 h-4 border flex items-center justify-center ${isSelected ? 'hidden border-verification' : 'border-structure/30'}`}>
-                          {isSelected && <span className="text-white text-[10px]">✓</span>}
+                        <span className="font-sans font-bold text-sm text-white">{test.title}</span>
+                        <div className={`w-5 h-5 rounded-lg border flex items-center justify-center ${isSelected ? 'bg-emerald-500 border-emerald-500' : 'border-[#2A2A2D]'}`}>
+                          {isSelected && <span className="text-[#0A0A0B] text-xs font-bold">✓</span>}
                         </div>
                       </div>
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0B]/50 mt-1 block">
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mt-1 block">
                         {test.category.name}
                       </span>
                     </button>
@@ -200,9 +252,9 @@ export function PostJob() {
 
             <button
               type="submit"
-              className="w-full bg-[#0A0A0B] text-vellum py-4 font-mono text-sm uppercase tracking-[0.2em] hover:opacity-80 transition-all active:scale-[0.98] mt-8"
+              className="w-full bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] py-4 rounded-xl font-mono text-xs uppercase tracking-widest font-bold shadow-xl shadow-emerald-500/10 hover:scale-[1.01] active:scale-[0.99] transition-all"
             >
-              Publish Job Listing
+              Publish Job Listing with Score Requirement &rarr;
             </button>
           </form>
         </div>
@@ -210,3 +262,6 @@ export function PostJob() {
     </div>
   );
 }
+
+
+

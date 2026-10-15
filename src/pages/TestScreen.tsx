@@ -141,14 +141,14 @@ export function TestScreen() {
   const testType = attempt.test.test_type;
 
   return (
-    <div className="flex-1 flex flex-col bg-[#0A0A0B] text-vellum">
-      <header className="px-6 py-4 border-b border-structure/20 flex justify-between items-center">
-        <div className="font-mono text-xs uppercase tracking-widest text-data">
-          Active Session: <span className="text-vellum">{attempt.test.title}</span>
+    <div className="flex-1 flex flex-col bg-[#0A0A0B] text-white">
+      <header className="px-6 py-4 border-b border-[#2A2A2D] bg-[#141415] flex justify-between items-center">
+        <div className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3]">
+          Active Session: <span className="text-white font-bold">{attempt.test.title}</span>
         </div>
-        <div className="font-mono text-[10px] uppercase text-verification flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full hidden animate-pulse"></div>
-          Recording & Proctoring Active
+        <div className="font-mono text-[10px] uppercase text-emerald-400 flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-1.5 rounded-full font-bold">
+          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          Proctoring Active
         </div>
       </header>
 

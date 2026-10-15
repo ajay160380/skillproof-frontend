@@ -16,6 +16,10 @@ export interface SuggestedTest {
   difficulty: string;
   duration_minutes: number;
   test_type: 'communication' | 'coding' | 'screen_task';
+  user_score?: number | null;
+  is_completed?: boolean;
+  unlocked_jobs?: Array<{ id: number; role_title: string; company_name: string }>;
+  unlocked_jobs_count?: number;
 }
 
 export const uploadResume = async (file: File): Promise<Resume> => {

@@ -34,23 +34,20 @@ export function FollowersList() {
   if (loading) return <Loader />;
 
   return (
-    <div className="flex-1 bg-vellum bg-mesh">
-      <div className="relative overflow-hidden bg-[#0A0A0B] text-white mb-8 border-b-4 border-verification">
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, #ffffff 40px, #ffffff 41px)`,
-        }} />
-        <div className="absolute top-0 right-0 w-96 h-96 hidden opacity-20 blur-3xl rounded-full" />
+    <div className="flex-1 bg-[#0A0A0B] text-white min-h-screen">
+      <div className="relative overflow-hidden bg-[#141415] border-b border-[#2A2A2D] mb-8">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative max-w-4xl mx-auto px-8 py-16">
-          <p className="font-mono text-[10px] text-verification uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 hidden rounded-full" />
-            NETWORK ACTIVITY
-          </p>
-          <h1 className="font-sans tracking-tight text-5xl md:text-6xl mb-4 font-light tracking-tight">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-mono text-[10px] uppercase tracking-wider mb-4 font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Network Activity
+          </div>
+          <h1 className="font-sans font-bold text-4xl sm:text-5xl text-white mb-4 tracking-tight">
             Network Followers
           </h1>
-          <p className="text-[#A0A0A3] text-sm md:text-base font-light max-w-lg leading-relaxed">
-            Recruiters actively tracking your verified skill profile.
+          <p className="text-[#A0A0A3] text-sm md:text-base font-sans max-w-lg leading-relaxed">
+            Recruiters actively tracking your verified skill dossier and portfolio.
           </p>
         </div>
       </div>
@@ -59,39 +56,39 @@ export function FollowersList() {
         {followers.length === 0 ? (
           <EmptyState message="No recruiters following yet — complete more verified skills to get noticed." />
         ) : (
-          <div className="bg-white border border-structure/20 shadow-sm rounded-lg overflow-hidden animate-fade-in-up">
+          <div className="bg-[#141415] border border-[#2A2A2D] rounded-2xl shadow-xl overflow-hidden">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-[#0A0A0B] text-white font-mono text-[10px] uppercase tracking-widest border-b border-structure/10">
+                <tr className="bg-[#1E1E21] text-[#A0A0A3] font-mono text-[10px] uppercase tracking-widest border-b border-[#2A2A2D]">
                   <th className="px-6 py-4">Recruiter</th>
                   <th className="px-6 py-4">Company</th>
                   <th className="px-6 py-4 text-right">Following Since</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-[#2A2A2D]">
                 {followers.map((follower) => (
-                  <tr key={follower.id} className="border-b border-structure/10 hover:bg-structure/5 transition-colors">
+                  <tr key={follower.id} className="hover:bg-[#1E1E21]/50 transition-colors">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-structure/30 overflow-hidden flex items-center justify-center shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-[#1E1E21] border border-[#2A2A2D] overflow-hidden flex items-center justify-center shrink-0">
                           {follower.avatar_url ? (
                             <img src={follower.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="font-sans tracking-tight text-[#0A0A0B]">{follower.recruiter_name.charAt(0)}</span>
+                            <span className="font-sans font-bold text-emerald-400">{follower.recruiter_name.charAt(0)}</span>
                           )}
                         </div>
-                        <span className="font-sans tracking-tight text-lg text-[#0A0A0B] font-semibold">
+                        <span className="font-sans font-semibold text-white">
                           {follower.recruiter_name}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <span className="font-mono text-xs uppercase tracking-widest text-[#0A0A0B]/70">
+                      <span className="font-mono text-xs uppercase tracking-widest text-[#D4D4D8]">
                         {follower.company_name}
                       </span>
                     </td>
                     <td className="px-6 py-5 text-right">
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-data">
+                      <span className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3]">
                         {new Date(follower.saved_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                     </td>

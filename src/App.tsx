@@ -5,6 +5,8 @@ import { AnimatePresence } from 'framer-motion';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { AdminProtectedRoute } from './components/AdminProtectedRoute';
+import { RecruiterProtectedRoute } from './components/RecruiterProtectedRoute';
 import { Loader } from './components/Loader';
 
 // Lazy-loaded pages for code splitting
@@ -23,6 +25,7 @@ const PostJob = lazy(() => import('./pages/PostJob').then(m => ({ default: m.Pos
 const RecruiterJobs = lazy(() => import('./pages/RecruiterJobs').then(m => ({ default: m.RecruiterJobs })));
 const FollowersList = lazy(() => import('./pages/FollowersList').then(m => ({ default: m.FollowersList })));
 const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate').then(m => ({ default: m.VerifyCertificate })));
+const AdminPortal = lazy(() => import('./pages/AdminPortal').then(m => ({ default: m.AdminPortal })));
 
 import { useAuthStore } from './store/authStore';
 import { api } from './services/api';
@@ -117,17 +120,28 @@ function App() {
             
             <Route element={<ProtectedRoute />}>
               <Route path="dashboard" element={<CandidateDashboard />} />
-              <Route path="recruiter" element={<RecruiterDashboard />} />
               <Route path="test/:id" element={<TestScreen />} />
+              <Route path="followers" element={<FollowersList />} />
+            </Route>
+
+            {/* Recruiter Only Routes (Candidates Cannot Access) */}
+            <Route element={<RecruiterProtectedRoute />}>
+              <Route path="recruiter" element={<RecruiterDashboard />} />
               <Route path="jobs/post" element={<PostJob />} />
               <Route path="jobs/my-listings" element={<RecruiterJobs />} />
-              <Route path="followers" element={<FollowersList />} />
             </Route>
 
             <Route path="profile/:id" element={<PublicProfile />} />
             <Route path="score/:id" element={<ScoreReveal />} />
             <Route path="jobs" element={<JobsBrowser />} />
             <Route path="jobs/:id" element={<JobDetail />} />
+            
+            {/* Protected Operations & Admin Suite (Only for Admin, SuperAdmin, Manager, Auditor) */}
+            <Route element={<AdminProtectedRoute />}>
+              <Route path="admin" element={<AdminPortal />} />
+              <Route path="operations" element={<AdminPortal />} />
+            </Route>
+
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

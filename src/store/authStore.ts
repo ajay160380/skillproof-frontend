@@ -5,7 +5,7 @@ export interface User {
   email: string;
   username?: string;
   full_name?: string;
-  role: 'candidate' | 'recruiter';
+  role: 'candidate' | 'recruiter' | 'admin' | 'superadmin' | 'manager' | 'auditor' | string;
   avatar_url?: string;
   cover_image?: string;
   bio?: string;

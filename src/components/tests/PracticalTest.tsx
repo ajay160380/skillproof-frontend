@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface TestData {
@@ -13,7 +13,7 @@ interface PracticalTestProps {
   onSubmit: (data: { project_url: string }) => void;
 }
 
-export function PracticalTest({ testId, testData, onSubmit }: PracticalTestProps) {
+export function PracticalTest({ testData, onSubmit }: PracticalTestProps) {
   const [projectUrl, setProjectUrl] = useState('');
   
   const submitTest = () => {
@@ -22,50 +22,56 @@ export function PracticalTest({ testId, testData, onSubmit }: PracticalTestProps
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-vellum text-[#0A0A0B] flex items-center justify-center p-8">
+    <div className="flex-1 overflow-auto bg-[#0A0A0B] text-white flex items-center justify-center p-8">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-2xl bg-white border border-structure p-8 rounded-xl shadow-lg"
+        className="w-full max-w-2xl bg-[#141415] border border-[#2A2A2D] p-8 rounded-3xl shadow-2xl"
       >
-        <h2 className="font-sans tracking-tight text-3xl mb-4 text-[#0A0A0B]">{testData.title}</h2>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-mono text-[10px] uppercase tracking-wider font-bold">
+            Practical Project Challenge
+          </span>
+        </div>
+        <h2 className="font-sans tracking-tight text-3xl font-bold text-white mb-4">{testData.title}</h2>
         
-        <div className="bg-structure/10 p-6 rounded-lg font-mono text-sm mb-8 whitespace-pre-wrap text-data/90 border border-structure/20">
-          <h3 className="uppercase tracking-widest text-[#0A0A0B] font-bold mb-2">Instructions</h3>
+        <div className="bg-[#1E1E21] p-6 rounded-2xl font-mono text-xs mb-6 whitespace-pre-wrap text-[#D4D4D8] border border-[#2A2A2D]">
+          <h3 className="uppercase tracking-widest text-emerald-400 font-bold mb-2 text-[10px]">Instructions</h3>
           {testData.instructions || "Please complete the project and submit the repository or portfolio URL below."}
         </div>
 
         {testData.problem_statement && (
-           <div className="bg-structure/5 p-6 rounded-lg font-mono text-sm mb-8 whitespace-pre-wrap text-[#0A0A0B] border border-structure/20">
-             <h3 className="uppercase tracking-widest text-[#0A0A0B] font-bold mb-2">Problem Statement</h3>
+           <div className="bg-[#1E1E21] p-6 rounded-2xl font-mono text-xs mb-6 whitespace-pre-wrap text-[#D4D4D8] border border-[#2A2A2D]">
+             <h3 className="uppercase tracking-widest text-emerald-400 font-bold mb-2 text-[10px]">Problem Statement</h3>
              {testData.problem_statement}
            </div>
         )}
 
         <div className="mb-8">
-          <label className="block font-mono text-xs uppercase tracking-widest text-data mb-2 font-bold">
-            Project URL (GitHub, GitLab, Portfolio, etc.)
+          <label className="block font-mono text-xs uppercase tracking-widest text-[#A0A0A3] mb-2 font-bold">
+            Project URL (GitHub, GitLab, Live Demo, etc.)
           </label>
           <input
             type="url"
             value={projectUrl}
             onChange={e => setProjectUrl(e.target.value)}
-            className="w-full bg-white border border-structure rounded-lg p-4 font-mono text-sm text-[#0A0A0B] focus:outline-none focus:border-ink transition-colors"
+            className="w-full bg-[#1E1E21] border border-[#2A2A2D] rounded-xl p-4 font-mono text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
             placeholder="https://github.com/username/project"
             required
           />
         </div>
         
-        <div className="flex justify-end pt-6 border-t border-structure/20">
+        <div className="flex justify-end pt-6 border-t border-[#2A2A2D]">
           <button
             onClick={submitTest}
             disabled={!projectUrl}
-            className="px-8 py-3 bg-[#0A0A0B] text-vellum font-mono text-xs uppercase tracking-widest hover:opacity-80 transition-colors rounded-lg font-bold shadow-sm disabled:opacity-50"
+            className="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-xs uppercase tracking-widest font-bold shadow-lg transition-all rounded-xl disabled:opacity-50 hover:scale-[1.02]"
           >
-            Submit Project
+            Submit Project &rarr;
           </button>
         </div>
       </motion.div>
     </div>
   );
 }
+
