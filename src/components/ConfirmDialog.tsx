@@ -23,7 +23,7 @@ const VARIANT_STYLES = {
     icon: '⚡',
   },
   info: {
-    button: 'bg-brand-primary hover:bg-brand-primary/90',
+    button: 'bg-emerald-500 hover:bg-emerald-400 !text-[#0A0A0B] font-bold',
     icon: 'ℹ️',
   },
 };

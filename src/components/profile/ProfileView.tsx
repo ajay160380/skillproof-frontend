@@ -254,7 +254,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         return (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
             <div className="max-w-2xl mx-auto mt-8">
-              <h2 className="font-sans tracking-tight text-2xl font-bold text-[#0A0A0B] mb-6">Recent Activity</h2>
+              <h2 className="font-sans tracking-tight text-2xl font-bold text-white mb-6">Recent Activity</h2>
               <FeedWidget authorId={profile.id} hidePostInput={!isOwnProfile} />
             </div>
           </motion.div>
@@ -301,9 +301,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               {isOwnProfile && !isAddingProject && (
                 <button 
                   onClick={() => setIsAddingProject(true)}
-                  className="flex items-center gap-2 bg-brand-primary text-white font-mono text-[10px] uppercase tracking-widest font-bold px-6 py-2.5 rounded-lg hover:bg-brand-secondary transition-all shadow-md"
+                  className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-xs uppercase tracking-widest font-bold px-6 py-2.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
                 >
-                  <Plus size={14} /> Add Project
+                  <Plus size={14} className="stroke-[3]" /> Add Project
                 </button>
               )}
             </div>
@@ -378,8 +378,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     </div>
                   </div>
                   <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-[#2A2A2D]">
-                    <button onClick={() => setIsAddingProject(false)} className="px-6 py-2.5 font-mono text-[10px] uppercase tracking-widest font-bold text-[#A0A0A3] hover:text-white transition-colors">Cancel</button>
-                    <button onClick={handleSaveProject} disabled={!newProject.title || !newProject.description} className="bg-brand-primary text-white font-mono text-[10px] uppercase tracking-widest font-bold px-6 py-2.5 rounded-lg hover:bg-brand-secondary transition-colors disabled:opacity-50">
+                    <button onClick={() => setIsAddingProject(false)} className="px-6 py-2.5 font-mono text-xs uppercase tracking-widest font-bold text-[#A0A0A3] hover:text-white transition-colors cursor-pointer">Cancel</button>
+                    <button onClick={handleSaveProject} disabled={!newProject.title || !newProject.description} className="bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-xs uppercase tracking-widest font-bold px-6 py-2.5 rounded-xl transition-all shadow-md disabled:opacity-50 active:scale-95 cursor-pointer">
                       Save Project
                     </button>
                   </div>
@@ -510,7 +510,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <>
             <button 
               onClick={() => coverInputRef.current?.click()}
-              className="absolute top-6 right-6 bg-white/20 hover:bg-white/40 text-[#0A0A0B]  p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 shadow-xl border border-white/30"
+              className="absolute top-6 right-6 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 shadow-xl border border-white/20 cursor-pointer"
               title="Change Cover"
             >
               <Code size={20} />
@@ -546,7 +546,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <>
                 <button 
                   onClick={() => avatarInputRef.current?.click()}
-                  className="absolute bottom-2 right-2 bg-brand-primary text-white p-2.5 rounded-full shadow-xl transition-all opacity-0 group-hover:opacity-100 hover:scale-110"
+                  className="absolute bottom-2 right-2 bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] p-2.5 rounded-full shadow-xl transition-all opacity-0 group-hover:opacity-100 hover:scale-110 cursor-pointer"
                 >
                   <Code size={18} />
                 </button>
@@ -629,7 +629,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <button 
                   onClick={toggleFollow}
                   className={`flex-1 font-mono text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 ${
-                    isFollowing ? 'bg-[#1E1E21] text-white hover:bg-white/20 border border-[#3A3A3D]' : 'bg-brand-primary text-white hover:bg-brand-secondary border border-transparent'
+                    isFollowing ? 'bg-[#1E1E21] text-white hover:bg-[#2A2A2D] border border-[#3A3A3D]' : 'bg-emerald-500 text-[#0A0A0B] hover:bg-emerald-400 font-bold border border-transparent'
                   }`}
                 >
                   <UserPlus size={16} /> {isFollowing ? 'Following' : 'Follow'}
@@ -753,8 +753,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 </div>
               </div>
               <div className="p-6 border-t border-[#2A2A2D] bg-[#141415] flex justify-end gap-4">
-                <button onClick={() => setIsEditing(false)} className="px-6 py-3 font-mono text-[11px] uppercase tracking-widest font-bold text-[#A0A0A3] hover:text-white transition-colors rounded-xl hover:bg-[#1E1E21]">Cancel</button>
-                <button onClick={handleEditSave} disabled={isSaving} className="bg-brand-primary text-white font-mono text-[11px] uppercase tracking-widest font-bold px-8 py-3 rounded-xl hover:bg-brand-secondary transition-all shadow-sm disabled:opacity-50">
+                <button onClick={() => setIsEditing(false)} className="px-6 py-3 font-mono text-xs uppercase tracking-widest font-bold text-[#A0A0A3] hover:text-white transition-colors rounded-xl hover:bg-[#1E1E21] cursor-pointer">Cancel</button>
+                <button onClick={handleEditSave} disabled={isSaving} className="bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-xs uppercase tracking-widest font-bold px-8 py-3 rounded-xl transition-all shadow-md disabled:opacity-50 cursor-pointer">
                   {isSaving ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>

@@ -146,10 +146,10 @@ export const PortfolioWidget = ({ projects = [] }: { projects?: any[] }) => (
     
     <div className="relative z-10 flex justify-between items-start mb-6">
       <div>
-        <h4 className="font-sans tracking-tight text-lg font-bold text-[#0A0A0B] tracking-tight">Portfolio</h4>
-        <p className="font-mono text-[9px] text-data font-bold uppercase tracking-[0.2em] mt-1">Showcase work</p>
+        <h4 className="font-sans tracking-tight text-lg font-bold text-white tracking-tight">Portfolio</h4>
+        <p className="font-mono text-[9px] text-[#A0A0A3] font-bold uppercase tracking-[0.2em] mt-1">Showcase work</p>
       </div>
-      <div className="w-10 h-10 bg-white/80 rounded-xl flex items-center justify-center shadow-sm">
+      <div className="w-10 h-10 bg-[#1E1E21] border border-[#2A2A2D] rounded-xl flex items-center justify-center shadow-sm">
         <span className="text-xl">🌐</span>
       </div>
     </div>
@@ -158,21 +158,21 @@ export const PortfolioWidget = ({ projects = [] }: { projects?: any[] }) => (
       {projects.length > 0 ? (
         <ul className="space-y-3">
           {projects.slice(0, 3).map((p, i) => (
-             <li key={i} className="flex items-center gap-3 bg-white/40 p-3 rounded-xl border border-[#1E1E21]0">
-               <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm text-sm">✨</div>
-               <span className="text-sm font-sans tracking-tight font-bold text-[#0A0A0B] tracking-tight truncate flex-1">{p.title}</span>
+             <li key={i} className="flex items-center gap-3 bg-[#141415] p-3 rounded-xl border border-[#2A2A2D]">
+               <div className="w-8 h-8 rounded-lg bg-[#1E1E21] border border-[#2A2A2D] flex items-center justify-center shadow-sm text-sm">✨</div>
+               <span className="text-sm font-sans tracking-tight font-bold text-white tracking-tight truncate flex-1">{p.title}</span>
              </li>
           ))}
         </ul>
       ) : (
-        <div className="h-full flex items-center justify-center text-center py-6 bg-white/30 rounded-2xl border border-dashed border-white/60">
-          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-data">Empty Portfolio</p>
+        <div className="h-full flex items-center justify-center text-center py-6 bg-[#141415] rounded-2xl border border-dashed border-[#2A2A2D]">
+          <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#A0A0A3]">Empty Portfolio</p>
         </div>
       )}
     </div>
     
-    <button className="relative z-10 w-full py-4 bg-[#0A0A0B] text-white rounded-2xl font-mono text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#0A0A0B]/90 transition-all  hover: hover:-translate-y-0.5">
+    <a href="/?tab=Portfolio" className="relative z-10 block text-center w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] rounded-2xl font-mono text-xs uppercase tracking-[0.2em] font-bold transition-all shadow-md hover:-translate-y-0.5 cursor-pointer">
       + Add Project
-    </button>
+    </a>
   </motion.div>
 );

@@ -278,9 +278,9 @@ export const PostComponent = ({ post, onLike, onDelete }: { post: any, onLike: (
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Add a comment..." 
-              className="flex-1 bg-[#141415] border border-[#2A2A2D] rounded-lg px-3 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-brand-primary"
+              className="flex-1 bg-[#18181B] border border-[#2A2A2D] rounded-xl px-4 py-2 font-sans tracking-tight text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder-[#71717A]"
             />
-            <button type="submit" className="bg-white text-black font-mono text-[9px] uppercase tracking-widest px-4 rounded-lg hover:bg-white/80 transition-colors">Post</button>
+            <button type="submit" className="bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-xl transition-all active:scale-95 cursor-pointer">Post</button>
           </form>
           <div className="space-y-3">
             {comments.map(c => (
@@ -374,21 +374,21 @@ export const FeedWidget = ({ authorId, hidePostInput = false }: { authorId?: str
   return (
     <div className="max-w-2xl mx-auto">
       {!hidePostInput && (
-        <div className="bg-white/60  border border-structure/30 rounded-2xl p-6 shadow-sm mb-8">
+        <div className="bg-[#111113] border border-[#2A2A2D] rounded-3xl p-6 shadow-xl mb-8">
           <form onSubmit={handlePost}>
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Share an update, achievement, or question..."
-              className="w-full bg-white border border-structure/20 rounded-xl p-4 font-sans tracking-tight text-[#0A0A0B] focus:outline-none focus:border-verification min-h-[100px] resize-none mb-4"
+              className="w-full bg-[#18181B] border border-[#2A2A2D] focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/30 rounded-2xl p-4 font-sans tracking-tight text-white placeholder-[#71717A] outline-none min-h-[110px] resize-none mb-4 transition-all"
             />
             {image && (
               <div className="relative mb-4 inline-block">
-                <img src={URL.createObjectURL(image)} alt="Preview" className="max-h-40 rounded-lg border border-structure/20" />
+                <img src={URL.createObjectURL(image)} alt="Preview" className="max-h-48 rounded-xl border border-[#2A2A2D]" />
                 <button 
                   type="button" 
                   onClick={() => setImage(null)}
-                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold shadow-md hover:bg-red-600 transition-colors"
+                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold shadow-md hover:bg-red-600 transition-colors flex items-center justify-center cursor-pointer"
                 >
                   ✕
                 </button>
@@ -406,16 +406,16 @@ export const FeedWidget = ({ authorId, hidePostInput = false }: { authorId?: str
                 <button 
                   type="button" 
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-data hover:text-[#0A0A0B] transition-colors flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-[#1E1E21] hover:bg-[#2A2A2D] border border-[#2A2A2D] text-[#D4D4D8] hover:text-white transition-all flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="text-xl">📷</span>
+                  <span className="text-base group-hover:scale-110 transition-transform">📷</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest font-bold">Image</span>
                 </button>
               </div>
               <button 
                 type="submit" 
                 disabled={!content.trim() && !image}
-                className="bg-structure/10 text-[#0A0A0B] font-mono text-[10px] font-bold uppercase tracking-widest px-6 py-2.5 rounded-xl hover:bg-structure/20 transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+                className="bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-xs font-bold uppercase tracking-wider px-6 py-2.5 rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 cursor-pointer"
               >
                 Post
               </button>
@@ -426,13 +426,13 @@ export const FeedWidget = ({ authorId, hidePostInput = false }: { authorId?: str
 
       {loading ? (
         <div className="text-center py-12">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-data">Loading feed...</p>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3]">Loading feed...</p>
         </div>
       ) : posts.length === 0 ? (
-        <div className="text-center py-12 bg-structure/5 rounded-2xl border border-dashed border-structure/20">
-          <span className="text-4xl mb-4 block opacity-50">📭</span>
-          <h3 className="font-sans tracking-tight text-lg font-bold text-[#0A0A0B] mb-2">Your feed is empty</h3>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-data">Follow more candidates to see their updates here.</p>
+        <div className="text-center py-14 bg-[#111113] rounded-3xl border border-dashed border-[#2A2A2D]">
+          <span className="text-4xl mb-4 block opacity-60">📭</span>
+          <h3 className="font-sans tracking-tight text-lg font-bold text-white mb-1.5">Your feed is empty</h3>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3]">Follow more candidates to see their updates here.</p>
         </div>
       ) : (
         <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
@@ -489,41 +489,41 @@ export const FollowersWidget = () => {
 
   if (followers.length === 0) {
     return (
-      <div className="text-center py-12 bg-structure/5 rounded-2xl border border-dashed border-structure/20 shadow-sm">
-        <span className="text-4xl mb-4 block opacity-50">👥</span>
-        <h3 className="font-sans tracking-tight text-lg font-bold text-[#0A0A0B] mb-2">No followers yet</h3>
-        <p className="font-mono text-[10px] uppercase tracking-widest text-data">When recruiters or candidates follow you, they will appear here.</p>
+      <div className="text-center py-14 bg-[#111113] rounded-3xl border border-dashed border-[#2A2A2D]">
+        <span className="text-4xl mb-4 block opacity-60">👥</span>
+        <h3 className="font-sans tracking-tight text-lg font-bold text-white mb-1.5">No followers yet</h3>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3]">When recruiters or candidates follow you, they will appear here.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/60  border border-structure/30 rounded-2xl p-8 shadow-sm">
+    <div className="bg-[#111113] border border-[#2A2A2D] rounded-3xl p-6 md:p-8 shadow-xl">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {followers.map(follow => {
           const follower = follow.follower_detail;
           if (!follower) return null;
           return (
-            <motion.div key={follow.id} variants={itemVariants} className="bg-white p-6 rounded-xl border border-structure/20 shadow-sm flex items-start gap-4 hover:border-verification transition-colors">
+            <motion.div key={follow.id} variants={itemVariants} className="bg-[#141415] p-6 rounded-2xl border border-[#2A2A2D] shadow-sm flex items-start gap-4 hover:border-[#3A3A3D] transition-colors">
               {follower.avatar_url ? (
-                <img src={follower.avatar_url} alt={follower.full_name} className="w-12 h-12 rounded-full object-cover border border-structure/20" />
+                <img src={follower.avatar_url} alt={follower.full_name} className="w-12 h-12 rounded-full object-cover border border-[#2A2A2D]" />
               ) : (
-                <div className="w-12 h-12 rounded-full bg-structure/10 flex items-center justify-center font-sans tracking-tight font-bold text-[#0A0A0B] shrink-0">
+                <div className="w-12 h-12 rounded-full bg-[#1E1E21] border border-[#2A2A2D] flex items-center justify-center font-sans tracking-tight font-bold text-white shrink-0">
                   {(follower.full_name || follower.username || 'U')[0].toUpperCase()}
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <a href={`/profile/${follower.username}`} className="font-sans tracking-tight font-bold text-[#0A0A0B] hover:text-verification transition-colors block truncate">
+                <a href={`/profile/${follower.username}`} className="font-sans tracking-tight font-bold text-white hover:text-emerald-400 transition-colors block truncate">
                   {follower.full_name || follower.username}
                 </a>
-                <p className="font-mono text-[10px] text-data mt-0.5 truncate capitalize">{follower.company_name || follower.role}</p>
-                <p className="font-mono text-[8px] uppercase tracking-widest text-data mt-2">
+                <p className="font-mono text-[10px] text-[#A0A0A3] mt-0.5 truncate capitalize">{follower.company_name || follower.role}</p>
+                <p className="font-mono text-[8px] uppercase tracking-widest text-[#71717A] mt-2">
                   Followed on {new Date(follow.created_at).toLocaleDateString()}
                 </p>
               </div>
               <button
                 onClick={() => handleMessage(follower.id)}
-                className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-structure/10 text-[#0A0A0B] hover:bg-structure/20 rounded-xl transition-colors active:scale-95 self-center"
+                className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-[#1E1E21] hover:bg-[#2A2A2D] text-white border border-[#2A2A2D] rounded-xl transition-colors active:scale-95 self-center cursor-pointer"
                 title="Message"
               >
                 💬

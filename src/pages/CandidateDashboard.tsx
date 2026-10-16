@@ -23,6 +23,8 @@ import { MessagesView } from './MessagesView';
 import { SkeletonLoader } from '../components/SkeletonLoader';
 import { LogOut } from 'lucide-react';
 import { getCachedCandidateData, setCachedCandidateData } from '../utils/dashboardCache';
+import { PracticeAssignmentModal } from '../components/PracticeAssignmentModal';
+
 
 interface SkillTest {
   id: number;
@@ -88,6 +90,7 @@ const tabVariants = {
   exit: { opacity: 0, y: -10, transition: { duration: 0.2 } }
 };
 
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'Dashboard';
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -110,14 +113,24 @@ const tabVariants = {
 
   useEffect(() => {
     const urlTab = searchParams.get('tab') || 'Dashboard';
+    if (urlTab.toLowerCase().includes('admin')) {
+      navigate('/admin', { replace: true });
+      return;
+    }
     if (urlTab !== activeTab) {
       setActiveTab(urlTab);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, activeTab]);
-  const navigate = useNavigate();
+  }, [searchParams, activeTab, navigate]);
+
   const { user, logout } = useAuthStore();
   const cached = getCachedCandidateData(user?.id);
+
+  useEffect(() => {
+    if (user && user.role === 'recruiter') {
+      navigate('/recruiter', { replace: true });
+    }
+  }, [user, navigate]);
 
   const [categories, setCategories] = useState<SkillCategory[]>(cached?.categories || []);
   const [testsByCategory, setTestsByCategory] = useState<Record<number, SkillTest[]>>(cached?.testsByCategory || {});
@@ -148,6 +161,10 @@ const tabVariants = {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editProfileData, setEditProfileData] = useState({ full_name: '', company_name: '', bio: '', avatar_url: '' });
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [selectedPracticeJob, setSelectedPracticeJob] = useState<any | null>(null);
+  const [isPracticeModalOpen, setIsPracticeModalOpen] = useState(false);
+
+
 
   // Cold start timer for first-time visitors with no cache
   useEffect(() => {
@@ -388,6 +405,25 @@ const tabVariants = {
     }
   };
 
+  const [jobFilter, setJobFilter] = useState<'all' | 'eligible' | 'test_required' | 'applied'>('all');
+  const [applyingJobId, setApplyingJobId] = useState<number | null>(null);
+
+  const handleApplyJob = async (jobId: number) => {
+    try {
+      setApplyingJobId(jobId);
+      toast.loading('Submitting application with your verified score...', { id: `apply-${jobId}` });
+      await api.post(`/jobs/${jobId}/apply/`);
+      toast.success('🎉 Application submitted with your verified skill score!', { id: `apply-${jobId}` });
+      const res = await api.get('/jobs/');
+      const updated = Array.isArray(res.data) ? res.data : res.data?.results || [];
+      setJobs(updated);
+    } catch (err: any) {
+      toast.error(err.response?.data?.error || 'Failed to submit application', { id: `apply-${jobId}` });
+    } finally {
+      setApplyingJobId(null);
+    }
+  };
+
   const [isReparsing, setIsReparsing] = useState(false);
 
   const handleReparseResume = async () => {
@@ -549,6 +585,12 @@ const tabVariants = {
         { id: 'Resume', icon: '📄', label: 'Resume' },
       ]
     },
+    ...(Boolean(user && (['admin', 'superadmin', 'manager', 'auditor'].includes(user.role) || (user as any).is_staff || (user as any).is_superuser)) ? [{
+      category: 'ADMINISTRATION',
+      items: [
+        { id: 'AdminSuite', icon: '⚡', label: 'Operations & Admin Suite', path: '/admin' },
+      ]
+    }] : []),
     {
       category: 'PROFILE',
       items: [
@@ -611,7 +653,11 @@ const tabVariants = {
                       )}
                       <button
                         onClick={() => {
-                          setActiveTab(item.id);
+                          if ((item as any).path) {
+                            navigate((item as any).path);
+                          } else {
+                            setActiveTab(item.id);
+                          }
                           setIsSidebarOpen(false); // Close sidebar on mobile when navigating
                         }}
                         className={`w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
@@ -624,9 +670,9 @@ const tabVariants = {
                           {item.icon}
                         </span>
                         <span className={`tracking-wide ${isActive ? 'font-bold' : ''}`}>{item.label}</span>
-                        {item.badge !== undefined && item.badge > 0 && (
+                        {(item as any).badge !== undefined && (item as any).badge > 0 && (
                           <span className="ml-auto w-5 h-5 bg-[#EF4444] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
-                            {item.badge}
+                            {(item as any).badge}
                           </span>
                         )}
                       </button>
@@ -655,7 +701,9 @@ const tabVariants = {
             </div>
             <div className="truncate">
               <div className="text-sm font-bold text-white truncate tracking-tight">{user?.email ? user.email.split('@')[0] : 'User'}</div>
-              <div className="text-[9.5px] font-mono font-bold text-[#A0A0A3] uppercase tracking-widest mt-0.5">Candidate</div>
+              <div className="text-[9.5px] font-mono font-bold text-emerald-400 uppercase tracking-widest mt-0.5">
+                {user?.role || 'Candidate'}
+              </div>
             </div>
           </div>
           <button 
@@ -1002,36 +1050,303 @@ const tabVariants = {
         )}
 
         {/* Jobs Tab */}
-        {activeTab === 'Jobs' && (
-          <motion.div key="jobs" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-8 py-10 space-y-8">
-            <h2 className="font-sans tracking-tight text-2xl font-bold text-white tracking-tight">Job Matches</h2>
-            <div className="bg-[#111113] border border-[#2A2A2D] rounded-3xl p-8 shadow-sm min-h-[400px]">
-              {jobs.length > 0 ? (
-                <div className="space-y-4">
-                  {jobs.map((job, i) => (
-                    <div key={i} className="flex justify-between items-start border border-[#2A2A2D] rounded-2xl p-6 bg-[#141415] hover:border-brand-primary/50 transition-all group">
-                      <div>
-                        <h3 className="font-sans tracking-tight text-xl font-bold text-white group-hover:text-brand-primary transition-colors">{job.title}</h3>
-                        <p className="font-mono text-[10px] text-[#A0A0A3] uppercase tracking-widest mt-1 mb-4">{job.company_name}</p>
-                        <div className="flex gap-2">
-                          <span className="bg-white/20 text-brand-primary px-3 py-1 rounded-lg font-mono text-[9px] uppercase font-bold tracking-widest border border-brand-primary/30">High Match</span>
-                          <span className="bg-[#1E1E21] text-[#D4D4D8] px-3 py-1 rounded-lg font-mono text-[9px] uppercase tracking-widest">Active</span>
+        {activeTab === 'Jobs' && (() => {
+          const eligibleCount = jobs.filter(j => j.candidate_eligibility?.is_eligible).length;
+          const testRequiredCount = jobs.filter(j => j.candidate_eligibility?.status === 'test_required' || j.candidate_eligibility?.status === 'score_too_low').length;
+          const appliedCount = jobs.filter(j => j.candidate_eligibility?.has_applied).length;
+
+          const filteredJobs = jobs.filter(j => {
+            if (jobFilter === 'eligible') return j.candidate_eligibility?.is_eligible;
+            if (jobFilter === 'test_required') return j.candidate_eligibility?.status === 'test_required' || j.candidate_eligibility?.status === 'score_too_low';
+            if (jobFilter === 'applied') return j.candidate_eligibility?.has_applied;
+            return true;
+          });
+
+          return (
+            <motion.div key="jobs" variants={tabVariants} initial="hidden" animate="show" exit="exit" className="max-w-5xl mx-auto px-6 lg:px-8 py-10 space-y-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#2A2A2D] pb-6">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400 font-bold mb-1 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    Algorithmic Talent-Role Matching
+                  </div>
+                  <h2 className="font-sans tracking-tight text-3xl font-bold text-white tracking-tight">Score-Qualified Job Matches</h2>
+                  <p className="font-sans tracking-tight text-sm text-[#A0A0A3] mt-1 max-w-xl">
+                    Roles unlock automatically when your verified test scores meet company requirements. Apply directly with your score proof.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={() => setActiveTab('Resume')}
+                    className="px-4 py-2 bg-[#1E1E21] hover:bg-[#2A2A2D] text-white font-mono text-[11px] font-bold uppercase tracking-widest rounded-xl border border-[#2A2A2D] transition-all flex items-center gap-2"
+                  >
+                    <span>📄</span> Match from Resume
+                  </button>
+                </div>
+              </div>
+
+              {/* Status Metric Pills */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl bg-[#141415] border border-[#2A2A2D]">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3] block">Active Listings</span>
+                  <span className="font-sans text-2xl font-bold text-white mt-1 block">{jobs.length}</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 block">Eligible to Apply</span>
+                  <span className="font-sans text-2xl font-bold text-emerald-300 mt-1 block">{eligibleCount}</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-amber-400 block">Assessment Needed</span>
+                  <span className="font-sans text-2xl font-bold text-amber-300 mt-1 block">{testRequiredCount}</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-purple-400 block">Applied</span>
+                  <span className="font-sans text-2xl font-bold text-purple-300 mt-1 block">{appliedCount}</span>
+                </div>
+              </div>
+
+              {/* Filter tabs */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                <button
+                  onClick={() => setJobFilter('all')}
+                  className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider transition-all font-bold ${
+                    jobFilter === 'all'
+                      ? 'bg-white text-[#0A0A0B] shadow-md'
+                      : 'bg-[#141415] border border-[#2A2A2D] text-[#A0A0A3] hover:text-white'
+                  }`}
+                >
+                  All Roles ({jobs.length})
+                </button>
+                <button
+                  onClick={() => setJobFilter('eligible')}
+                  className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider transition-all font-bold flex items-center gap-1.5 ${
+                    jobFilter === 'eligible'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20'
+                  }`}
+                >
+                  <span>🟢</span> Score Qualified ({eligibleCount})
+                </button>
+                <button
+                  onClick={() => setJobFilter('test_required')}
+                  className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider transition-all font-bold flex items-center gap-1.5 ${
+                    jobFilter === 'test_required'
+                      ? 'bg-amber-600 text-white shadow-md'
+                      : 'bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20'
+                  }`}
+                >
+                  <span>🟡</span> Assessment Needed ({testRequiredCount})
+                </button>
+                {appliedCount > 0 && (
+                  <button
+                    onClick={() => setJobFilter('applied')}
+                    className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider transition-all font-bold flex items-center gap-1.5 ${
+                      jobFilter === 'applied'
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : 'bg-purple-500/10 text-purple-300 border border-purple-500/30 hover:bg-purple-500/20'
+                    }`}
+                  >
+                    <span>🟣</span> Applied ({appliedCount})
+                  </button>
+                )}
+              </div>
+
+              {/* Jobs List */}
+              <div className="space-y-4">
+                {filteredJobs.length > 0 ? (
+                  filteredJobs.map((job) => {
+                    const elig = job.candidate_eligibility;
+                    const isEligible = elig?.is_eligible;
+                    const hasApplied = elig?.has_applied;
+                    const minScoreReq = job.min_score || 70;
+
+                    return (
+                      <div
+                        key={job.id}
+                        className={`border rounded-3xl p-6 sm:p-8 bg-[#141415] transition-all relative overflow-hidden group ${
+                          isEligible
+                            ? 'border-emerald-500/50 shadow-lg shadow-emerald-500/5'
+                            : 'border-[#2A2A2D] hover:border-[#3A3A3D]'
+                        }`}
+                      >
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                          <div className="space-y-3 flex-1">
+                            <div className="flex flex-wrap items-center gap-3">
+                              <span className="font-mono text-xs font-bold text-[#A0A0A3] bg-[#1E1E21] px-3 py-1 rounded-full border border-[#2A2A2D]">
+                                {job.company_name}
+                              </span>
+                              {hasApplied ? (
+                                <span className="font-mono text-[9px] uppercase tracking-widest px-2.5 py-1 bg-purple-500/15 text-purple-300 border border-purple-500/30 rounded-full font-bold">
+                                  ✓ Application Sent
+                                </span>
+                              ) : isEligible ? (
+                                <span className="font-mono text-[9px] uppercase tracking-widest px-2.5 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full font-bold flex items-center gap-1">
+                                  <span>✓</span> Score Qualified
+                                </span>
+                              ) : (
+                                <span className="font-mono text-[9px] uppercase tracking-widest px-2.5 py-1 bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded-full font-bold">
+                                  Assessment Needed
+                                </span>
+                              )}
+                              <span className="font-mono text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20 font-bold">
+                                Min Score: {minScoreReq}%
+                              </span>
+                            </div>
+
+                            <h3 className="font-sans text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                              {job.role_title}
+                            </h3>
+
+                            <div className="flex flex-wrap gap-2 text-xs font-mono text-[#A0A0A3]">
+                              {job.location && (
+                                <span className="bg-[#1E1E21] border border-[#2A2A2D] px-2.5 py-1 rounded-lg text-[#D4D4D8]">
+                                  📍 {job.location}
+                                </span>
+                              )}
+                              {job.salary_range && (
+                                <span className="bg-[#1E1E21] border border-[#2A2A2D] px-2.5 py-1 rounded-lg text-[#D4D4D8]">
+                                  💰 {job.salary_range}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Eligibility Banner */}
+                            <div className={`p-4 rounded-2xl border ${
+                              isEligible
+                                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200'
+                                : elig?.status === 'score_too_low'
+                                ? 'bg-rose-500/10 border-rose-500/30 text-rose-200'
+                                : 'bg-amber-500/10 border-amber-500/30 text-amber-200'
+                            }`}>
+                              {isEligible ? (
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <div className="text-[10px] font-mono uppercase tracking-widest font-bold text-emerald-400">
+                                      Competency Met ({elig?.candidate_score}% / {minScoreReq}% threshold)
+                                    </div>
+                                    <div className="text-xs text-white/90 mt-0.5">
+                                      You meet all requirements! Your verified score gives you top priority with the hiring manager.
+                                    </div>
+                                  </div>
+                                  <span className="text-2xl">🎯</span>
+                                </div>
+                              ) : elig?.status === 'score_too_low' ? (
+                                <div>
+                                  <div className="text-[10px] font-mono uppercase tracking-widest font-bold text-rose-400">
+                                    Score Below Minimum ({elig?.candidate_score}% &lt; {minScoreReq}%)
+                                  </div>
+                                  <div className="text-xs text-white/90 mt-0.5">
+                                    Retake the assessment to raise your score above {minScoreReq}% and unlock this position.
+                                  </div>
+                                </div>
+                              ) : (
+                                <div>
+                                  <div className="text-[10px] font-mono uppercase tracking-widest font-bold text-amber-400">
+                                    Skill Proof Required ({elig?.completed_tests_count || 0}/{elig?.total_required_tests || job.required_tests?.length || 1} Completed)
+                                  </div>
+                                  <div className="text-xs text-white/90 mt-0.5">
+                                    Complete {elig?.missing_tests?.[0]?.title || 'required assessment'} ({elig?.missing_tests?.[0]?.duration_minutes || 30} mins) to qualify.
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Required Tests Pills */}
+                            <div className="space-y-1.5 pt-1">
+                              <span className="text-[10px] font-mono uppercase tracking-widest text-[#6A6A6D]">Required Assessments:</span>
+                              <div className="flex flex-wrap gap-2">
+                                {job.required_tests?.map((test: any) => {
+                                  const completed = elig?.completed_tests?.find((c: any) => c.id === test.id);
+                                  return (
+                                    <span
+                                      key={test.id}
+                                      className={`px-3 py-1 font-mono text-[10px] uppercase tracking-wider rounded-xl border flex items-center gap-1.5 ${
+                                        completed?.passed
+                                          ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 font-bold'
+                                          : 'bg-[#1E1E21] text-[#A0A0A3] border-[#2A2A2D]'
+                                      }`}
+                                    >
+                                      <span>{completed?.passed ? '✓' : '○'}</span>
+                                      <span>{test.title}</span>
+                                      {completed && <span className="text-emerald-400 font-bold">({completed.score}%)</span>}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* CTA Side */}
+                          <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 min-w-[210px] shrink-0 justify-center">
+                            {hasApplied ? (
+                              <button
+                                disabled
+                                className="w-full px-5 py-3.5 bg-purple-500/20 text-purple-300 font-mono text-xs uppercase tracking-widest rounded-xl font-bold border border-purple-500/30 cursor-default"
+                              >
+                                ✓ Applied ({elig?.candidate_score}%)
+                              </button>
+                            ) : isEligible ? (
+                              <button
+                                onClick={() => handleApplyJob(job.id)}
+                                disabled={applyingJobId === job.id}
+                                className="w-full px-5 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-[#0A0A0B] font-mono text-xs uppercase tracking-widest rounded-xl font-bold transition-all shadow-lg hover:shadow-emerald-500/20 disabled:opacity-50"
+                              >
+                                {applyingJobId === job.id ? 'Applying...' : `Apply (${elig?.candidate_score}%)`}
+                              </button>
+                            ) : elig?.missing_tests && elig.missing_tests.length > 0 ? (
+                              <button
+                                onClick={() => handleStartTest(elig.missing_tests[0].id)}
+                                className="w-full px-5 py-3.5 bg-white hover:bg-emerald-400 hover:text-[#0A0A0B] text-[#0A0A0B] font-mono text-xs uppercase tracking-widest rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2"
+                              >
+                                <span>⚡</span> Take Assessment
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => navigate(`/jobs/${job.id}`)}
+                                className="w-full px-5 py-3.5 bg-[#1E1E21] hover:bg-white/20 text-white font-mono text-xs uppercase tracking-widest rounded-xl font-bold transition-all border border-[#2A2A2D]"
+                              >
+                                View Role
+                              </button>
+                            )}
+
+                            {/* Take Practice Assignment Option */}
+                            <button
+                              onClick={() => {
+                                setSelectedPracticeJob(job);
+                                setIsPracticeModalOpen(true);
+                              }}
+                              className="w-full px-4 py-2.5 bg-[#1E1E21] hover:bg-emerald-500/10 hover:border-emerald-500/40 text-emerald-400 font-mono text-xs uppercase tracking-wider rounded-xl font-bold transition-all border border-[#2A2A2D] flex items-center justify-center gap-2 group shadow-sm hover:scale-[1.01]"
+                            >
+                              <span className="group-hover:scale-110 transition-transform">🎯</span> Take Practice Assignment
+                            </button>
+
+                            <button
+                              onClick={() => navigate(`/jobs/${job.id}`)}
+                              className="w-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-wider text-[#A0A0A3] hover:text-white transition-colors text-center"
+                            >
+                              Details & AI Prep &rarr;
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <button className="bg-white text-white px-6 py-2.5 rounded-lg font-mono text-[10px] uppercase tracking-widest font-bold hover:bg-brand-secondary transition-colors">Apply</button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-20 flex flex-col items-center justify-center h-full border border-dashed border-[#3A3A3D] rounded-2xl bg-[#141415]">
-                  <span className="text-4xl opacity-50 block mb-4">💼</span>
-                  <h3 className="font-sans tracking-tight text-lg font-bold text-white mb-2">No Job Matches Yet</h3>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[#A0A0A3]">Complete more assessments to unlock job matches.</p>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
+                    );
+                  })
+                ) : (
+                  <div className="text-center py-20 flex flex-col items-center justify-center h-full border border-dashed border-[#3A3A3D] rounded-3xl bg-[#141415]">
+                    <span className="text-4xl opacity-50 block mb-4">💼</span>
+                    <h3 className="font-sans tracking-tight text-lg font-bold text-white mb-2">No Matching Roles Found</h3>
+                    <p className="font-mono text-xs uppercase tracking-widest text-[#A0A0A3] max-w-sm">
+                      {jobFilter === 'eligible' 
+                        ? 'Complete assessments in the Certificates or Resume tab to unlock matching jobs!' 
+                        : 'Check back soon for new postings from verified companies.'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })()}
 
         {/* Interviews Tab */}
         {activeTab === 'Interviews' && (
@@ -1421,22 +1736,33 @@ const tabVariants = {
                                 {CATEGORY_ICONS[st.test_type] || '🧠'}
                               </span>
                               <div>
-                                <div className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 font-bold mb-1">
-                                  {st.category} • {st.difficulty || 'Intermediate'}
+                                <div className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 font-bold mb-1 flex items-center gap-2">
+                                  <span>{st.category} • {st.difficulty || 'Intermediate'}</span>
+                                  {st.is_completed && (
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[9px]">
+                                      ✓ Verified ({st.user_score}%)
+                                    </span>
+                                  )}
                                 </div>
                                 <h4 className="font-sans tracking-tight font-bold text-white text-base group-hover:text-emerald-300 transition-colors">
                                   {st.title}
                                 </h4>
-                                <div className="font-mono text-[10px] text-[#6A6A6D] mt-1 flex items-center gap-2">
+                                <div className="font-mono text-[10px] text-[#A0A0A3] mt-1.5 flex flex-wrap items-center gap-2">
                                   <span>⏱ {st.duration_minutes} Mins</span>
                                   <span>•</span>
-                                  <span className="text-emerald-400/80">Proctored Proof</span>
+                                  {st.unlocked_jobs_count && st.unlocked_jobs_count > 0 ? (
+                                    <span className="text-amber-400 font-bold">
+                                      🎯 Unlocks {st.unlocked_jobs_count} Role{st.unlocked_jobs_count > 1 ? 's' : ''} in Jobs Tab
+                                    </span>
+                                  ) : (
+                                    <span className="text-emerald-400/80">Proctored Proof</span>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <div className="flex items-center pl-4">
-                              <span className="w-10 h-10 rounded-xl bg-[#141415] group-hover:bg-emerald-500 group-hover:text-[#0A0A0B] text-white flex items-center justify-center font-bold text-lg transition-all duration-300 group-hover:translate-x-1 shadow-sm">
-                                →
+                              <span className="px-4 py-2 rounded-xl bg-[#1E1E21] group-hover:bg-emerald-500 group-hover:text-[#0A0A0B] text-white font-mono text-[11px] font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-1.5 shrink-0">
+                                {st.is_completed ? 'Retake' : 'Take Test'} <span>&rarr;</span>
                               </span>
                             </div>
                           </div>
@@ -1518,6 +1844,18 @@ const tabVariants = {
         </AnimatePresence>
         </div>
       </div>
+
+      {/* Practice Assignment Modal */}
+      <PracticeAssignmentModal
+        job={selectedPracticeJob}
+        isOpen={isPracticeModalOpen}
+        onClose={() => setIsPracticeModalOpen(false)}
+        onStartOfficialTest={(testId) => {
+          setIsPracticeModalOpen(false);
+          handleStartTest(testId);
+        }}
+      />
     </div>
   );
 }
+

@@ -225,7 +225,7 @@ export function MessagesView() {
                             {conv.latest_message ? conv.latest_message.content : 'No messages yet'}
                           </p>
                           {conv.unread_count > 0 && (
-                            <span className={`text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center ml-2 flex-shrink-0 ${isActive ? 'bg-brand-primary text-white' : 'bg-brand-primary text-white shadow-sm'}`}>
+                            <span className="text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center ml-2 flex-shrink-0 bg-emerald-500 text-[#0A0A0B] shadow-sm">
                               {conv.unread_count}
                             </span>
                           )}
@@ -358,7 +358,7 @@ export function MessagesView() {
                     <button 
                       type="submit" 
                       disabled={!inputValue.trim() || isSending}
-                      className="w-10 h-10 rounded-full flex items-center justify-center bg-brand-primary text-white hover:bg-brand-primary/80 transition-colors disabled:opacity-50 disabled:bg-[#1E1E21]"
+                      className="w-10 h-10 rounded-full flex items-center justify-center bg-emerald-500 text-[#0A0A0B] hover:bg-emerald-400 transition-colors disabled:opacity-40 disabled:bg-[#1E1E21] disabled:text-[#A0A0A3] cursor-pointer shadow-md"
                     >
                       <svg className="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                     </button>

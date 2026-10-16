@@ -64,12 +64,12 @@ export const AIAssistantWidget: React.FC = () => {
 
   // Simple markdown formatter: converts **bold**, *italic* to proper HTML
   const formatMessage = (text: string) => {
-    // Replace **bold** with <strong>
-    let formatted = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    // Replace *italic* with <em>
-    formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    let formatted = text
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
+      .replace(/\*([^*\n]+?)\*/g, '<em class="italic text-emerald-300">$1</em>');
     return formatted;
   };
+
 
   return (
     <>
@@ -81,11 +81,11 @@ export const AIAssistantWidget: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="mb-4 w-80 sm:w-96 bg-white/90  border border-white/60  rounded-3xl overflow-hidden flex flex-col"
+              className="mb-4 w-80 sm:w-96 bg-[#111113] border border-[#2A2A2D] rounded-3xl overflow-hidden flex flex-col shadow-2xl"
               style={{ height: '500px', maxHeight: 'calc(100vh - 120px)' }}
             >
               {/* Header */}
-              <div className="p-4 bg-[#0A0A0B] text-white flex items-center justify-between shadow-md z-10 relative">
+              <div className="p-4 bg-[#141415] border-b border-[#2A2A2D] text-white flex items-center justify-between shadow-md z-10 relative">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-verification to-emerald-400 p-0.5 shadow-inner">
                     <div className="w-full h-full bg-[#0A0A0B] rounded-full flex items-center justify-center">
@@ -94,19 +94,19 @@ export const AIAssistantWidget: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-sans tracking-tight font-bold text-sm tracking-tight">AI Assistant</h3>
-                    <p className="font-mono text-[9px] uppercase tracking-widest text-[#D4D4D8]">SkillProof Guide</p>
+                    <p className="font-mono text-[9px] uppercase tracking-widest text-emerald-400">SkillProof Guide</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#1E1E21] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-[#A0A0A3] hover:text-white hover:bg-[#1E1E21] transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
               </div>
 
               {/* Chat Area */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 relative">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 relative bg-[#0D0D0E]">
                 {messages.map((msg) => (
                   <motion.div 
                     key={msg.id}
@@ -116,8 +116,8 @@ export const AIAssistantWidget: React.FC = () => {
                   >
                     <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
                       msg.is_user 
-                        ? 'bg-[#0A0A0B] text-white rounded-br-none' 
-                        : 'bg-white border border-structure/30 text-[#0A0A0B] rounded-bl-none'
+                        ? 'bg-emerald-500 text-[#0A0A0B] font-medium rounded-br-none' 
+                        : 'bg-[#18181B] border border-[#2A2A2D] text-white/90 rounded-bl-none'
                     }`}>
                       {msg.is_user ? (
                         <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
@@ -133,10 +133,10 @@ export const AIAssistantWidget: React.FC = () => {
                 
                 {isTyping && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                    <div className="bg-white border border-structure/30 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 bg-[#0A0A0B]/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="w-1.5 h-1.5 bg-[#0A0A0B]/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-1.5 h-1.5 bg-[#0A0A0B]/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <div className="bg-[#18181B] border border-[#2A2A2D] rounded-2xl rounded-bl-none px-4 py-3 shadow-sm flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </motion.div>
                 )}
@@ -145,12 +145,12 @@ export const AIAssistantWidget: React.FC = () => {
 
               {/* Quick Prompts (only show if few messages) */}
               {messages.length < 3 && !isTyping && (
-                <div className="px-4 pb-2 flex flex-wrap gap-2">
+                <div className="px-4 pb-2 pt-2 bg-[#0D0D0E] flex flex-wrap gap-2">
                   {quickPrompts.map((prompt, i) => (
                     <button
                       key={i}
                       onClick={() => handleSend(prompt)}
-                      className="text-[10px] font-mono uppercase tracking-widest text-[#0A0A0B]/70 bg-[#141415]0 border border-structure/30 hover:border-verification hover:text-verification hover:bg-white/5 px-3 py-1.5 rounded-full transition-all duration-300"
+                      className="text-[10px] font-mono uppercase tracking-widest text-[#D4D4D8] bg-[#18181B] border border-[#2A2A2D] hover:border-emerald-500/50 hover:text-white px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer"
                     >
                       {prompt}
                     </button>
@@ -159,7 +159,7 @@ export const AIAssistantWidget: React.FC = () => {
               )}
 
               {/* Input Area */}
-              <div className="p-4 bg-white/80 border-t border-structure/20 ">
+              <div className="p-4 bg-[#141415] border-t border-[#2A2A2D]">
                 <form 
                   onSubmit={(e) => { e.preventDefault(); handleSend(inputValue); }}
                   className="relative flex items-center"
@@ -169,13 +169,13 @@ export const AIAssistantWidget: React.FC = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Ask about your skills..."
-                    className="w-full bg-white border border-structure/30 rounded-full pl-4 pr-12 py-2.5 text-sm text-[#0A0A0B] focus:outline-none focus:border-verification focus:ring-1 focus:ring-verification shadow-inner transition-all"
+                    className="w-full bg-[#18181B] border border-[#2A2A2D] rounded-full pl-4 pr-12 py-2.5 text-sm text-white placeholder-[#71717A] focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 shadow-inner transition-all"
                     disabled={isTyping}
                   />
                   <button 
-                    type="submit"
+                    type="submit" 
                     disabled={!inputValue.trim() || isTyping}
-                    className="absolute right-1 w-8 h-8 rounded-full bg-[#0A0A0B] text-white flex items-center justify-center hover:bg-[#0A0A0B]/90 disabled:opacity-50 disabled:hover:bg-[#0A0A0B] transition-colors shadow-md"
+                    className="absolute right-1 w-8 h-8 rounded-full bg-emerald-500 text-[#0A0A0B] flex items-center justify-center hover:bg-emerald-400 disabled:opacity-40 disabled:hover:bg-emerald-500 transition-colors shadow-md cursor-pointer"
                   >
                     <svg className="w-4 h-4 ml-0.5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                   </button>
