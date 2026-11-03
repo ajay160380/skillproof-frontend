@@ -24,6 +24,7 @@ const JobDetail = lazy(() => import('./pages/JobDetail').then(m => ({ default: m
 const PostJob = lazy(() => import('./pages/PostJob').then(m => ({ default: m.PostJob })));
 const RecruiterJobs = lazy(() => import('./pages/RecruiterJobs').then(m => ({ default: m.RecruiterJobs })));
 const FollowersList = lazy(() => import('./pages/FollowersList').then(m => ({ default: m.FollowersList })));
+const MessagesView = lazy(() => import('./pages/MessagesView').then(m => ({ default: m.MessagesView })));
 const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate').then(m => ({ default: m.VerifyCertificate })));
 const AdminPortal = lazy(() => import('./pages/AdminPortal').then(m => ({ default: m.AdminPortal })));
 
@@ -122,6 +123,7 @@ function App() {
               <Route path="dashboard" element={<CandidateDashboard />} />
               <Route path="test/:id" element={<TestScreen />} />
               <Route path="followers" element={<FollowersList />} />
+              <Route path="messages" element={<MessagesView />} />
             </Route>
 
             {/* Recruiter Only Routes (Candidates Cannot Access) */}

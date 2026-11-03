@@ -85,7 +85,7 @@ export function ResumeUploader({
       className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 overflow-hidden ${
         isDragging
           ? 'border-emerald-400 bg-emerald-500/10  scale-[1.01]'
-          : 'border-[#2A2A2D] bg-[#111113] hover:bg-[#1E1E21] hover:border-emerald-500/40 hover:'
+          : 'border-[#2A2A2D] bg-[#111113] hover:bg-[#1E1E21] hover:border-emerald-500/40'
       } ${className}`}
     >
       <input

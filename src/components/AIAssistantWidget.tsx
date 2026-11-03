@@ -188,7 +188,7 @@ export const AIAssistantWidget: React.FC = () => {
         {/* Floating Action Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="group relative w-14 h-14 rounded-full bg-gradient-to-tr from-ink to-ink/90  hover: hover:-translate-y-1 transition-all duration-300 flex items-center justify-center ring-1 ring-white/10"
+          className="group relative w-14 h-14 rounded-full bg-gradient-to-tr from-ink to-ink/90 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center ring-1 ring-white/10"
         >
           {/* Subtle Pulse */}
           {!isOpen && (

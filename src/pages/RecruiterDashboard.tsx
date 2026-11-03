@@ -575,7 +575,7 @@ export function RecruiterDashboard() {
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {talentMatches.slice(0, 4).map((match, i) => (
-                        <motion.div whileHover={{ y: -5 }} key={match.user_id} className="bg-[#141415]  border border-[#2A2A2D] hover:border-emerald-500/40 rounded-3xl p-6 hover: transition-all duration-300">
+                        <motion.div whileHover={{ y: -5 }} key={match.user_id} className="bg-[#141415] border border-[#2A2A2D] hover:border-emerald-500/40 rounded-3xl p-6 transition-all duration-300">
                           <div className="flex justify-between items-start mb-4">
                             <div>
                               <h3 className="font-sans tracking-tight text-xl text-white font-bold">{match.name || match.email.split('@')[0]}</h3>

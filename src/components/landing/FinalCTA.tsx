@@ -16,7 +16,7 @@ export function FinalCTA() {
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <BadgeIcon level="platinum" size={80} className="text-vellum drop-" />
+          <BadgeIcon level="platinum" size={80} className="text-vellum drop-shadow-lg" />
         </motion.div>
         
         <motion.h2 

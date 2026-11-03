@@ -7,7 +7,7 @@ export const itemVariants: Variants = {
   show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 400, damping: 30 } }
 };
 
-const glassCardClasses = "bg-[#111113] border border-[#2A2A2D] rounded-3xl p-6 hover:bg-[#1E1E21] hover: transition-all duration-300 relative overflow-hidden group";
+const glassCardClasses = "bg-[#111113] border border-[#2A2A2D] rounded-3xl p-6 hover:bg-[#1E1E21] transition-all duration-300 relative overflow-hidden group";
 
 export const ActivityStreakWidget = ({ attempts = [] }: { attempts?: any[] }) => {
   const currentStreak = attempts.length > 0 ? 3 : 0; // Simplified for now

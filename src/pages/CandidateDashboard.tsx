@@ -786,14 +786,14 @@ const tabVariants = {
                     {/* Main CTA Bento Box (Center) */}
                     <div className="col-span-1 lg:col-span-2 row-span-2 relative">
                       
-                      <div className="w-full h-full bg-[#111113] border border-[#2A2A2D]  rounded-3xl p-10 flex flex-col items-center justify-center text-center relative overflow-hidden z-10 group transition-all duration-500 hover: hover:border-emerald-500/30">
+                      <div className="w-full h-full bg-[#111113] border border-[#2A2A2D] rounded-3xl p-10 flex flex-col items-center justify-center text-center relative overflow-hidden z-10 group transition-all duration-500 hover:border-emerald-500/30">
                         {/* Shimmer effect */}
                         <div className="absolute inset-0 hidden -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none" />
                         
                         <div className="relative w-32 h-32 mx-auto mb-8 cursor-pointer group/icon" onClick={() => setActiveTab('Resume')}>
                           <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-brand-primary rounded-[2.5rem] rotate-3 group-hover/icon:rotate-6 transition-transform duration-500 " />
                           <div className="absolute inset-0 bg-[#0A0A0B]/80   border border-[#3A3A3D] rounded-[2.5rem] -rotate-3 group-hover/icon:rotate-0 transition-transform duration-500 flex items-center justify-center">
-                            <svg className="w-14 h-14 text-emerald-400 group-hover/icon:scale-110 transition-transform duration-300 drop-" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-14 h-14 text-emerald-400 group-hover/icon:scale-110 transition-transform duration-300 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 16v-4m0 0l-2 2m2-2l2 2" className="animate-bounce" />
                             </svg>
@@ -992,7 +992,7 @@ const tabVariants = {
                         </div>
                         <div className="flex flex-col items-end">
                           {attempt.score ? (
-                            <div className="font-sans tracking-tight text-xl font-bold text-emerald-400 drop-">{attempt.score.overall_score}%</div>
+                            <div className="font-sans tracking-tight text-xl font-bold text-emerald-400 drop-shadow-sm">{attempt.score.overall_score}%</div>
                           ) : (
                             <div className="font-mono text-[9px] uppercase tracking-widest text-gold font-bold border border-gold/30 bg-gold/10 px-3 py-1.5 rounded-full">Pending</div>
                           )}

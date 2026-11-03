@@ -355,7 +355,7 @@ export function SkillInsights({ onStartTest }: { onStartTest: (testId: number) =
                   key={gap.skill}
                   variants={itemVariants}
                   whileHover={{ y: -4, scale: 1.01 }}
-                  className={`${glassCardClasses} hover:bg-[#1E1E21] hover: cursor-default`}
+                  className={`${glassCardClasses} hover:bg-[#1E1E21] cursor-default`}
                 >
                   {/* Status indicator blob */}
                   <div className={`absolute -top-12 -right-12 w-24 h-24 ${gap.status === 'above' ? 'bg-emerald-400/10' : gap.status === 'below' ? 'bg-rose-400/10' : 'bg-amber-400/10'} rounded-full blur-2xl`} />
