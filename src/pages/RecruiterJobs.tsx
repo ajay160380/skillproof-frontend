@@ -8,7 +8,9 @@ import { EmptyState } from '../components/EmptyState';
 interface JobApplicant {
   id: number;
   candidate_id: number;
-  candidate_email: string;
+  candidate_username?: string;
+  candidate_name?: string;
+  candidate_email?: string;
   status: string;
   overall_fit_score: number | null;
   completed_at: string | null;
@@ -140,7 +142,10 @@ export function RecruiterJobs() {
                     {applicants.map((app, idx) => (
                       <tr key={app.id} className="hover:bg-[#1E1E21]/50 transition-colors">
                         <td className="px-6 py-4 font-mono text-xs text-[#A0A0A3]">#{idx + 1}</td>
-                        <td className="px-6 py-4 font-sans font-medium text-white">{app.candidate_email}</td>
+                        <td className="px-6 py-4 font-sans font-medium text-white">
+                          {app.candidate_name || app.candidate_username || app.candidate_email || 'Applicant'}
+                          {app.candidate_username && <span className="block font-mono text-[10px] text-[#A0A0A3]">@{app.candidate_username}</span>}
+                        </td>
                         <td className="px-6 py-4">
                           <span className={`px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider rounded-full border ${
                             app.status === 'completed' 
@@ -159,7 +164,7 @@ export function RecruiterJobs() {
                         </td>
                         <td className="px-6 py-4 text-right">
                           <Link 
-                            to={`/profile/${app.candidate_id}`}
+                            to={`/profile/${app.candidate_username || app.candidate_id}`}
                             className="font-mono text-xs uppercase tracking-widest text-emerald-400 hover:text-emerald-300 font-bold"
                           >
                             View Dossier &rarr;

@@ -602,7 +602,7 @@ export function RecruiterDashboard() {
                           
                           <div className="flex gap-3">
                             <Link 
-                              to={`/profile/${match.user_id}`} 
+                              to={`/profile/${match.username || match.user_id}`} 
                               className="flex-1 py-2.5 bg-[#1E1E21] hover:bg-white/20 text-white text-center rounded-xl font-mono text-xs font-bold uppercase tracking-widest border border-[#2A2A2D] transition-colors"
                             >
                               Dossier
@@ -704,12 +704,12 @@ export function RecruiterDashboard() {
                              <div className="w-[60px] h-[60px] rounded-full bg-[#1E1E21] flex items-center justify-center font-mono text-[10px] text-[#A0A0A3]">TBD</div>
                            )}
                            <div>
-                             <h3 className="font-sans tracking-tight text-lg font-bold text-white">{app.candidate_name || app.candidate_email}</h3>
+                             <h3 className="font-sans tracking-tight text-lg font-bold text-white">{app.candidate_name || app.candidate_username || 'Applicant'}</h3>
                              <p className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 font-bold mt-0.5">Status: {app.status}</p>
                            </div>
                          </div>
                          <div className="flex gap-2">
-                           <Link to={`/profile/${app.candidate_id}`} className="px-4 py-2.5 border border-[#2A2A2D] hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors">
+                           <Link to={`/profile/${app.candidate_username || app.candidate_id}`} className="px-4 py-2.5 border border-[#2A2A2D] hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors">
                              Dossier
                            </Link>
                            <button onClick={() => handleProposeInterview(app.candidate_id.toString(), selectedJobIdForApplicants || undefined)} className="px-4 py-2.5 bg-white text-[#0A0A0B] rounded-xl font-mono text-xs uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-md">
@@ -756,7 +756,7 @@ export function RecruiterDashboard() {
                           </div>
                         </div>
                         <div>
-                           <Link to={`/profile/${interview.candidate}`} className="px-6 py-2.5 border border-[#2A2A2D] hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors inline-block">
+                           <Link to={`/profile/${interview.candidate_username || interview.candidate}`} className="px-6 py-2.5 border border-[#2A2A2D] hover:border-white/30 text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-colors inline-block">
                              View Candidate
                            </Link>
                         </div>

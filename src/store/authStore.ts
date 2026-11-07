@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { api } from '../services/api';
 
 export interface User {
   id: number;
@@ -51,6 +52,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ user, isAuthenticated: true, isLoading: false });
   },
   logout: () => {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (refreshToken) {
+      api.post('/auth/logout/', { refresh: refreshToken }).catch((err) => {
+        console.warn('Blacklist refresh token on logout failed:', err);
+      });
+    }
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user_info');
