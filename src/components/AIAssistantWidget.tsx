@@ -60,13 +60,17 @@ export const AIAssistantWidget: React.FC = () => {
   const quickPrompts = [
     "How does scoring work?",
     "What should I do first?",
+    "Tips to boost my Score",
+    "How does proctoring work?",
   ];
 
-  // Simple markdown formatter: converts **bold**, *italic* to proper HTML
+  // Enhanced markdown formatter: converts bold, italic, and bullet lists to styled HTML
   const formatMessage = (text: string) => {
     let formatted = text
       .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
-      .replace(/\*([^*\n]+?)\*/g, '<em class="italic text-emerald-300">$1</em>');
+      .replace(/\*([^*\n]+?)\*/g, '<em class="italic text-emerald-300">$1</em>')
+      .replace(/^\s*[\*\-]\s+(.+)$/gm, '<li class="ml-4 list-disc text-gray-200 my-0.5">$1</li>')
+      .replace(/^\s*(\d+)\.\s+(.+)$/gm, '<li class="ml-4 list-decimal text-gray-200 my-0.5">$2</li>');
     return formatted;
   };
 
